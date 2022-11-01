@@ -1,0 +1,337 @@
+﻿@using BMSS.Domain
+@using BMSS.WebUI.Models.DOViewModels
+@model IEnumerable<DODocH>
+@using System.Globalization;
+@{
+    ViewBag.Title = "List of Delivery Order / Invoice";
+    string PreferredLocation = ViewBag.PreferredLocation;
+}
+@section Styles {
+    @Styles.Render("~/DataTablesCss")
+    @Styles.Render("~/Select2Css")
+    @Styles.Render("~/DatePicker")
+}
+@section Content_Header {
+    <section class="content-header">
+        <h1>
+            Delivery Order / Invoice Listing
+            <small>Delivery Order / Invoices</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href='@Url.Action("Index", "Home")'><i class="fa fa-dashboard"></i>Transactions</a></li>
+            <li class="active">Delivery Order / Invoices</li>
+        </ol>
+    </section>
+}
+@using (Html.BeginForm("Edit", null, null, FormMethod.Get, new { id = "DetailForm" }))
+{
+    @Html.Hidden("DocNum", "")
+}
+<div class="row">
+    <div class="col-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">List of Delivery Order / Invoices</h3>
+                <div class="box-tools" style="top: 3px;"><a class="btn btn-primary" href="@Url.Action("Add", "DO")" role="button">Add</a></div>
+            </div>
+            <div class="box-body">
+                <table id="ItemList" class="table table-bordered table-striped responsive nowrap dblEdit" data-fixed-header="true" data-auto-width="true" data-paging="true" data-searching="true" data-length-change="true" data-page-length="100" data-ordering="true" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Doc #</th>
+                            <th>Date</th>
+                            <th>Account #</th>
+                            <th class="text-right">Amount</th>
+                            <th>Print Status</th>
+                            <th>SAP Status</th>
+                            <th>SAP Invoice No</th>
+                            <th>Del Date</th>
+                            <th>Del Time</th>
+                            <th>Customer Ref</th>
+                            <th data-priority="1">To Planner</th>
+                            <th>Sent</th>
+                            <th data-priority="1">Print</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section BootModals {
+    @Html.Partial("_DOPlannerRowModal", new DOPlannerRowViewModel(ViewBag.WarehouseList) { });
+}
+@section Scripts {
+    @Scripts.Render("~/DataTables")
+    @Scripts.Render("~/bundles/Jquery-Validation-and-Ajax")
+    @Scripts.Render("~/Select2")
+    @Scripts.Render("~/DatePickerJS")
+    @Scripts.Render("~/Knockout")
+    @Scripts.Render("~/Own")
+<script>
+        $(document).ready(function () {
+            function DOViewModel() {
+                self.DOPlannerLine = {
+                docType: ko.observable(),
+                creatorLocation: ko.observable('@PreferredLocation'),
+                referenceNo: ko.observable(),
+                deliveryLocation: ko.observable(),
+                deliveryDate: ko.observable(),
+                deliveryTime: ko.observable(),
+                remarks: ko.observable()
+            }
+            self.currentrowid = 0;
+            $('#CreatorLocation').val('@PreferredLocation').trigger('change');
+            self.showDOPlannerRow = function (rowid, DONum, DDate, DTime, DAddress, data, event) {
+                 
+                self.currentrowid = rowid;
+                $('#DOPlannerRowModal').find(".validation-summary-errors ul li").remove();
+                $('#DOPlannerRowModal').find(".validation-summary-valid ul li").remove();
+                $('#DOPlannerRowModal').modal('show');
+                self.InitializeDOPlannerLine(DONum, DDate, DTime, DAddress);
+            }
+             
+            self.hideDOPlannerRow = function () {
+            }
+            self.InitializeDOPlannerLine = function (DONum, DDate, DTime, DAddress) {
+                self.DOPlannerLine.docType('');
+                self.DOPlannerLine.creatorLocation('');
+                self.DOPlannerLine.referenceNo(DONum);
+                self.DOPlannerLine.deliveryLocation('');
+                self.DOPlannerLine.deliveryDate(DDate);
+                self.DOPlannerLine.deliveryTime(DTime);
+                self.DOPlannerLine.deliveryLocation(DAddress);
+                self.DOPlannerLine.remarks('');
+            }
+            self.validateAndPostLine = function (form) {
+                if (!$(form).valid()) {
+                    //$('#DOPlannerRowModal').scrollTop(0);
+                }
+                else {
+                    $(form).find(".validation-summary-errors ul li").remove();
+                    $(form).find(".validation-summary-valid ul li").remove();
+                    self.DOPlannerLine.__RequestVerificationToken = form[0].value;
+                    $.ajax({
+                        url: "@Url.Action("AddPlannerLine", "DO", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS(self.DOPlannerLine),
+                        success: function (data)
+                        {
+
+                            self.successfulSave(form, data);
+                        },
+                        error: function ()
+                        {
+                            self.errorSave(form);
+                        }
+                    });
+                }
+            }
+            self.successfulSave = function (form, data) {
+                if (Boolean(data.IsModelValid) === true) {
+                    //var PurchaseOrderListTbl = $('#DeliveryOrderList').DataTable();
+                    //var temp = PurchaseOrderListTbl.row(self.currentrowid).data();
+                    //temp[11] = data.SentCount;
+
+                    //var rowNo = self.currentrowid;
+                    //PurchaseOrderListTbl.row(rowNo).data(temp).invalidate();
+                    setTimeout(function () {
+                        table.ajax.reload();
+                    }, 2000);
+
+                    $('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Success!</h4> Delivery planner line added successfully</div>')
+                        .prependTo($(".box-body"))
+                        .delay(2000)
+                        .slideUpAndRemove('slow');
+                    $('#DOPlannerRowModal').modal('hide');
+                }
+                else {
+                    var ErrArray = data.ModelErrList;
+
+                    $(form).find(".validation-summary-errors ul li").remove(); // Remove All li if before Submission had client side errors
+                    $(form).find(".validation-summary-valid ul li").remove();  // Remove one li with diplay:none style if before Submission didn't had any client side errors
+
+                    for (var i = 0; i < data.ModelErrList.length; i++) {
+                        $(form).find(".validation-summary-errors ul").append("<li>" + ErrArray[i] + "</li>");
+                        $(form).find(".validation-summary-valid ul").append("<li>" + ErrArray[i] + "</li>");
+                    }
+                }
+            }
+            self.errorSave = function (form) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                $('<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Alert!</h4><p>Sorry, Some thing went wrong, Please contact website adminitrator</p></div>')
+                    .prependTo($(form))
+                    .delay(5000)
+                    .slideUpAndRemove('slow');
+            }
+
+        }
+
+            $(document).on('click', '.sendToPlanner', function (e) {
+                e.preventDefault();
+                if (DOViewModel !== undefined) {    
+                    let DocNumber = $(this).data('row-docnum');
+                    let DelDate = $(this).data('row-deldate');
+                    let DelTime = $(this).data('row-deltime');
+                    let DelAddress = $(this).data('row-deladdress');
+                   
+                   
+                    showDOPlannerRow(0, DocNumber, DelDate, DelTime, DelAddress);
+                }
+            });
+
+            $(document).on('click', '.printPreview', function (e) {
+            e.preventDefault();
+            let rowNo = $(this).data('row-index');
+            let DocNumber = $(this).data('row-docnum');
+            let DocEntry = $(this).data('row-docentry');
+            let URL = $(this).attr("href") + '/' + DocEntry;
+            $.ajax({
+                url: "@Url.Action("CanPrintInvoice", "DO", null)",
+                type: 'post',
+                contentType: 'application/x-www-form-urlencoded',
+                data: ko.toJS({ DocNumber: DocNumber }),
+                success: function (data)
+                {
+                    if (data.canAccess) {
+
+                        setTimeout(function () {
+                            table.ajax.reload();
+                        }, 5000);
+
+                        window.open(URL, '_blank');
+                    }
+                    else {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        $('<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Alert!</h4><p>Access denied</p></div>')
+                            .prependTo($('.box-body'))
+                            .delay(5000)
+                            .slideUpAndRemove('slow');
+                    }
+
+                },
+                error: function ()
+                {
+
+                }
+            });
+        });
+        $(document).on('click', '.printPreviewTax', function (e) {
+            e.preventDefault();
+            let rowNo = $(this).data('row-index');
+            let DocNumber = $(this).data('row-docnum');
+            let DocEntry = $(this).data('row-docentry');
+            let URL = $(this).attr("href") + '/' + DocEntry;
+            $.ajax({
+                url: "@Url.Action("CanPrintInvoice", "DO", null)",
+                type: 'post',
+                contentType: 'application/x-www-form-urlencoded',
+                data: ko.toJS({ DocNumber: DocNumber }),
+                success: function (data)
+                {
+                    if (data.canAccess) {
+
+                        setTimeout(function () {                           
+                            table.ajax.reload();
+                        }, 5000);
+                        
+                        window.open(URL, '_blank');
+
+                    }
+                    else {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        $('<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Alert!</h4><p>Access denied</p></div>')
+                            .prependTo($('.box-body'))
+                            .delay(5000)
+                            .slideUpAndRemove('slow');
+                    }
+
+                },
+                error: function ()
+                {
+
+                }
+            });
+        });
+
+
+        
+            var DOVM = new DOViewModel();
+            ko.applyBindings(DOVM);
+             
+        
+
+            var table = $('#ItemList') 
+                .DataTable({
+                    'processing': true,
+                    'serverSide': true,
+                    'serverMethod': 'post',
+                    'ajax': {
+                        'url': '@Url.Action("IndexNewPagining", "DO", null)'
+                    },
+                    'columns': [
+                        { data: 'DocNum', orderable: true },
+                        { data: 'DocDate', orderable: true },
+                        { data: 'CardCode', orderable: true },
+                        {
+                            data: 'GrandTotal',
+                            render: $.fn.dataTable.render.number(',', '.', 2, ''),
+                            className: "text-right",
+                            orderable: true
+                        },
+                        { data: 'PrintStatus', orderable: true },
+                        {
+                            data: null,
+                            render: function (data, type, row, meta) {
+                                if (data.SyncRemarks !== null)
+                                    return data.SAPStatus + " <span data-toggle='popover' data-trigger='hover' data-placement='right' data-html='true' data-content='" + data.SyncRemarks + "' data-title='Sync Remarks'><i class='fa fa-fw fa-info-circle'></i></span>";
+                                else
+                                    return data.SAPStatus;
+                            },
+                            orderable: true
+                        },
+                        { data: 'SAPDocNum', orderable: true },
+                        { data: 'DeliveryDate', orderable: true },
+                        { data: 'DeliveryTime', orderable: true },
+                        { data: 'CustomerRef', orderable: true },
+                        {
+                            data: null,
+                            render: function (data, type, row, meta) {                                
+                                return '<button  type="button" class="btn btn-primary btn-xs sendToPlanner" data-row-docnum="' + row.DocNum + '" data-row-deladdress="' + data.ShipToAddress1 + '" data-row-deldate="' + row.DeliveryDate + '" data-row-deltime="' + row.DeliveryTime + '">To Planner</button>';
+                            },
+                            orderable: false
+                        },
+                        { data: 'SentCount', orderable: false },
+
+                        {
+                            data: null,
+                            render: function (data, type, row, meta) {
+                                return "<div class='input-group-btn'><button type='button' class='btn btn-primary btn-xs dropdown-toggle' data-toggle='dropdown' aria-expanded='false'>Print</button><ul class='dropdown-menu' x-placement='bottom-start' style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px,15px, 10px);'><li class='btn-xs'><a target='_blank' class='printPreviewTax' data-row-index='0' data-row-docentry='" + data.DocEntry + "' data-row-docnum='" + row.DocNum + "' href='@Url.Action("DOTaxInvoiceViewer.aspx","WForms/")'>Tax Invoice</a></li><li class='btn-xs'><a target='_blank' class='printPreview' data-row-index='0'  data-row-docentry='" + data.DocEntry + "' data-row-docnum='" + row.DocNum + "' href='@Url.Action("DOViewer.aspx","WForms/")'>Delivery Order</a></li></ul></div>";
+                            },
+                            orderable: false
+                            //"defaultContent": "<div class='input-group-btn'><button type='button' class='btn btn-primary btn-xs dropdown-toggle' data-toggle='dropdown' aria-expanded='false'>Print</button><ul class='dropdown-menu' x-placement='bottom-start' style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px,15px, 10px);'><li class='btn-xs'><a target='_blank' class='printPreviewTax' data-row-index='0' data-row-docnum='" + row.DocNum + "' href='@Url.Action("DOTaxInvoiceViewer.aspx","WForms/", new { id = 1 })'>Tax Invoice</a></li><li class='btn-xs'><a target='_blank' class='printPreview' data-row-index='0'  data-row-docnum='0' href='@Url.Action("DOViewer.aspx","WForms/", new { id = 1 })'>Delivery Order</a></li></ul></div>",
+                        },
+                    ],
+                    "order": [[0, "desc"]]
+
+                });
+                //.on('xhr', function () {
+                //    console.log('data loaded');
+                //    ko.cleanNode(document.getElementById("ItemList"));
+                //    ko.applyBindings(DOVM, document.getElementById("ItemList"));
+                //});
+
+            $('#ItemList tbody').on('dblclick', 'tr', function () {
+                var data = table.row(this).data();
+                $(this).addClass("highlight");
+                $("#DocNum").val(data.DocNum);
+                $("#DocNum").closest("form").submit();
+            });
+            $('.select2').select2();
+            $('.datepicker').datepicker({ format: 'dd/mm/yyyy', autoclose: true });
+        });
+
+
+</script>
+}

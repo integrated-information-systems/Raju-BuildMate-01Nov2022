@@ -1,0 +1,1754 @@
+﻿@using BMSS.WebUI.Models.DOViewModels
+@model DOViewModel
+@{
+
+    var isCreating = Model.DocNum == "New";
+    ViewBag.Title = (isCreating) ? "Add New Delivery Order / Invoice" : "Edit Delivery Order /Invoice #" + Model.DocNum;
+}
+@section Content_Header {
+    <section class="content-header">
+        <h1>
+            @ViewBag.Title
+            <small>Delivery Order / Invoice</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i>Transactions</a></li>
+            <li class="active"><a href='@Url.Action("Index", "DO")'>Delivery Order / Invoices</a></li>
+        </ol>
+    </section>
+}
+@section Styles {
+    @Styles.Render("~/DataTablesCss")
+    @Styles.Render("~/Select2Css")
+    @Styles.Render("~/DatePicker")
+}
+<div class="row" id="MainContent">
+    <div class="col-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">Delivery Order / Invoice</h3>
+            </div>
+            @using (Html.BeginForm(null, null, null, FormMethod.Post, new { @id = "DOForm", @class = "form-horizontal", data_bind = "submit: validateAndSubmit" }))
+            {
+                @Html.ValidationSummary()
+                @Html.AntiForgeryToken()
+            <div class="box-body">
+
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.CardCode)
+                            @Html.DropDownListFor(x => x.CardCode, Enumerable.Empty<SelectListItem>(), null, new { @class = "form-control select2", data_bind = "options: CustomerNameCodes, optionsText: 'Value', optionsValue: 'Value', value: DO.cardCode ,optionsCaption: 'Select Customer Code'" })
+                        </div>
+                        <div class="overlay">
+                            <i class="fa fa-refresh fa-spin text-gray"></i>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.DocNum)
+                            @Html.TextBoxFor(x => x.DocNum, new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.PrintedStatus)
+                            @Html.TextBox("PrintedStatus", Html.GetPrintedStatusName(Model.PrintedStatus), new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.Currency)
+                            @Html.TextBoxFor(x => x.Currency, new { @class = "form-control", disabled = "", data_bind = "value: DO.currency" })
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.CreatedBy)
+                            @Html.TextBoxFor(x => x.CreatedBy, new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.CardName)
+                            @Html.DropDownListFor(x => x.CardName, Enumerable.Empty<SelectListItem>(), null, new { @class = "form-control select2", data_bind = "options: CustomerNameCodes, optionsText: 'Text', optionsValue: 'Value', value: DO.cardName,optionsCaption: 'Select Company Name'" })
+                        </div>
+                        <div class="overlay">
+                            <i class="fa fa-refresh fa-spin text-gray"></i>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.DocDate)
+                            @Html.TextBoxFor(x => x.DocDate, new { @class = "form-control datepicker", data_bind = "value: DO.docDate" })
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.Status)
+                            @Html.TextBox("Status", Html.GetDocStatusName(Model.Status), new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                         
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.PaymentTermName)                            
+                            @Html.TextBoxFor(x => x.PaymentTermName, new { @class = "form-control", data_bind = "value: DO.paymentTermName", disabled = "" })
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                        <div class="form-group">                            
+                            @Html.LabelFor(x => x.CreatedOn)
+                            @if (Model.CreatedOn.ToString("dd'/'MM'/'yyyy").Equals("01/01/0001"))
+                            {
+                                @Html.TextBox("CreatedOnString", null, null, new { @class = "form-control", disabled = "" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(x => x.CreatedOn, "{0:dd'/'MM'/'yyyy HH:mm:ss tt}", new { @class = "form-control", disabled = "" })
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.OfficeTelNo)
+                            @Html.TextBoxFor(x => x.OfficeTelNo, new { @class = "form-control", data_bind = "value: DO.officeTelNo" })
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.DueDate)
+                            @Html.TextBoxFor(x => x.DueDate, new { @class = "form-control datepicker", data_bind = "value: DO.dueDate" })
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.CopiedSQ)
+                            @Html.TextBoxFor(x => x.CopiedSQ, new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.SlpName)                            
+                            @Html.TextBoxFor(x => x.SlpName, new { @class = "form-control", data_bind = "value: DO.slpName", disabled = "" })
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.UpdatedBy)
+                            @Html.TextBoxFor(x => x.UpdatedBy, new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                        <div class="form-group">                          
+                            @Html.LabelFor(x => x.Fax)
+                            @Html.TextBoxFor(x => x.Fax, new { @class = "form-control", data_bind = "value: DO.fax" })
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.DeliveryDate)
+                            @Html.TextBoxFor(x => x.DeliveryDate, new { @class = "form-control datepicker", data_bind = "value: DO.deliveryDate" })
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.CustomerRef)
+                            @Html.TextBoxFor(x => x.CustomerRef, new { @class = "form-control", data_bind = "value: DO.customerRef" })
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.CustomerTelNo)
+                            @Html.TextBoxFor(x => x.CustomerTelNo, new { @class = "form-control", data_bind = "value: DO.customerTelNo" })
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.UpdatedOn)
+                            @if (Model.UpdatedOn.ToString("dd'/'MM'/'yyyy").Equals("01/01/0001"))
+                            {
+                                @Html.TextBox("UpdatedOnString", null, null, new { @class = "form-control", disabled = "" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(x => x.UpdatedOn, "{0:dd'/'MM'/'yyyy HH:mm:ss tt}", new { @class = "form-control", disabled = "" })
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="nav-tabs-custom">
+                            <ul class="nav nav-tabs">
+                                <li class="nav-item active"><a href="#tab_1" data-toggle="tab" class="nav-link active">Contents</a></li>
+                                <li class="nav-item"><a href="#tab_2" data-toggle="tab" class="nav-link">Logistics</a></li>                                
+                                <li class="nav-item"><a href="#tab_3" data-toggle="tab" class="nav-link">Notes</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="tab_1">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <button type="button" class="btn btn-primary float-right mr-1" data-bind="click: addDOLine">Add</button>
+                                        </div>
+                                    </div>
+
+                                    <table id="ItemListTable" class="table table-striped table-bordered responsive nowrap bmdatatable" data-fixed-header="true" data-auto-width="true" data-paging='false' data-searching="false" data-length-change="false" data-page-length="5" data-ordering="false" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Line No</th>
+                                                <th>Stock Code</th>
+                                                <th>Description</th>
+                                                <th class="text-right">Qty</th>
+                                                <th>Location</th>
+                                                <th class="text-right">Unit Price</th>
+                                                <th>GST</th>
+                                                <th>Line Total</th>
+                                                <th>Delete</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                            <div class="form-group">
+                                                @Html.Label("Header Remarks")
+                                                @Html.TextBoxFor(x => x.HeaderRemarks1, new { @class = "form-control", data_bind = "value: DO.headerRemarks1" })
+                                            </div>
+                                            <div class="form-group">
+                                                @Html.TextBoxFor(x => x.HeaderRemarks2, new { @class = "form-control", data_bind = "value: DO.headerRemarks2" })
+                                            </div>
+                                            <div class="form-group">
+                                                @Html.TextBoxFor(x => x.HeaderRemarks3, new { @class = "form-control", data_bind = "value: DO.headerRemarks3" })
+                                            </div>
+                                            <div class="form-group">
+                                                @Html.TextBoxFor(x => x.HeaderRemarks4, new { @class = "form-control", data_bind = "value: DO.headerRemarks4" })
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                            <div class="form-group">
+                                                @Html.Label("Footer Remarks")
+                                                @Html.TextBoxFor(x => x.FooterRemarks1, new { @class = "form-control", data_bind = "value: DO.footerRemarks1" })
+                                            </div>
+                                            <div class="form-group">
+                                                @Html.TextBoxFor(x => x.FooterRemarks2, new { @class = "form-control", data_bind = "value: DO.footerRemarks2" })
+                                            </div>
+                                            <div class="form-group">
+                                                @Html.TextBoxFor(x => x.FooterRemarks3, new { @class = "form-control", data_bind = "value: DO.footerRemarks3" })
+                                            </div>
+                                            <div class="form-group">
+                                                @Html.TextBoxFor(x => x.FooterRemarks4, new { @class = "form-control", data_bind = "value: DO.footerRemarks4" })
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                            <div class="form-group row">
+                                                @Html.LabelFor(x => x.NetTotal, new { @class = "col-form-label col-4" })
+                                                <div class="col-8">
+                                                    @Html.TextBoxFor(x => x.NetTotal, new { @class = "form-control", data_bind = "value: DO.netTotal", disabled = "", style = "text-align: right; " })
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                @Html.LabelFor(x => x.DiscByPercent, new { @class = "col-form-label col-4" })
+                                                <div class="col-4">
+                                                    Percentage @Html.RadioButtonFor(x => x.DiscByPercent, "true", new { data_bind = "checked: DO.discByPercent" })
+                                                </div>
+                                                <div class="col-4">
+                                                    Amount @Html.RadioButtonFor(x => x.DiscByPercent, "false", new { data_bind = "checked: DO.discByPercent" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                @Html.LabelFor(x => x.DiscPercent, new { @class = "col-form-label col-4" })
+                                                <div class="col-8">
+                                                    @Html.TextBoxFor(x => x.DiscPercent, new { @class = "form-control", data_bind = "textInput: DO.discPercent", style = "text-align: right; " })
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                @Html.LabelFor(x => x.DiscAmount, new { @class = "col-form-label col-4" })
+                                                <div class="col-8">
+                                                    @Html.TextBoxFor(x => x.DiscAmount, new { @class = "form-control", data_bind = "textInput: DO.discAmount", style = "text-align: right; " })
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                @Html.LabelFor(x => x.GstTotal, new { @class = "col-form-label col-4" })
+                                                <div class="col-8">
+                                                    @Html.TextBoxFor(x => x.GstTotal, new { @class = "form-control", data_bind = "value: DO.gstTotal", style = "text-align: right; ", disabled = "" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                @Html.LabelFor(x => x.GrandTotal, new { @class = "col-form-label col-4" })
+                                                <div class="col-8">
+                                                    @Html.TextBoxFor(x => x.GrandTotal, new { @class = "form-control", data_bind = "value: DO.grandTotal", style = "text-align: right; ", disabled = "" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tab_2">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(x => x.ShipTo)
+                                                        @Html.DropDownListFor(x => x.ShipTo, Enumerable.Empty<SelectListItem>(), null, new { @class = "form-control select2", style = "width:100%", data_bind = "options: CustomerShipToAddresses, optionsText: 'Text', optionsValue: 'Value', value: DO.shipTo,optionsCaption: 'Select Ship To'" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(x => x.ShipToAddress1)
+                                                        @Html.TextBoxFor(x => x.ShipToAddress1, new { @class = "form-control", data_bind = "value: DO.shipToAddress1" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                </div>
+                                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(x => x.ShipToAddress2)
+                                                        @Html.TextBoxFor(x => x.ShipToAddress2, new { @class = "form-control", data_bind = "value: DO.shipToAddress2" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                </div>
+                                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(x => x.ShipToAddress3)
+                                                        @Html.TextBoxFor(x => x.ShipToAddress3, new { @class = "form-control", data_bind = "value: DO.shipToAddress3" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                </div>
+                                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(x => x.ShipToAddress4)
+                                                        @Html.TextBoxFor(x => x.ShipToAddress4, new { @class = "form-control", data_bind = "value: DO.shipToAddress4" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(x => x.BillTo)
+                                                        @Html.DropDownListFor(x => x.BillTo, Enumerable.Empty<SelectListItem>(), null, new { @class = "form-control select2", style = "width:100%", data_bind = "options: CustomerBillToAddresses, optionsText: 'Text', optionsValue: 'Value', value: DO.billTo,optionsCaption: 'Select Bill To'" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(x => x.BillToAddress1)
+                                                        @Html.TextBoxFor(x => x.BillToAddress1, new { @class = "form-control", data_bind = "value: DO.billToAddress1" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                </div>
+                                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(x => x.BillToAddress2)
+                                                        @Html.TextBoxFor(x => x.BillToAddress2, new { @class = "form-control", data_bind = "value: DO.billToAddress2" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                </div>
+                                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(x => x.BillToAddress3)
+                                                        @Html.TextBoxFor(x => x.BillToAddress3, new { @class = "form-control", data_bind = "value: DO.billToAddress3" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                </div>
+                                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(x => x.BillToAddress4)
+                                                        @Html.TextBoxFor(x => x.BillToAddress4, new { @class = "form-control", data_bind = "value: DO.billToAddress4" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>    
+                                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(x => x.SelfCollect)
+                                                        @Html.CheckBoxFor(x => x.SelfCollect, new { data_bind = "checked: DO.selfCollect" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(x => x.SelfCollectRemarks1)
+                                                        @Html.TextBoxFor(x => x.SelfCollectRemarks1, new { @class = "form-control", data_bind = "value: DO.selfCollectRemarks1" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                </div>
+                                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(x => x.SelfCollectRemarks2)
+                                                        @Html.TextBoxFor(x => x.SelfCollectRemarks2, new { @class = "form-control", data_bind = "value: DO.selfCollectRemarks2" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                </div>
+                                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(x => x.SelfCollectRemarks3)
+                                                        @Html.TextBoxFor(x => x.SelfCollectRemarks3, new { @class = "form-control", data_bind = "value: DO.selfCollectRemarks3" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                </div>
+                                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(x => x.SelfCollectRemarks4)
+                                                        @Html.TextBoxFor(x => x.SelfCollectRemarks4, new { @class = "form-control", data_bind = "value: DO.selfCollectRemarks4" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                 
+                                <div class="tab-pane" id="tab_3">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <button type="button" class="btn btn-primary float-right mr-1" data-bind="click: addDONote">Add</button>
+                                            </div>
+                                        </div>
+                                        <table id="NoteListTable" class="table table-striped table-bordered responsive nowrap bmdatatable dblEdit" data-fixed-header="true" data-auto-width="false" data-paging='false' data-searching="false" data-length-change="false" data-page-length="5" data-ordering="false" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 10%;">Line No</th>
+                                                    <th style="width: 80%;">Note</th>
+                                                    <th style="width: 10%;">Delete</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="input-group-btn">
+                    <Button type="submit" Class="btn btn-primary" data-bind="attr : {'disabled' : isDisabled}">Save</Button>
+                    <a class="btn btn-primary" href="@Url.Action("Index")" role="button">Close w/o Saving</a>
+                    @*<a class="btn btn-primary" href="@Url.Action("Index")" role="button">Duplicate</a>*@
+                    <a class="btn btn-primary" href="#" role="button">Preview</a>
+
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        Print
+                    </button>
+                    <ul class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px,15px, 10px);">
+                        <li><a href="#">Delivery Order</a></li>
+                        <li><a href="#">Invoice</a></li>
+                    </ul>
+
+                    <Button type="submit" Class="btn btn-primary" data-bind="click: validateAndSubmitToSAP, attr : {'disabled' : isDisabled}">Submit To SAP</Button>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>
+@section BootModals {
+    @Html.Partial("_DOLineDetailModal", new DOLineViewModel() { });
+    @Html.Partial("_DONoteDetailModal", new DONoteViewModel() { });
+}
+@section Scripts {
+    @Scripts.Render("~/DataTables")
+    @Scripts.Render("~/bundles/Jquery-Validation-and-Ajax")
+    @Scripts.Render("~/Select2")
+    @Scripts.Render("~/DatePickerJS")
+    @Scripts.Render("~/Knockout")
+
+    <script>
+        function DOViewModel(dO) {
+            var self = this;
+            self.isCreating = dO.docNum == "New";
+            // Loaded from ajax - Observable Arrays
+            self.CustomerNameCodes = ko.observableArray();
+            self.CustomerContactPersons = ko.observableArray();
+           
+            self.isDisabled = ko.observable(false);
+
+            self.ItemCodesAndNames = ko.observableArray();
+            self.LocationCodeAndNames = ko.observableArray();
+            self.TaxCodes = ko.observableArray();
+
+            self.CustomerShipToAddresses = ko.observableArray();
+            self.CustomerBillToAddresses = ko.observableArray();
+            
+            var LoadingFinished = true;
+            if (!self.isCreating) {
+                LoadingFinished = false;
+            }
+
+            self.LoadCustomerBasedDropdowns = function (cardcode) {
+                    $.when(
+                    // Initial Ajax Requests, while page loading
+                    //Load Customer's ContactPersons
+                    $.ajax({
+                        url: "@Url.Action("GetContactPersons", "ContactPersons", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ CardCode: cardcode }),
+                        success: function (data) {
+                            self.CustomerContactPersons(data);
+
+                        },
+                        error: function () { }
+                    }),
+                    //Load Shipping Addresses
+                    $.ajax({
+                        url: "@Url.Action("GetCustomerShippingAddresses", "CustomerAddress", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ CardCode: cardcode }),
+                        success: function (data) {
+
+                            self.CustomerShipToAddresses(data);
+
+                        },
+                        error: function () { }
+                    }),
+                    //Load Billing Addresses
+                    $.ajax({
+                        url: "@Url.Action("GetCustomerBillingAddresses", "CustomerAddress", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ CardCode: cardcode }),
+                        success: function (data) {
+
+                            self.CustomerBillToAddresses(data);
+                        },
+                        error: function () { }
+                    })
+                    ).done(function () {
+
+                            if (LoadingFinished === false) {
+                              
+                                
+                                self.DO.billTo(dO.billTo);
+                                $('#BillTo').val(dO.billTo).trigger('change');
+                                self.DO.shipTo(dO.shipTo);
+                                $('#ShipTo').val(dO.shipTo).trigger('change');
+
+                                LoadingFinished = true;
+                            }
+                        else {
+                            $.ajax({
+                                                url: "@Url.Action("GetCustomerDetails", "Customer", null)",
+                                                type: 'post',
+                                                contentType: 'application/x-www-form-urlencoded',
+                                                    data: ko.toJS({ CardCode: cardcode }),
+                                                success: function (data) {
+
+                                                    var PaymentTermsDays = parseInt(data.PaymentTermDays);
+                                                    self.DO.fax(data.Fax);
+                                                    self.DO.officeTelNo(data.OfficeTelNo);
+
+                                                    self.DO.currency(data.Currency);
+
+                                                    self.DO.paymentTermName(data.PymntGroup);
+                                                    self.DO.slpName(data.SlpName);
+
+
+                                                    let BillToDefVal = data.BillToDef;
+                                                    $('#BillTo').val("").trigger('change');
+                                                    $('#BillTo').val(BillToDefVal).trigger('change');
+
+                                                    let ShipToDefVal = data.ShipToDef;
+                                                    $('#ShipTo').val("").trigger('change');
+                                                    $('#ShipTo').val(ShipToDefVal).trigger('change');
+
+
+                                                    $('#GstName').val("SO").trigger('change');
+                                                    var DDate = self.DO.docDate();
+                                                    var DateParts = DDate.split("/");
+                                                    var dt = new Date(parseInt(DateParts[2], 10),
+                                                        parseInt(DateParts[1], 10) - 1,
+                                                        parseInt(DateParts[0], 10) + PaymentTermsDays);
+                                                    var dd = dt.getDate();
+                                                    var mm = dt.getMonth() + 1;
+
+                                                    var yyyy = dt.getFullYear();
+                                                    if (dd < 10) {
+                                                        dd = '0' + dd;
+                                                    }
+                                                    if (mm < 10) {
+                                                        mm = '0' + mm;
+                                                    }
+                                                    var FormattedDueDate = dd + '/' + mm + '/' + yyyy;
+                                                  
+                                                    self.DO.dueDate(FormattedDueDate);
+
+
+
+                                                },
+                                                error: function () { }
+                                            });
+                        }
+
+
+                });
+            };
+
+            // Model Binding
+            self.DO = {
+                docNum: dO.docNum,
+                cardCode: ko.observable(dO.cardCode),
+                cardName: ko.observable(dO.cardName),
+                currency: ko.observable(dO.currency),
+                officeTelNo: ko.observable(dO.officeTelNo),      
+                customerRef: ko.observable(dO.customerRef),      
+                customerTelNo: ko.observable(dO.customerTelNo),      
+                fax: ko.observable(dO.fax),
+                docDate: ko.observable(dO.docDate),
+                dueDate: ko.observable(dO.dueDate),
+                deliveryDate: ko.observable(dO.deliveryDate),
+                poNo: ko.observable(dO.poNo),
+                paymentTermName: ko.observable(dO.paymentTermName),
+                slpName: ko.observable(dO.slpName),                
+                headerRemarks1: ko.observable(dO.headerRemarks1),
+                headerRemarks2: ko.observable(dO.headerRemarks2),
+                headerRemarks3: ko.observable(dO.headerRemarks3),
+                headerRemarks4: ko.observable(dO.headerRemarks4),
+                footerRemarks1: ko.observable(dO.footerRemarks1),
+                footerRemarks2: ko.observable(dO.footerRemarks2),
+                footerRemarks3: ko.observable(dO.footerRemarks3),
+                footerRemarks4: ko.observable(dO.footerRemarks4),
+                billTo: ko.observable(dO.billTo),
+                billToAddress1: ko.observable(dO.billToAddress1),
+                billToAddress2: ko.observable(dO.billToAddress2),
+                billToAddress3: ko.observable(dO.billToAddress3),
+                billToAddress4: ko.observable(dO.billToAddress4),
+                shipTo: ko.observable(dO.shipTo),
+                shipToAddress1: ko.observable(dO.shipToAddress1),
+                shipToAddress2: ko.observable(dO.shipToAddress2),
+                shipToAddress3: ko.observable(dO.shipToAddress3),
+                shipToAddress4: ko.observable(dO.shipToAddress4),
+                selfCollect: ko.observable(dO.selfCollect),
+                selfCollectRemarks1: ko.observable(dO.selfCollectRemarks1),
+                selfCollectRemarks2: ko.observable(dO.selfCollectRemarks2),
+                selfCollectRemarks3: ko.observable(dO.selfCollectRemarks3),
+                selfCollectRemarks4: ko.observable(dO.selfCollectRemarks4),
+                discByPercent: ko.observable(dO.discByPercent),
+                discPercent: ko.observable(dO.discPercent),
+                discAmount: ko.observable(dO.discAmount),
+                grandTotal: ko.observable(dO.grandTotal),    
+                submittedToSAP: ko.observable(dO.submittedToSAP),
+                lines: ko.observableArray(dO.lines),
+                noteLines: ko.observableArray(dO.noteLines),
+                
+            }
+            
+            self.isDisabled(self.DO.submittedToSAP());           
+            //Total Calculation
+            self.DO.netTotal = ko.computed(function () {
+                var calculated = 0;
+                if (self.DO.lines() !== null) {
+                    for (var i = 0; i < self.DO.lines().length; i++) {
+                        calculated = calculated + parseFloat(self.DO.lines()[i].lineTotal);
+                    }
+                }
+                if (isNaN(calculated)) {
+                    return 0;
+                }
+                else {
+                    return roundToTwo(calculated);
+                }
+            }, self) //Computed observable
+            self.DO.gstTotal = ko.computed(function () {
+                var calculated = 0;
+                var discAmt = 0;
+                var disperc = 0;
+                disperc = self.DO.discPercent();
+                if (isNaN(disperc)) {
+                    disperc = 0
+                }
+                if (self.DO.lines() !== null) {
+                    for (var i = 0; i < self.DO.lines().length; i++) {
+                        if (disperc > 0) {
+                            discAmt = parseFloat(self.DO.lines()[i].lineTotal) * parseFloat(disperc) / 100;
+                        }
+
+                        calculated = calculated + parseFloat( roundToTwo( (parseFloat(self.DO.lines()[i].lineTotal) - discAmt) * (parseFloat(self.DO.lines()[i].gst) / 100) ));
+                    }
+                }
+                if (isNaN(calculated)) {
+                    return 0;
+                }
+                else {
+                    return roundToTwo(calculated);
+                }
+            }, self) //Computed observable
+            self.DO.netTotal.subscribe(function (newValue) {
+                self.CalcDiscounts();
+            }, self)
+            self.DO.discPercent.subscribe(function (newValue) {
+                self.CalcDiscounts();
+            }, self)
+            self.DO.discAmount.subscribe(function (newValue) {
+                self.CalcDiscounts();
+            }, self)
+            self.DO.gstTotal.subscribe(function (newValue) {
+                self.CalcTotals();
+            }, self)
+            
+            self.CalcTotals = function () {
+                var GrandTotal = 0;
+                if (!isNaN(self.DO.netTotal()) && !isNaN(self.DO.discAmount()) && !isNaN(self.DO.gstTotal())) {
+                    GrandTotal = parseFloat(self.DO.netTotal()) - parseFloat(self.DO.discAmount()) + parseFloat(self.DO.gstTotal());
+                   
+                }
+                if (isNaN(GrandTotal)) {
+                    self.DO.grandTotal(0);
+                }
+                else {
+                    GrandTotal = parseFloat(GrandTotal).toFixed(2);
+                    self.DO.grandTotal(GrandTotal);
+                }
+               
+            }
+            self.CalcDiscounts = function () {
+
+                if (self.DO.discByPercent() === "true") {
+
+                    var calculated = 0;
+                    if (!isNaN(self.DO.netTotal()) && !isNaN(self.DO.discPercent())) {
+                        calculated = self.DO.netTotal() * (self.DO.discPercent() / 100);
+                    }
+                    if (isNaN(calculated)) {
+                        self.DO.discAmount(0);
+                    }
+                    else {
+                        calculated = roundToTwo(calculated);
+                        self.DO.discAmount(calculated);
+                    }
+                }
+                else {
+
+                    var calculated = 0;
+                    if (!isNaN(self.DO.netTotal()) && !isNaN(self.DO.discAmount())) {
+
+                        calculated = (self.DO.discAmount() * 100) / self.DO.netTotal();
+                    }
+                    if (isNaN(calculated)) {
+                        self.DO.discPercent(0);
+                    }
+                    else {
+                        calculated = roundToTwo(calculated);
+                        self.DO.discPercent(calculated);
+                    }
+                }
+
+                self.CalcTotals();
+
+
+            }
+
+            if (!self.isCreating) {
+                self.LoadCustomerBasedDropdowns(self.DO.cardCode);
+            }
+
+            var originalState = dO;
+
+            //Single DOLine Object Setup
+            self.DOLine = {
+                lineNum: ko.observable(),
+                itemCode: ko.observable(),
+                description: ko.observable(),
+                overwriteDescription: ko.observable(),
+                description2: ko.observable(),
+                description3: ko.observable(),
+                description4: ko.observable(),
+                description5: ko.observable(),
+                description6: ko.observable(),
+                serialNumber: ko.observable(),
+                qty: ko.observable(),              
+                location: ko.observable(),
+                locationText: '',
+                unitPrice: ko.observable(),
+                gstName: ko.observable(),
+                gst: '',
+            }
+            //Single DONote Object Setup
+            self.DONote = {
+                lineNum: ko.observable(),
+                note: ko.observable(),
+            }
+            self.DOLine.lineTotal = ko.computed(function () {
+                var calculated = parseFloat(self.DOLine.qty()) * parseFloat(self.DOLine.unitPrice());
+                if (isNaN(calculated)) {
+                    return 0;
+                }
+                else {
+                    return roundToTwo(calculated);
+                }
+            }, self) //Computed observable
+
+
+            // Add/Update/Delete DO Lines
+            self.validateAndAddline = function (form) {
+                if (!$(form).valid()) {
+                    $('#AddUpdateItemModal').scrollTop(0);
+                }
+                else {
+                    var lineNum = 0;
+                    if (self.DO.lines() !== null) {
+                        lineNum = self.DO.lines().length;
+                    }
+
+                    // Remove All li before submission, which he had in the previous validation
+                    $(form).find(".validation-summary-errors ul li").remove();
+                    $(form).find(".validation-summary-valid ul li").remove();
+                    var InputDescription = $(form).find("#Description:first").find("option:selected").text();
+                    var LocationText = $(form).find("#Location:first").find("option:selected").text();
+                    var GstValue = 0;
+                    for (var i = 0; i < self.TaxCodes.length; i++) {
+                        if (self.TaxCodes[i].Text === self.DOLine.gstName()) {
+                            GstValue = self.TaxCodes[i].Value;
+                        }
+                    }
+
+                    if (self.DOLine.lineNum() === "") {
+                        self.DO.lines.push({
+                            lineNum: lineNum,
+                            itemCode: self.DOLine.itemCode(),
+                            description: InputDescription,
+                            overwriteDescription: self.DOLine.overwriteDescription(),
+                            description2: self.DOLine.description2(),
+                            description3: self.DOLine.description3(),
+                            description4: self.DOLine.description4(),
+                            description5: self.DOLine.description5(),
+                            description6: self.DOLine.description6(),
+                            serialNumber: self.DOLine.serialNumber(),
+                            qty: parseFloat(self.DOLine.qty()).toFixed(3),                           
+                            location: self.DOLine.location(),
+                            locationText: LocationText,
+                            unitPrice: parseFloat(self.DOLine.unitPrice()).toFixed(4),
+                            gstName: self.DOLine.gstName(),
+                            gst: GstValue,
+                            lineTotal: parseFloat(self.DOLine.lineTotal()).toFixed(2),
+                        });
+                    }
+                    else {
+                        var LineIndex = parseInt(self.DOLine.lineNum());
+
+                        self.DO.lines.replace(self.DO.lines()[LineIndex], {
+                            lineNum: self.DOLine.lineNum(),
+                            itemCode: self.DOLine.itemCode(),
+                            description: InputDescription,
+                            overwriteDescription: self.DOLine.overwriteDescription(),
+                            description2: self.DOLine.description2(),
+                            description3: self.DOLine.description3(),
+                            description4: self.DOLine.description4(),
+                            description5: self.DOLine.description5(),
+                            description6: self.DOLine.description6(),
+                            serialNumber: self.DOLine.serialNumber(),
+                            qty: parseFloat(self.DOLine.qty()).toFixed(3),                            
+                            location: self.DOLine.location(),
+                            locationText: LocationText,
+                            unitPrice: parseFloat(self.DOLine.unitPrice()).toFixed(4),
+                            gstName: self.DOLine.gstName(),
+                            gst: GstValue,
+                            lineTotal: parseFloat(self.DOLine.lineTotal()).toFixed(2),
+                        });
+                    }
+                }
+            }
+            self.editDOLine = function (rowid, data, event) {
+
+                var clickedRowId = parseInt(rowid);
+                if (clickedRowId < self.DO.lines().length) {
+                    self.DOLine.lineNum(clickedRowId);
+
+                    var itemcode = self.DO.lines()[clickedRowId].itemCode;
+                    $('#ItemCode').val(itemcode).trigger('change');
+
+                    self.DOLine.itemCode(itemcode);
+                    self.DOLine.description(itemcode);
+                    self.DOLine.overwriteDescription(self.DO.lines()[clickedRowId].overwriteDescription);
+                    self.DOLine.description2(self.DO.lines()[clickedRowId].description2);
+                    self.DOLine.description3(self.DO.lines()[clickedRowId].description3);
+                    self.DOLine.description4(self.DO.lines()[clickedRowId].description4);
+                    self.DOLine.description5(self.DO.lines()[clickedRowId].description5);
+                    self.DOLine.description6(self.DO.lines()[clickedRowId].description6);
+                    self.DOLine.serialNumber(self.DO.lines()[clickedRowId].serialNumber);
+                    self.DOLine.qty(self.DO.lines()[clickedRowId].qty);                   
+
+                    var location = self.DO.lines()[clickedRowId].location;
+                    self.DOLine.location(location);
+                    $('#Location').val(location).trigger('change');
+
+                    self.DOLine.unitPrice(self.DO.lines()[clickedRowId].unitPrice);
+                    var gstName = self.DO.lines()[clickedRowId].gstName;
+                    self.DOLine.gstName(gstName);
+                    $('#GstName').val(gstName).trigger('change');
+
+                    //self.DOLine.lineTotal(self.DOLine.lineTotal); //Computed automatically
+                    $('#AddUpdateItemModal').modal('show');
+                }
+            }
+            self.addDOLine = function () {
+                $('#AddUpdateItemModal').modal('show');
+                self.InitializeDOLine();
+            }
+            self.deleteDOLine = function (rowid, data, event) {
+                var clickedRowId = parseInt(rowid);
+
+                if (clickedRowId < self.DO.lines().length) {
+                    self.DO.lines.remove(self.DO.lines()[clickedRowId]);
+
+                }
+
+
+                var table = $('#ItemListTable').DataTable();
+
+                if (self.DO.lines().length > 0) {
+                    table.clear();
+
+                    var i;
+                    for (i = 0; i < self.DO.lines().length; i++) {
+
+                        var rowNode = table.row.add([
+                            i + 1,
+                            self.DO.lines()[i].itemCode,
+                            self.DO.lines()[i].description,
+                            self.DO.lines()[i].qty,                           
+                            self.DO.lines()[i].locationText,
+                            self.DO.lines()[i].unitPrice,
+                            self.DO.lines()[i].gstName,
+                            self.DO.lines()[i].lineTotal,
+                            "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteDOLine("
+                            + i + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                        ]).draw().node();
+                        $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editDOLine(" + i + ", data, event) } }");
+                        ko.applyBindings(self, rowNode);
+                    }
+
+                }
+                else {
+                    table.clear().draw();
+                }
+
+
+
+                ////Deletes Row from html table and by calling draw datatable will be redrawn
+                //var table = $('#ItemListTable').DataTable();
+                //table.row(clickedRowId).remove().draw();
+
+            }
+            self.InitializeDOLine = function () {
+                self.DOLine.lineNum('');
+                self.DOLine.itemCode('');
+                self.DOLine.description('');
+                self.DOLine.overwriteDescription('');
+                self.DOLine.description2('');
+                self.DOLine.description3('');
+                self.DOLine.description4('');
+                self.DOLine.description5('');
+                self.DOLine.description6('');
+                self.DOLine.serialNumber('');
+                self.DOLine.qty('');               
+                self.DOLine.location('');
+                $('#Location').val('').trigger('change');
+                self.DOLine.unitPrice('');
+                //self.DOLine.gstName('');
+                //$('#GstName').val('').trigger('change');
+            }
+            //Data Table operations
+            self.DO.lines.subscribe(function (changes) {
+
+
+                // Add Lines
+                if (changes[0].status === "deleted") {
+
+
+                }
+                else if (self.DOLine.lineNum() === "") {
+                    var table = $('#ItemListTable').DataTable();
+                    var rowNode = table.row.add([
+                        changes[0].index + 1,
+                        changes[0].value.itemCode,
+                        changes[0].value.description,
+                        changes[0].value.qty,                        
+                        changes[0].value.locationText,
+                        changes[0].value.unitPrice,
+                        changes[0].value.gstName,
+                        changes[0].value.lineTotal,
+                        "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteDOLine("
+                        + changes[0].index + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                    ]).draw().node();
+                    $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editDOLine(" + changes[0].index + ", data, event) } }");
+
+                    ko.applyBindings(self, rowNode);
+                } //Update Lines
+                else {
+
+                    var table = $('#ItemListTable').DataTable();
+                    var LineIndex = parseInt(self.DOLine.lineNum());
+                    var rowNode = table.row(LineIndex).data([
+                        changes[0].index + 1,
+                        changes[0].value.itemCode,
+                        changes[0].value.description,
+                        changes[0].value.qty,                       
+                        changes[0].value.locationText,
+                        changes[0].value.unitPrice,
+                        changes[0].value.gstName,
+                        changes[0].value.lineTotal,
+                        "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteDOLine("
+                        + changes[0].index + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                    ]).draw().node();
+
+                    table.columns.adjust().draw();
+                    ko.cleanNode(rowNode);
+                    ko.applyBindings(self, rowNode);
+                    //ko.applyBindings(DOVM, rowNode);
+                }
+
+                $('#AddUpdateItemModal').modal('hide');
+
+            }, self, "arrayChange");
+
+
+
+            // Add/Update/Delete DO Notes
+            self.InitializeDONote = function () {
+                self.DONote.lineNum('');
+                self.DONote.note('');
+            }
+            self.validateAndAddNote = function (form) {
+                if (!$(form).valid()) {
+
+                    $('#AddUpdateNoteModal').scrollTop(0);
+                }
+                else {
+
+                    var lineNum = 0;
+                    if (self.DO.noteLines() !== null) {
+                        lineNum = self.DO.noteLines().length;
+                    }
+
+                    if (self.DONote.lineNum() === "") {
+                        self.DO.noteLines.push({
+                            lineNum: lineNum,
+                            note: self.DONote.note(),
+                        });
+                    }
+                    else {
+
+                        var LineIndex = parseInt(self.DONote.lineNum());
+
+                        self.DO.noteLines.replace(self.DO.noteLines()[LineIndex], {
+                            lineNum: self.DONote.lineNum(),
+                            note: self.DONote.note(),
+                        });
+                    }
+                }
+            }
+            self.DO.noteLines.subscribe(function (changes) {
+
+                if (changes[0].status === "deleted") {
+
+
+                }
+                else if (self.DONote.lineNum() === "") {
+
+                    var table = $('#NoteListTable').DataTable();
+                    var rowNode = table.row.add([
+                        changes[0].index + 1,
+                        changes[0].value.note,
+                        "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteDONote("
+                        + changes[0].index + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                    ]).draw().node();
+                    $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editDONote(" + changes[0].index + ", data, event) } }");
+                    ko.applyBindings(self, rowNode);
+                } //Update Lines
+                else {
+
+                    var table = $('#NoteListTable').DataTable();
+                    var LineIndex = parseInt(self.DONote.lineNum());
+                    var rowNode = table.row(LineIndex).data([
+                        changes[0].index + 1,
+                        changes[0].value.note,
+                        "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteDONote("
+                        + changes[0].index + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                    ]).draw().node();
+
+                    table.columns.adjust().draw();
+                    ko.cleanNode(rowNode);
+                    ko.applyBindings(self, rowNode);
+                }
+
+
+                $('#AddUpdateNoteModal').modal('hide');
+
+            }, self, "arrayChange");
+            self.editDONote = function (rowid, data, event) {
+
+                var clickedRowId = parseInt(rowid);
+                if (clickedRowId < self.DO.noteLines().length) {
+                    self.DONote.lineNum(clickedRowId);
+                    self.DONote.note(self.DO.noteLines()[clickedRowId].note);
+
+                    //self.DOLine.lineTotal(self.DOLine.lineTotal); //Computed automatically
+                    $('#AddUpdateNoteModal').modal('show');
+                }
+            }
+            self.addDONote = function () {
+                $('#AddUpdateNoteModal').modal('show');
+                self.InitializeDONote();
+            }
+            self.deleteDONote = function (rowid, data, event) {
+                var clickedRowId = parseInt(rowid);
+
+                if (clickedRowId < self.DO.noteLines().length) {
+                    self.DO.noteLines.remove(self.DO.noteLines()[clickedRowId]);
+
+                }
+
+
+                var table = $('#NoteListTable').DataTable();
+
+                if (self.DO.noteLines().length > 0) {
+                    table.clear();
+
+                    var i;
+                    for (i = 0; i < self.DO.noteLines().length; i++) {
+
+                        var rowNode = table.row.add([
+                            i + 1,
+                            self.DO.noteLines()[i].note,
+                            "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteDONote("
+                            + i + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                        ]).draw().node();
+                        $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editDONote(" + i + ", data, event) } }");
+                        ko.applyBindings(self, rowNode);
+                    }
+
+                }
+                else {
+                    table.clear().draw();
+                }
+
+
+
+
+
+            }
+
+
+
+             // on Change of ItemCode - ItemName value will be selected
+            self.DOLine.itemCode.subscribe(function (newValue) {
+                //self.DOLine.description(newValue);
+                // Above statement is enough to trigger the change of selection in knockout
+                // because of select2 is used we have to use below statement to trigger the change of selection
+                $('#Description').val(newValue).trigger('change');
+                self.LoadItemDetails();
+            });
+
+            self.LoadItemDetails = function () {
+                if (self.DOLine.itemCode() !== null) {
+                    var LocationStocktable = $('#LocationStock').DataTable();
+                    LocationStocktable.clear().draw();
+                    $.ajax({
+                        url: "@Url.Action("GetLocationStockQty", "Item", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ ItemCode: self.DOLine.itemCode() }),
+                        success: function (data) {
+
+                            var LocStockLines = data;
+                            if (LocStockLines !== null) {
+
+                                for (var i = 0; i < LocStockLines.length; i++) {
+                                    LocationStocktable.row.add([
+                                        LocStockLines[i].WarhouseName,
+                                        parseFloat(LocStockLines[i].AvailableQty).toFixed(3),
+                                    ]).draw().node();
+                                }
+                            }
+
+                        },
+                        error: function () { }
+                    });
+
+                    var PriceHistorytable = $('#PriceHistory').DataTable();
+                    PriceHistorytable.clear().draw();
+                    $.ajax({
+                        url: "@Url.Action("GetDOLastPriceHistory", "DO", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ ItemCode: self.DOLine.itemCode() }),
+                        success: function (data) {
+
+                            var PriceHistoryLines = data;
+                            if (PriceHistoryLines !== null) {
+
+                                for (var i = 0; i < PriceHistoryLines.length; i++) {
+                                    PriceHistorytable.row.add([
+                                        PriceHistoryLines[i].DocDate,
+                                        PriceHistoryLines[i].DocNum,
+                                        parseFloat(PriceHistoryLines[i].Qty).toFixed(3),
+                                        parseFloat(PriceHistoryLines[i].UnitPrice).toFixed(4),
+                                    ]).draw().node();
+                                }
+                            }
+
+                        },
+                        error: function () { }
+                    });
+
+                    $.ajax({
+                        url: "@Url.Action("GetItemDefaultWhs", "Item", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ ItemCode: self.DOLine.itemCode() }),
+                        success: function (data) {
+
+                            let LocationCodeVal = data.DefaultWhs;
+                            $('#Location').val(LocationCodeVal).trigger('change');
+
+                        },
+                        error: function () { }
+                    });
+
+                      $.ajax({
+                            url: "@Url.Action("GetItemDetails", "Item", null)",
+                            type: 'post',
+                            contentType: 'application/x-www-form-urlencoded',
+                            data: ko.toJS({ ItemCode: self.DOLine.itemCode() }),
+                            success: function (data) {
+
+                                let DefaultTaxVal = data.DefaultTax;
+                                $('#GstName').val(DefaultTaxVal).trigger('change');
+
+                            },
+                            error: function () { }
+                      });              
+
+
+                }
+            }
+
+            // on Change of ItemName - ItemCode value will be selected
+            self.DOLine.description.subscribe(function (newValue) {
+                //self.DOLine.itemCode(newValue);
+                // Above statement is enough to trigger the change of selection in knockout
+                // because of select2 is used we have to use below statement to trigger the change of selection
+                $('#ItemCode').val(newValue).trigger('change');
+            });
+
+            // Initialize Add/Update DO Model to the Initial State of page loaded first
+            self.Initialize = function () { // Used to initialize Form
+
+                self.DO.cardCode(originalState.cardCode);
+                $('#CardCode').val(originalState.cardCode).trigger('change');
+                self.DO.cardName(originalState.cardName);
+                $('#CardName').val(originalState.cardName).trigger('change');
+                self.DO.currency(originalState.currency);
+                self.DO.officeTelNo(originalState.officeTelNo);
+                 
+
+                self.DO.fax(originalState.fax);
+                self.DO.docDate(originalState.docDate);
+                self.DO.dueDate(originalState.dueDate);
+                self.DO.deliveryDate(originalState.deliveryDate);
+                self.DO.poNo(originalState.poNo);
+
+                self.DO.paymentTermName(originalState.paymentTermName);
+                 
+
+                self.DO.slpName(originalState.slpName);
+                 
+
+               
+                self.DO.headerRemarks1(originalState.headerRemarks1);
+                self.DO.headerRemarks2(originalState.headerRemarks2);
+                self.DO.headerRemarks3(originalState.headerRemarks3);
+                self.DO.headerRemarks4(originalState.headerRemarks4);
+                self.DO.footerRemarks1(originalState.footerRemarks1);
+                self.DO.footerRemarks2(originalState.footerRemarks2);
+                self.DO.footerRemarks3(originalState.footerRemarks3);
+                self.DO.footerRemarks4(originalState.footerRemarks4);
+                self.DO.billTo(originalState.billTo);
+                $('#BillTo').val(originalState.billTo).trigger('change');
+                self.DO.billToAddress1(originalState.billToAddress1);
+                self.DO.billToAddress2(originalState.billToAddress2);
+                self.DO.billToAddress3(originalState.billToAddress3);
+                self.DO.billToAddress4(originalState.billToAddress4);
+
+                self.DO.shipTo(originalState.shipTo);
+                $('#ShipTo').val(originalState.shipTo).trigger('change');                              
+                self.DO.shipToAddress1(originalState.shipToAddress1);
+                self.DO.shipToAddress2(originalState.shipToAddress2);
+                self.DO.shipToAddress3(originalState.shipToAddress3);
+                self.DO.shipToAddress4(originalState.shipToAddress4);
+
+                self.DO.selfCollect(originalState.selfCollect);
+                self.DO.selfCollectRemarks1(originalState.selfCollectRemarks1);
+                self.DO.selfCollectRemarks2(originalState.selfCollectRemarks2);
+                self.DO.selfCollectRemarks3(originalState.selfCollectRemarks3);
+                self.DO.selfCollectRemarks4(originalState.selfCollectRemarks4);
+
+                self.DO.discByPercent(originalState.discByPercent);
+                self.DO.discPercent(originalState.discPercent);
+                self.DO.discAmount(originalState.discAmount);
+                self.DO.grandTotal(originalState.grandTotal);
+              
+
+
+                if (originalState.lines !== null) {
+                    //Original state lines are not nul
+                    self.DO.lines(originalState.lines);
+                }
+                else {
+                    //Original state lines are null
+
+                    self.DO.lines.removeAll();
+                }
+
+
+            }
+            self.copyToDo = function () {
+                var form = $('form[id="DOForm"]');
+                if (!self.isCreating) {
+                    var CopyObj = {
+                        docNum: self.DO.docNum,
+
+                    }
+                    CopyObj.__RequestVerificationToken = $(form).find('input[name="__RequestVerificationToken"]').val();
+
+                    $.ajax({
+                        url: "@Url.Action("CopyToDO", "DO", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS(CopyObj),
+                        success: function (data) {
+
+                        },
+                        error: function () {
+
+                        }
+                    });
+                   
+                }
+                else {
+                    
+                }
+
+            }
+
+            self.validateAndSubmitToSAP = function () {
+                var form = $('form[id="DOForm"]');
+
+                if (!$(form).valid()) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });                   
+                }
+                else {
+
+                    // Remove All li before submission, which he had in the previous validation
+                    $(form).find(".validation-summary-errors ul li").remove();
+                    $(form).find(".validation-summary-valid ul li").remove();
+
+                    self.DO.__RequestVerificationToken = $(form).find('input[name="__RequestVerificationToken"]').val();
+                    self.DO.submittedToSAP(true);
+
+                    $.ajax({
+                        url: "@Url.Action("Add", "DO", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS(self.DO),
+                        success: function (data)
+                        {
+                            self.successfulSave(form, data);
+                        },
+                        error: function ()
+                        {
+                            self.errorSave(form);
+                        }
+                    });
+                }
+            }
+            // DO Form Submission using Ajax
+            self.validateAndSubmit = function (form) {
+
+                //By Default this function will return false, so form submission will not happen
+                if (!$(form).valid()) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                     
+                }
+                else {
+
+                    // Remove All li before submission, which he had in the previous validation
+                    $(form).find(".validation-summary-errors ul li").remove();
+                    $(form).find(".validation-summary-valid ul li").remove();
+
+                    self.DO.__RequestVerificationToken = form[0].value;
+                    $.ajax({
+                        url: "@Url.Action("Add", "DO", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS(self.DO),
+                        success: function (data)
+                        {
+                            self.successfulSave(form, data);
+                        },
+                        error: function ()
+                        {
+                            self.errorSave(form);
+                        }
+                    });
+
+                }
+            }
+             
+            self.successfulSave = function (form, data) {
+                if (Boolean(data.IsModelValid) === true) {
+
+                    if (self.isCreating) {
+                        self.Initialize();
+                        var table = $('#ItemListTable').DataTable();
+                        table.clear().draw();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        $('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Success!</h4> DO Saved Successfully</div>')
+                            .prependTo($(form))
+                            .delay(5000)
+                            .slideUpAndRemove('slow');
+                               
+                    } else {
+                        if (self.DO.submittedToSAP()) {
+                            self.isDisabled(self.DO.submittedToSAP());   
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                            $('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Success!</h4> DO ' + self.DO.docNum + ' Updated Successfully</div>')
+                                .prependTo($(form))
+                                .delay(5000)
+                                .slideUpAndRemove('slow');
+                        }
+                        else {
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                            $('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Success!</h4> DO ' + self.DO.docNum + ' Updated Successfully</div>')
+                                .prependTo($(form))
+                                .delay(5000)
+                                .slideUpAndRemove('slow');
+                        }
+                         
+                    }
+
+
+                }
+                else {
+
+                    var ErrArray = data.ModelErrList;
+
+                        $(form).find(".validation-summary-errors ul li").remove(); // Remove All li if before Submission had client side errors
+                        $(form).find(".validation-summary-valid ul li").remove();  // Remove one li with diplay:none style if before Submission didn't had any client side errors
+
+                        for (var i = 0; i < data.ModelErrList.length; i++) {
+                            $(form).find(".validation-summary-errors ul").append("<li>" + ErrArray[i] + "</li>");
+                            $(form).find(".validation-summary-valid ul").append("<li>" + ErrArray[i] + "</li>");
+                        }
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+
+            }
+            self.errorSave = function (form) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                $('<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Alert!</h4><p>Sorry, Some thing went wrong, Please contact website adminitrator</p></div>')
+                    .prependTo($(form))
+                    .delay(5000)
+                    .slideUpAndRemove('slow');
+            }
+
+            // on Change of CardCode - CardName value will be selected
+            self.DO.cardCode.subscribe(function (newValue) {
+
+                //self.DO.cardName(newValue);
+                // Above statement is enough to trigger the change of selection in knockout
+                // because of select2 is used we have to use below statement to trigger the change of selection
+                $('#CardName').val(newValue).trigger('change');
+                //self.LoadCustomerDetails(newValue);
+                self.LoadCustomerBasedDropdowns(newValue);
+
+
+            });
+            self.DO.selfCollect.subscribe(function (newValue) {
+
+                if (newValue === false) {
+                    self.DO.selfCollectRemarks1('');
+                    self.DO.selfCollectRemarks2('');
+                    self.DO.selfCollectRemarks3('');
+                    self.DO.selfCollectRemarks4('');
+                }
+                else {
+                    self.DO.shipTo(null);
+                    $('#ShipTo').val(null).trigger('change');
+                    self.DO.shipToAddress1('');
+                    self.DO.shipToAddress2('');
+                    self.DO.shipToAddress3('');
+                    self.DO.shipToAddress4('');
+                }
+                
+            });
+            // on Change of CardName - CardCode value will be selected
+            self.DO.cardName.subscribe(function (newValue) {
+                //self.DO.cardCode(newValue);
+                // Above statement is enough to trigger the change of selection in knockout
+                // because of select2 is used we have to use below statement to trigger the change of selection
+                $('#CardCode').val(newValue).trigger('change');
+
+            });
+            
+            self.DO.billTo.subscribe(function (newValue) {
+                if (LoadingFinished === true) {
+                    $.ajax({
+                        url: "@Url.Action("GetCustomerBillingAddressDetails", "CustomerAddress", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ CardCode: self.DO.cardCode, AddressCode: newValue }),
+                        success: function (data) {
+
+                            self.DO.billToAddress1(data.Street);
+                            self.DO.billToAddress2(data.Block);
+                            self.DO.billToAddress3(data.City);
+                            self.DO.billToAddress4(data.County);
+
+                        },
+                        error: function () { }
+                    });
+                }
+            });
+            self.DO.shipTo.subscribe(function (newValue) {
+                if (LoadingFinished === true) {
+                    $.ajax({
+                        url: "@Url.Action("GetCustomerShippingAddressDetails", "CustomerAddress", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ CardCode: self.DO.cardCode, AddressCode: newValue }),
+                        success: function (data) {
+
+                            self.DO.shipToAddress1(data.Street);
+                            self.DO.shipToAddress2(data.Block);
+                            self.DO.shipToAddress3(data.City);
+                            self.DO.shipToAddress4(data.County);
+
+                        },
+                        error: function () { }
+                    });
+                }
+            });
+
+
+        }
+        // Once Document Ready
+        $(function () {
+
+            var CustomerNameCodes;        
+             
+            var ItemCodesAndNames;
+            var LocationCodeAndNames;
+            var TaxCodes;
+            $.when(
+                // Initial Ajax Requests, while page loading
+                //Load Customers
+                $.ajax({
+                    url: "@Url.Action("GetActiveCustomers", "Customer", null)",
+                    type: 'get',
+                    contentType: 'application/x-www-form-urlencoded',
+                    success: function (data) {
+
+                        CustomerNameCodes = data;
+
+                        $("#CardCode").parent().parent().find('.overlay').hide();
+                        $("#CardName").parent().parent().find('.overlay').hide();
+                    },
+                    error: function () { }
+                }),
+                //Load Item Codes
+                $.ajax({
+                url: "@Url.Action("GetActiveItems", "Item", null)",
+                type: 'get',
+                contentType: 'application/x-www-form-urlencoded',
+                success: function (data) {
+
+                    ItemCodesAndNames = data;
+
+                    $("#ItemCode").parent().parent().find('.overlay').hide();
+                    $("#Description").parent().parent().find('.overlay').hide();
+                },
+                error: function () { }
+                }),
+                //Load Location Codes
+                $.ajax({
+                    url: "@Url.Action("GetWarehouses", "Location", null)",
+                    type: 'get',
+                    contentType: 'application/x-www-form-urlencoded',
+                    success: function (data) {
+
+                       LocationCodeAndNames = data;
+                        $("#Location").parent().parent().find('.overlay').hide();
+                    },
+                    error: function () { }
+                }),
+                $.ajax({
+                url: "@Url.Action("GetTaxCodes", "Tax", null)",
+                type: 'get',
+                contentType: 'application/x-www-form-urlencoded',
+                success: function (data) {
+
+                    TaxCodes = data;
+                    $("#GstName").parent().parent().find('.overlay').hide();
+
+                },
+                error: function () { }
+               })
+            ).done(function () {
+                   //View Model Object Initialization
+                var DOVM = new DOViewModel(@Html.ViewModelToJson(Model));
+                DOVM.CustomerNameCodes = CustomerNameCodes;               
+                DOVM.ItemCodesAndNames = ItemCodesAndNames;
+                DOVM.LocationCodeAndNames = LocationCodeAndNames;
+                DOVM.TaxCodes = TaxCodes;
+                
+                ko.applyBindings(DOVM);
+
+                    //Editing DO
+                    var ExisingDO = @Html.ViewModelToJson(Model);
+
+                    var SqLines = ExisingDO.lines;
+                    if (SqLines !== null) {
+                        for (var i = 0; i < SqLines.length; i++) {
+                            var dolinetable = $('#ItemListTable').DataTable();
+                            var rowNode = dolinetable.row.add([
+                                i + 1,
+                                SqLines[i].itemCode,
+                                SqLines[i].description,
+                                parseFloat(SqLines[i].qty).toFixed(3),                               
+                                SqLines[i].locationText,
+                                parseFloat(SqLines[i].unitPrice).toFixed(4),
+                                SqLines[i].gstName,
+                                parseFloat(SqLines[i].lineTotal).toFixed(2),
+                                "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteDOLine("
+                                + i + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                            ]).draw().node();
+                            $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editDOLine(" + i + ", data, event) } }");
+
+                            ko.applyBindings(DOVM, rowNode);
+                        }
+                    }
+                var SqNoteLines = ExisingDO.noteLines;
+
+                if (SqNoteLines !== null) {
+                    if (jQuery.type(SqNoteLines) !== "undefined") {
+
+                        for (var i = 0; i < SqNoteLines.length; i++) {
+                            var sqnotetable = $('#NoteListTable').DataTable();
+                            var rowNode = sqnotetable.row.add([
+                                i + 1,
+                                SqNoteLines[i].note,
+                                "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteDONote("
+                                + i + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                            ]).draw().node();
+                            $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editDONote(" + i + ", data, event) } }");
+
+                            ko.applyBindings(DOVM, rowNode);
+                        }
+                    }
+                }
+
+            });
+
+
+
+
+
+            $('.select2').select2();
+            $('.datepicker').datepicker({ format: 'dd/mm/yyyy', autoclose: true });
+            var table = $('#ItemListTable').DataTable(
+                {
+                    "columnDefs": [
+                        { className: "text-right", "targets": [3, 5, 7] }
+                    ]
+                }
+            );
+            var LocationStocktable = $('#LocationStock').DataTable({
+                "columnDefs": [
+                    { className: "text-right", "targets": [1] }
+                ]
+            });
+
+            var PriceHistorytable = $('#PriceHistory').DataTable(
+                {
+                    "columnDefs": [
+                        { className: "text-right", "targets": [2, 3] }
+                    ]
+                });
+
+            var NoteListTable = $('#NoteListTable').DataTable(
+                {
+
+                });
+
+
+
+
+
+            $('table.bmdatatable tbody').on('click', 'tr td button.btn-danger', function () {
+
+                table.row($(this).parents('tr')).remove().draw();
+                //if ($(this).parent().parent().hasClass('highlight')) {
+                //    $(this).parent().parent().removeClass('highlight');
+                //}
+                //else {
+                //    table.$('tr.highlight').removeClass('highlight');
+                //    $(this).parent().parent().addClass('highlight');
+                //}
+            });
+            // Datables Need to be re-drawn again if datatable intialised in hidden area(That is when we put datatables inside tabs)
+            // So here we are call draw to redraw table when each tabs become visible
+            $(document).on('shown.bs.modal', '#AddUpdateItemModal', function (event) {
+                var table = $('#PriceHistory').DataTable();
+                table.columns.adjust().draw();
+            });
+
+        });
+    </script>
+}

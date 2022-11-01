@@ -1,0 +1,168 @@
+﻿<error errorId="4348b700-9546-433f-bf38-b4c6869b802e" host="LAPTOP-JN2PNONG" type="System.IO.FileLoadException" message="Could not load file or assembly 'CrystalDecisions.Web, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304' or one of its dependencies. The located assembly's manifest definition does not match the assembly reference. (Exception from HRESULT: 0x80131040)" source="mscorlib" detail="System.Web.HttpParseException (0x80004005): Could not load file or assembly 'CrystalDecisions.Web, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304' or one of its dependencies. The located assembly's manifest definition does not match the assembly reference. (Exception from HRESULT: 0x80131040) ---&gt; System.Web.HttpParseException (0x80004005): Could not load file or assembly 'CrystalDecisions.Web, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304' or one of its dependencies. The located assembly's manifest definition does not match the assembly reference. (Exception from HRESULT: 0x80131040) ---&gt; System.IO.FileLoadException: Could not load file or assembly 'CrystalDecisions.Web, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304' or one of its dependencies. The located assembly's manifest definition does not match the assembly reference. (Exception from HRESULT: 0x80131040)&#xD;&#xA;File name: 'CrystalDecisions.Web, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304'&#xD;&#xA;   at System.Reflection.RuntimeAssembly._nLoad(AssemblyName fileName, String codeBase, Evidence assemblySecurity, RuntimeAssembly locationHint, StackCrawlMark&amp; stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, Boolean forIntrospection, Boolean suppressSecurityChecks)&#xD;&#xA;   at System.Reflection.RuntimeAssembly.nLoad(AssemblyName fileName, String codeBase, Evidence assemblySecurity, RuntimeAssembly locationHint, StackCrawlMark&amp; stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, Boolean forIntrospection, Boolean suppressSecurityChecks)&#xD;&#xA;   at System.Reflection.RuntimeAssembly.InternalLoadAssemblyName(AssemblyName assemblyRef, Evidence assemblySecurity, RuntimeAssembly reqAssembly, StackCrawlMark&amp; stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, Boolean forIntrospection, Boolean suppressSecurityChecks)&#xD;&#xA;   at System.Reflection.RuntimeAssembly.InternalLoad(String assemblyString, Evidence assemblySecurity, StackCrawlMark&amp; stackMark, IntPtr pPrivHostBinder, Boolean forIntrospection)&#xD;&#xA;   at System.Reflection.RuntimeAssembly.InternalLoad(String assemblyString, Evidence assemblySecurity, StackCrawlMark&amp; stackMark, Boolean forIntrospection)&#xD;&#xA;   at System.Reflection.Assembly.Load(String assemblyString)&#xD;&#xA;   at System.Web.Configuration.CompilationSection.LoadAssembly(String assemblyName, Boolean throwOnFail)&#xD;&#xA;   at System.Web.UI.TemplateParser.LoadAssembly(String assemblyName, Boolean throwOnFail)&#xD;&#xA;   at System.Web.UI.TemplateParser.AddAssemblyDependency(String assemblyName, Boolean addDependentAssemblies)&#xD;&#xA;   at System.Web.UI.MainTagNameToTypeMapper.ProcessTagNamespaceRegistrationCore(TagNamespaceRegisterEntry nsRegisterEntry)&#xD;&#xA;   at System.Web.UI.MainTagNameToTypeMapper.ProcessTagNamespaceRegistration(TagNamespaceRegisterEntry nsRegisterEntry)&#xD;&#xA;   at System.Web.UI.BaseTemplateParser.ProcessDirective(String directiveName, IDictionary directive)&#xD;&#xA;   at System.Web.UI.TemplateControlParser.ProcessDirective(String directiveName, IDictionary directive)&#xD;&#xA;   at System.Web.UI.PageParser.ProcessDirective(String directiveName, IDictionary directive)&#xD;&#xA;   at System.Web.UI.TemplateParser.ParseStringInternal(String text, Encoding fileEncoding)&#xD;&#xA;&#xD;&#xA;=== Pre-bind state information ===&#xD;&#xA;LOG: DisplayName = CrystalDecisions.Web, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304&#xA; (Fully-specified)&#xD;&#xA;LOG: Appbase = file:///C:/Users/William Lee/Desktop/old/Buildmate-190521/BMSS.WebUI/&#xD;&#xA;LOG: Initial PrivatePath = C:\Users\William Lee\Desktop\old\Buildmate-190521\BMSS.WebUI\bin&#xD;&#xA;Calling assembly : (Unknown).&#xD;&#xA;===&#xD;&#xA;LOG: This bind starts in default load context.&#xD;&#xA;LOG: Using application configuration file: C:\Users\William Lee\Desktop\old\Buildmate-190521\BMSS.WebUI\web.config&#xD;&#xA;LOG: Using host configuration file: C:\Users\William Lee\Documents\IISExpress\config\aspnet.config&#xD;&#xA;LOG: Using machine configuration file from C:\Windows\Microsoft.NET\Framework\v4.0.30319\config\machine.config.&#xD;&#xA;LOG: Post-policy reference: CrystalDecisions.Web, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304&#xD;&#xA;LOG: Attempting download of new URL file:///C:/Users/William Lee/AppData/Local/Temp/Temporary ASP.NET Files/vs/9fe1c4a9/83dd8b5e/CrystalDecisions.Web.DLL.&#xD;&#xA;LOG: Attempting download of new URL file:///C:/Users/William Lee/AppData/Local/Temp/Temporary ASP.NET Files/vs/9fe1c4a9/83dd8b5e/CrystalDecisions.Web/CrystalDecisions.Web.DLL.&#xD;&#xA;LOG: Attempting download of new URL file:///C:/Users/William Lee/Desktop/old/Buildmate-190521/BMSS.WebUI/bin/CrystalDecisions.Web.DLL.&#xD;&#xA;WRN: Comparing the assembly name resulted in the mismatch: Build Number&#xD;&#xA;ERR: Failed to complete setup of assembly (hr = 0x80131040). Probing terminated.&#xD;&#xA;&#xD;&#xA;   at System.Web.UI.TemplateParser.ProcessException(Exception ex)&#xD;&#xA;   at System.Web.UI.TemplateParser.ParseStringInternal(String text, Encoding fileEncoding)&#xD;&#xA;   at System.Web.UI.TemplateParser.ParseString(String text, VirtualPath virtualPath, Encoding fileEncoding)&#xD;&#xA;   at System.Web.UI.TemplateParser.ParseString(String text, VirtualPath virtualPath, Encoding fileEncoding)&#xD;&#xA;   at System.Web.UI.TemplateParser.ParseFile(String physicalPath, VirtualPath virtualPath)&#xD;&#xA;   at System.Web.UI.TemplateParser.ParseInternal()&#xD;&#xA;   at System.Web.UI.TemplateParser.Parse()&#xD;&#xA;   at System.Web.Compilation.BaseTemplateBuildProvider.get_CodeCompilerType()&#xD;&#xA;   at System.Web.Compilation.BuildProvider.GetCompilerTypeFromBuildProvider(BuildProvider buildProvider)&#xD;&#xA;   at System.Web.Compilation.BuildProvidersCompiler.ProcessBuildProviders()&#xD;&#xA;   at System.Web.Compilation.BuildProvidersCompiler.PerformBuild()&#xD;&#xA;   at System.Web.Compilation.BuildManager.CompileWebFile(VirtualPath virtualPath)&#xD;&#xA;   at System.Web.Compilation.BuildManager.GetVPathBuildResultInternal(VirtualPath virtualPath, Boolean noBuild, Boolean allowCrossApp, Boolean allowBuildInPrecompile, Boolean throwIfNotFound, Boolean ensureIsUpToDate)&#xD;&#xA;   at System.Web.Compilation.BuildManager.GetVPathBuildResultWithNoAssert(HttpContext context, VirtualPath virtualPath, Boolean noBuild, Boolean allowCrossApp, Boolean allowBuildInPrecompile, Boolean throwIfNotFound, Boolean ensureIsUpToDate)&#xD;&#xA;   at System.Web.Compilation.BuildManager.GetVirtualPathObjectFactory(VirtualPath virtualPath, HttpContext context, Boolean allowCrossApp, Boolean throwIfNotFound)&#xD;&#xA;   at System.Web.Compilation.BuildManager.CreateInstanceFromVirtualPath(VirtualPath virtualPath, Type requiredBaseType, HttpContext context, Boolean allowCrossApp)&#xD;&#xA;   at System.Web.UI.PageHandlerFactory.GetHandlerHelper(HttpContext context, String requestType, VirtualPath virtualPath, String physicalPath)&#xD;&#xA;   at System.Web.UI.PageHandlerFactory.GetHandler(HttpContext context, String requestType, String virtualPath, String path)&#xD;&#xA;   at System.Web.HttpApplication.MaterializeHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()&#xD;&#xA;   at System.Web.HttpApplication.ExecuteStepImpl(IExecutionStep step)&#xD;&#xA;   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean&amp; completedSynchronously)" user="Admin" time="2021-05-28T09:20:17.8340024Z" statusCode="500" webHostHtmlMessage="&lt;!DOCTYPE html&gt;&#xD;&#xA;&lt;html&gt;&#xD;&#xA;    &lt;head&gt;&#xD;&#xA;        &lt;title&gt;Parser Error&lt;/title&gt;&#xD;&#xA;        &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width&quot; /&gt;&#xD;&#xA;        &lt;style&gt;&#xD;&#xA;         body {font-family:&quot;Verdana&quot;;font-weight:normal;font-size: .7em;color:black;} &#xD;&#xA;         p {font-family:&quot;Verdana&quot;;font-weight:normal;color:black;margin-top: -5px}&#xD;&#xA;         b {font-family:&quot;Verdana&quot;;font-weight:bold;color:black;margin-top: -5px}&#xD;&#xA;         H1 { font-family:&quot;Verdana&quot;;font-weight:normal;font-size:18pt;color:red }&#xD;&#xA;         H2 { font-family:&quot;Verdana&quot;;font-weight:normal;font-size:14pt;color:maroon }&#xD;&#xA;         pre {font-family:&quot;Consolas&quot;,&quot;Lucida Console&quot;,Monospace;font-size:11pt;margin:0;padding:0.5em;line-height:14pt}&#xD;&#xA;         .marker {font-weight: bold; color: black;text-decoration: none;}&#xD;&#xA;         .version {color: gray;}&#xD;&#xA;         .error {margin-bottom: 10px;}&#xD;&#xA;         .expandable { text-decoration:underline; font-weight:bold; color:navy; cursor:pointer; }&#xD;&#xA;         @media screen and (max-width: 639px) {&#xD;&#xA;          pre { width: 440px; overflow: auto; white-space: pre-wrap; word-wrap: break-word; }&#xD;&#xA;         }&#xD;&#xA;         @media screen and (max-width: 479px) {&#xD;&#xA;          pre { width: 280px; }&#xD;&#xA;         }&#xD;&#xA;        &lt;/style&gt;&#xD;&#xA;    &lt;/head&gt;&#xD;&#xA;&#xD;&#xA;    &lt;body bgcolor=&quot;white&quot;&gt;&#xD;&#xA;&#xD;&#xA;            &lt;span&gt;&lt;H1&gt;Server Error in '/' Application.&lt;hr width=100% size=1 color=silver&gt;&lt;/H1&gt;&#xD;&#xA;&#xD;&#xA;            &lt;h2&gt; &lt;i&gt;Parser Error&lt;/i&gt; &lt;/h2&gt;&lt;/span&gt;&#xD;&#xA;&#xD;&#xA;            &lt;font face=&quot;Arial, Helvetica, Geneva, SunSans-Regular, sans-serif &quot;&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt; Description: &lt;/b&gt;An error occurred during the parsing of a resource required to service this request.   Please review the following specific parse error details and modify your source file appropriately.&#xD;&#xA;            &lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt; Parser Error Message: &lt;/b&gt;Could not load file or assembly 'CrystalDecisions.Web, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304' or one of its dependencies. The located assembly's manifest definition does not match the assembly reference. (Exception from HRESULT: 0x80131040)&lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt;Source Error:&lt;/b&gt; &lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;table width=100% bgcolor=&quot;#ffffcc&quot;&gt;&#xD;&#xA;               &lt;tr&gt;&#xD;&#xA;                  &lt;td&gt;&#xD;&#xA;                      &lt;code&gt;&lt;pre&gt;&#xD;&#xA;&#xD;&#xA;Line 1:  &amp;lt;%@ Page Title=&amp;quot;&amp;quot; Language=&amp;quot;C#&amp;quot; MasterPageFile=&amp;quot;~/WForms/Site.Master&amp;quot; AutoEventWireup=&amp;quot;true&amp;quot; CodeBehind=&amp;quot;SOA.aspx.cs&amp;quot; Inherits=&amp;quot;BMSS.WebUI.WForms.SOA&amp;quot; %&amp;gt;&#xD;&#xA;&lt;font color=red&gt;Line 2:  &amp;lt;%@ Register Assembly=&amp;quot;CrystalDecisions.Web, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304&amp;quot; Namespace=&amp;quot;CrystalDecisions.Web&amp;quot; TagPrefix=&amp;quot;CR&amp;quot; %&amp;gt;&#xD;&#xA;&lt;/font&gt;Line 3:  &#xD;&#xA;Line 4:  &amp;lt;asp:Content ID=&amp;quot;Content1&amp;quot; ContentPlaceHolderID=&amp;quot;head&amp;quot; runat=&amp;quot;server&amp;quot;&amp;gt;&lt;/pre&gt;                      &lt;/code&gt;&#xD;&#xA;&#xD;&#xA;                  &lt;/td&gt;&#xD;&#xA;               &lt;/tr&gt;&#xD;&#xA;            &lt;/table&gt;&#xD;&#xA;&#xD;&#xA;            &lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt; Source File: &lt;/b&gt; /WForms/SOA.aspx&lt;b&gt; &amp;nbsp;&amp;nbsp; Line: &lt;/b&gt; 2&#xD;&#xA;            &lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;/font&gt;&#xD;&#xA;&#xD;&#xA;    &lt;/body&gt;&#xD;&#xA;&lt;/html&gt;&#xD;&#xA;">
+  <serverVariables>
+    <item name="ALL_HTTP">
+      <value string="HTTP_CONNECTION:keep-alive&#xD;&#xA;HTTP_ACCEPT:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8&#xD;&#xA;HTTP_ACCEPT_ENCODING:gzip, deflate&#xD;&#xA;HTTP_ACCEPT_LANGUAGE:en-US,en;q=0.5&#xD;&#xA;HTTP_COOKIE:__RequestVerificationToken=2dEZ_EcHbHCi2nIUFQpaV3A2cGODLMbO1RGY8cSKSiFYfyaYeJ9oc5C8TNM5nYjLP84x3PrFZ82cl2UsENuqOxSbBLlvOX0-f0yvxKXGyGg1; .AspNet.ApplicationCookie=hP-9NOsWIbO46xlf_hkpTVqnWm7WcmW7m85a8fRvPfjWQYxvJjvXZ4rPM97XlUtWcn3lmG-Ic8wFu8XWaEhCdKvEnI9MiN4nN86YFGRhkHAuio-zR3-1hZ_nBMgJ7FM8UKJXlDNl4rmB6O-LIqn8dmJKWzgpXtu4Bm-TcUqBCgwyK-vkqEj2oerOlxnATM7xoVS2oTU1zoYr7OnosoNKsLtjM5vnJsX6QkkF6Ioqsqm86WFYu53fj9C0jfju4PVt11bo4DQF3P9k2UEJB8m-Nf0y1st727qSzQNV_mAg10exRwv9MX50jWeNwwX2sh8DHkQK3CBvhCMqk0rtrrrUUIcep1WIX3zT49ksLdgsPgeqC_SB7wTwOEW_fDL4Ekj9lU65IEHEdRjOfxw3-U9mP0B8lnuYR7NLYcoL0lD-4ZUzQbSw7cCevMyonZRjj2gRnyOYYULajg0OFDorH6VohGEDB7G4ruVWOTlxOh6RxM7NeeuB5K3CJe9untEnQAJGxCUFyl4Mirrtw8ZBOARs1R50ivYCbb1YZ0mGPv4YA85Lx82l71SnaXxR4fuEZVJM9JHz1cUZowM_YPYnCTPit9LYpUGNciQ2w804D0WYComlaCoLRWc_PO7wzWcIRh2t8hJplsPcUHQyilHSmKN6AAnRNy7o1a-Z-dx8kzCI5zk_gUOt5hu97eyoszTQnBhEHUCvJ6-Nji29Ujz5alkf7jKGW_YUqvYqwqZZo-9TDwXFFUinZjiA8_SjER6TIt7AGHJmcejGv8W14tsCj5CdodUsY5ok0W2__wcft8hQ-JvCcaGp51itZXAPuagsZJmppXS9GolIrs6JaTuRACMy-j4x_H0s2lQixtqMzdrHChLhAktG9vWi1QoVNhkrnvSEdMYOjIj83PJC2VKgzPsQC7lbZDIekDII0UAEYcMlbIPn0xJ5z0z1LeWJoUUirQPn&#xD;&#xA;HTTP_HOST:localhost:60054&#xD;&#xA;HTTP_REFERER:http://localhost:60054/Customer/Detail?CardCode=1CASWQ&#xD;&#xA;HTTP_USER_AGENT:Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0&#xD;&#xA;HTTP_UPGRADE_INSECURE_REQUESTS:1&#xD;&#xA;" />
+    </item>
+    <item name="ALL_RAW">
+      <value string="Connection: keep-alive&#xD;&#xA;Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8&#xD;&#xA;Accept-Encoding: gzip, deflate&#xD;&#xA;Accept-Language: en-US,en;q=0.5&#xD;&#xA;Cookie: __RequestVerificationToken=2dEZ_EcHbHCi2nIUFQpaV3A2cGODLMbO1RGY8cSKSiFYfyaYeJ9oc5C8TNM5nYjLP84x3PrFZ82cl2UsENuqOxSbBLlvOX0-f0yvxKXGyGg1; .AspNet.ApplicationCookie=hP-9NOsWIbO46xlf_hkpTVqnWm7WcmW7m85a8fRvPfjWQYxvJjvXZ4rPM97XlUtWcn3lmG-Ic8wFu8XWaEhCdKvEnI9MiN4nN86YFGRhkHAuio-zR3-1hZ_nBMgJ7FM8UKJXlDNl4rmB6O-LIqn8dmJKWzgpXtu4Bm-TcUqBCgwyK-vkqEj2oerOlxnATM7xoVS2oTU1zoYr7OnosoNKsLtjM5vnJsX6QkkF6Ioqsqm86WFYu53fj9C0jfju4PVt11bo4DQF3P9k2UEJB8m-Nf0y1st727qSzQNV_mAg10exRwv9MX50jWeNwwX2sh8DHkQK3CBvhCMqk0rtrrrUUIcep1WIX3zT49ksLdgsPgeqC_SB7wTwOEW_fDL4Ekj9lU65IEHEdRjOfxw3-U9mP0B8lnuYR7NLYcoL0lD-4ZUzQbSw7cCevMyonZRjj2gRnyOYYULajg0OFDorH6VohGEDB7G4ruVWOTlxOh6RxM7NeeuB5K3CJe9untEnQAJGxCUFyl4Mirrtw8ZBOARs1R50ivYCbb1YZ0mGPv4YA85Lx82l71SnaXxR4fuEZVJM9JHz1cUZowM_YPYnCTPit9LYpUGNciQ2w804D0WYComlaCoLRWc_PO7wzWcIRh2t8hJplsPcUHQyilHSmKN6AAnRNy7o1a-Z-dx8kzCI5zk_gUOt5hu97eyoszTQnBhEHUCvJ6-Nji29Ujz5alkf7jKGW_YUqvYqwqZZo-9TDwXFFUinZjiA8_SjER6TIt7AGHJmcejGv8W14tsCj5CdodUsY5ok0W2__wcft8hQ-JvCcaGp51itZXAPuagsZJmppXS9GolIrs6JaTuRACMy-j4x_H0s2lQixtqMzdrHChLhAktG9vWi1QoVNhkrnvSEdMYOjIj83PJC2VKgzPsQC7lbZDIekDII0UAEYcMlbIPn0xJ5z0z1LeWJoUUirQPn&#xD;&#xA;Host: localhost:60054&#xD;&#xA;Referer: http://localhost:60054/Customer/Detail?CardCode=1CASWQ&#xD;&#xA;User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0&#xD;&#xA;Upgrade-Insecure-Requests: 1&#xD;&#xA;" />
+    </item>
+    <item name="APPL_MD_PATH">
+      <value string="/LM/W3SVC/2/ROOT" />
+    </item>
+    <item name="APPL_PHYSICAL_PATH">
+      <value string="C:\Users\William Lee\Desktop\old\Buildmate-190521\BMSS.WebUI\" />
+    </item>
+    <item name="AUTH_TYPE">
+      <value string="ApplicationCookie" />
+    </item>
+    <item name="AUTH_USER">
+      <value string="Admin" />
+    </item>
+    <item name="AUTH_PASSWORD">
+      <value string="" />
+    </item>
+    <item name="LOGON_USER">
+      <value string="Admin" />
+    </item>
+    <item name="REMOTE_USER">
+      <value string="Admin" />
+    </item>
+    <item name="CERT_COOKIE">
+      <value string="" />
+    </item>
+    <item name="CERT_FLAGS">
+      <value string="" />
+    </item>
+    <item name="CERT_ISSUER">
+      <value string="" />
+    </item>
+    <item name="CERT_KEYSIZE">
+      <value string="" />
+    </item>
+    <item name="CERT_SECRETKEYSIZE">
+      <value string="" />
+    </item>
+    <item name="CERT_SERIALNUMBER">
+      <value string="" />
+    </item>
+    <item name="CERT_SERVER_ISSUER">
+      <value string="" />
+    </item>
+    <item name="CERT_SERVER_SUBJECT">
+      <value string="" />
+    </item>
+    <item name="CERT_SUBJECT">
+      <value string="" />
+    </item>
+    <item name="CONTENT_LENGTH">
+      <value string="0" />
+    </item>
+    <item name="CONTENT_TYPE">
+      <value string="" />
+    </item>
+    <item name="GATEWAY_INTERFACE">
+      <value string="CGI/1.1" />
+    </item>
+    <item name="HTTPS">
+      <value string="off" />
+    </item>
+    <item name="HTTPS_KEYSIZE">
+      <value string="" />
+    </item>
+    <item name="HTTPS_SECRETKEYSIZE">
+      <value string="" />
+    </item>
+    <item name="HTTPS_SERVER_ISSUER">
+      <value string="" />
+    </item>
+    <item name="HTTPS_SERVER_SUBJECT">
+      <value string="" />
+    </item>
+    <item name="INSTANCE_ID">
+      <value string="2" />
+    </item>
+    <item name="INSTANCE_META_PATH">
+      <value string="/LM/W3SVC/2" />
+    </item>
+    <item name="LOCAL_ADDR">
+      <value string="127.0.0.1" />
+    </item>
+    <item name="PATH_INFO">
+      <value string="/WForms/SOA.aspx" />
+    </item>
+    <item name="PATH_TRANSLATED">
+      <value string="C:\Users\William Lee\Desktop\old\Buildmate-190521\BMSS.WebUI\WForms\SOA.aspx" />
+    </item>
+    <item name="QUERY_STRING">
+      <value string="" />
+    </item>
+    <item name="REMOTE_ADDR">
+      <value string="127.0.0.1" />
+    </item>
+    <item name="REMOTE_HOST">
+      <value string="127.0.0.1" />
+    </item>
+    <item name="REMOTE_PORT">
+      <value string="61504" />
+    </item>
+    <item name="REQUEST_METHOD">
+      <value string="GET" />
+    </item>
+    <item name="SCRIPT_NAME">
+      <value string="/WForms/SOA.aspx" />
+    </item>
+    <item name="SERVER_NAME">
+      <value string="localhost" />
+    </item>
+    <item name="SERVER_PORT">
+      <value string="60054" />
+    </item>
+    <item name="SERVER_PORT_SECURE">
+      <value string="0" />
+    </item>
+    <item name="SERVER_PROTOCOL">
+      <value string="HTTP/1.1" />
+    </item>
+    <item name="SERVER_SOFTWARE">
+      <value string="Microsoft-IIS/10.0" />
+    </item>
+    <item name="URL">
+      <value string="/WForms/SOA.aspx" />
+    </item>
+    <item name="HTTP_CONNECTION">
+      <value string="keep-alive" />
+    </item>
+    <item name="HTTP_ACCEPT">
+      <value string="text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8" />
+    </item>
+    <item name="HTTP_ACCEPT_ENCODING">
+      <value string="gzip, deflate" />
+    </item>
+    <item name="HTTP_ACCEPT_LANGUAGE">
+      <value string="en-US,en;q=0.5" />
+    </item>
+    <item name="HTTP_COOKIE">
+      <value string="__RequestVerificationToken=2dEZ_EcHbHCi2nIUFQpaV3A2cGODLMbO1RGY8cSKSiFYfyaYeJ9oc5C8TNM5nYjLP84x3PrFZ82cl2UsENuqOxSbBLlvOX0-f0yvxKXGyGg1; .AspNet.ApplicationCookie=hP-9NOsWIbO46xlf_hkpTVqnWm7WcmW7m85a8fRvPfjWQYxvJjvXZ4rPM97XlUtWcn3lmG-Ic8wFu8XWaEhCdKvEnI9MiN4nN86YFGRhkHAuio-zR3-1hZ_nBMgJ7FM8UKJXlDNl4rmB6O-LIqn8dmJKWzgpXtu4Bm-TcUqBCgwyK-vkqEj2oerOlxnATM7xoVS2oTU1zoYr7OnosoNKsLtjM5vnJsX6QkkF6Ioqsqm86WFYu53fj9C0jfju4PVt11bo4DQF3P9k2UEJB8m-Nf0y1st727qSzQNV_mAg10exRwv9MX50jWeNwwX2sh8DHkQK3CBvhCMqk0rtrrrUUIcep1WIX3zT49ksLdgsPgeqC_SB7wTwOEW_fDL4Ekj9lU65IEHEdRjOfxw3-U9mP0B8lnuYR7NLYcoL0lD-4ZUzQbSw7cCevMyonZRjj2gRnyOYYULajg0OFDorH6VohGEDB7G4ruVWOTlxOh6RxM7NeeuB5K3CJe9untEnQAJGxCUFyl4Mirrtw8ZBOARs1R50ivYCbb1YZ0mGPv4YA85Lx82l71SnaXxR4fuEZVJM9JHz1cUZowM_YPYnCTPit9LYpUGNciQ2w804D0WYComlaCoLRWc_PO7wzWcIRh2t8hJplsPcUHQyilHSmKN6AAnRNy7o1a-Z-dx8kzCI5zk_gUOt5hu97eyoszTQnBhEHUCvJ6-Nji29Ujz5alkf7jKGW_YUqvYqwqZZo-9TDwXFFUinZjiA8_SjER6TIt7AGHJmcejGv8W14tsCj5CdodUsY5ok0W2__wcft8hQ-JvCcaGp51itZXAPuagsZJmppXS9GolIrs6JaTuRACMy-j4x_H0s2lQixtqMzdrHChLhAktG9vWi1QoVNhkrnvSEdMYOjIj83PJC2VKgzPsQC7lbZDIekDII0UAEYcMlbIPn0xJ5z0z1LeWJoUUirQPn" />
+    </item>
+    <item name="HTTP_HOST">
+      <value string="localhost:60054" />
+    </item>
+    <item name="HTTP_REFERER">
+      <value string="http://localhost:60054/Customer/Detail?CardCode=1CASWQ" />
+    </item>
+    <item name="HTTP_USER_AGENT">
+      <value string="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0" />
+    </item>
+    <item name="HTTP_UPGRADE_INSECURE_REQUESTS">
+      <value string="1" />
+    </item>
+  </serverVariables>
+  <cookies>
+    <item name="__RequestVerificationToken">
+      <value string="2dEZ_EcHbHCi2nIUFQpaV3A2cGODLMbO1RGY8cSKSiFYfyaYeJ9oc5C8TNM5nYjLP84x3PrFZ82cl2UsENuqOxSbBLlvOX0-f0yvxKXGyGg1" />
+    </item>
+    <item name=".AspNet.ApplicationCookie">
+      <value string="hP-9NOsWIbO46xlf_hkpTVqnWm7WcmW7m85a8fRvPfjWQYxvJjvXZ4rPM97XlUtWcn3lmG-Ic8wFu8XWaEhCdKvEnI9MiN4nN86YFGRhkHAuio-zR3-1hZ_nBMgJ7FM8UKJXlDNl4rmB6O-LIqn8dmJKWzgpXtu4Bm-TcUqBCgwyK-vkqEj2oerOlxnATM7xoVS2oTU1zoYr7OnosoNKsLtjM5vnJsX6QkkF6Ioqsqm86WFYu53fj9C0jfju4PVt11bo4DQF3P9k2UEJB8m-Nf0y1st727qSzQNV_mAg10exRwv9MX50jWeNwwX2sh8DHkQK3CBvhCMqk0rtrrrUUIcep1WIX3zT49ksLdgsPgeqC_SB7wTwOEW_fDL4Ekj9lU65IEHEdRjOfxw3-U9mP0B8lnuYR7NLYcoL0lD-4ZUzQbSw7cCevMyonZRjj2gRnyOYYULajg0OFDorH6VohGEDB7G4ruVWOTlxOh6RxM7NeeuB5K3CJe9untEnQAJGxCUFyl4Mirrtw8ZBOARs1R50ivYCbb1YZ0mGPv4YA85Lx82l71SnaXxR4fuEZVJM9JHz1cUZowM_YPYnCTPit9LYpUGNciQ2w804D0WYComlaCoLRWc_PO7wzWcIRh2t8hJplsPcUHQyilHSmKN6AAnRNy7o1a-Z-dx8kzCI5zk_gUOt5hu97eyoszTQnBhEHUCvJ6-Nji29Ujz5alkf7jKGW_YUqvYqwqZZo-9TDwXFFUinZjiA8_SjER6TIt7AGHJmcejGv8W14tsCj5CdodUsY5ok0W2__wcft8hQ-JvCcaGp51itZXAPuagsZJmppXS9GolIrs6JaTuRACMy-j4x_H0s2lQixtqMzdrHChLhAktG9vWi1QoVNhkrnvSEdMYOjIj83PJC2VKgzPsQC7lbZDIekDII0UAEYcMlbIPn0xJ5z0z1LeWJoUUirQPn" />
+    </item>
+  </cookies>
+</error>

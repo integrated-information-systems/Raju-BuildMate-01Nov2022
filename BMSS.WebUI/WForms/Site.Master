@@ -1,0 +1,52 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="BMSS.WebUI.WForms.Site" %>
+
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title><%=companyFullName %>Seng Liat Precast Sales System</title>
+    <link href="~/Content/css/bootstrap-4.3.1.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />   
+    <link href="~/Content/css/select2.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/css/adminlte-2.4.7.css" rel="stylesheet" type="text/css" />      
+    <link href="~/Content/css/skin-blue.css" rel="stylesheet" type="text/css" />      
+    <link href="~/Content/css/own.css" rel="stylesheet" type="text/css" />   
+    
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body class="">
+    <div class="content">
+         <asp:ContentPlaceHolder ID="ContentHeader" runat="server">
+                    </asp:ContentPlaceHolder>
+        <section class="content">
+           
+            <form id="form1" runat="server">
+                 <asp:ScriptManager ID="ScriptManager1" runat="server"
+        EnablePageMethods = "true"></asp:ScriptManager>
+                
+                    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                    </asp:ContentPlaceHolder>
+                
+            </form>
+        </section>
+    </div>
+    <asp:ContentPlaceHolder ID="footer" runat="server">
+    </asp:ContentPlaceHolder>
+    <script  src="../Scripts/jquery-3.4.1.min.js"></script>
+    <script  src="../Scripts/bootstrap.bundle.min.js"></script> 
+    <script  src="../Scripts/bootstrap-datepicker.min.js"></script> 
+    <script  src="../Scripts/adminlte.js"></script>
+    <script  src="../Scripts/select2.full.min.js"></script>      
+    <script  src="../Scripts/general-theme.js"></script> 
+ 
+    <script>
+        $(function () {
+            $('.select2').select2();   
+            $('.datepicker').datepicker({ format: 'dd'/'MM'/'yyyy', autoclose: true });
+        });
+    </script>
+</body>
+</html>

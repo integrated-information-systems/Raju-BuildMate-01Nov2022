@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Menu>
+  <MenuItem CssClass="treeview" FawsIcon="fa fa-dashboard" DisplayText="Administration">
+    <MenuItem CssClass="treeview-menu">
+      <MenuItem  FawsIcon="fa fa-users" DisplayText="Users" Controller="User" Action="Index" />
+      <MenuItem  FawsIcon="fa fa-fw fa-user" DisplayText="Roles"  CssClass="treeview"  >
+        <MenuItem CssClass="treeview-menu">
+          <MenuItem  FawsIcon="fa fa-fw fa-plus" DisplayText="Manage Roles" Controller="Role" Action="Index" />
+          <MenuItem  FawsIcon="fa fa-fw fa-link" DisplayText="Assign User Roles" Controller="Role" Action="AssignRoles" />
+        </MenuItem>
+      </MenuItem>
+      <MenuItem  FawsIcon="fa fa-circle-o" DisplayText="Stocks" Controller="Item" Action="IndexNew" />
+      <MenuItem  FawsIcon="fa fa-circle-o" DisplayText="Customers"  CssClass="treeview"  >
+        <MenuItem CssClass="treeview-menu">
+          <MenuItem  FawsIcon="fa fa-fw fa-list" DisplayText="Customer Details" Controller="Customer" Action="Index" />
+          <MenuItem  FawsIcon="fa fa-fw fa-pencil" DisplayText="Change Credit Limit" Controller="ChangeCRLimit" Action="Index" />
+        </MenuItem>
+      </MenuItem>
+      <!--<MenuItem  FawsIcon="fa fa-circle-o" DisplayText="Cash Customers" Controller="CashSalesCustomer" Action="Index" />-->
+      <MenuItem  FawsIcon="fa fa-circle-o" DisplayText="Suppliers" Controller="Supplier" Action="Index" />
+      <MenuItem  FawsIcon="fa fa-circle-o" DisplayText="Document Numbering" Controller="DocNumbering" Action="Index" />
+    </MenuItem>
+  </MenuItem>
+  <MenuItem CssClass="treeview" FawsIcon="fa fa-dashboard" DisplayText="Transactions">
+    <MenuItem CssClass="treeview-menu">
+      <MenuItem  FawsIcon="fa fa-circle-o" DisplayText="Sales Quotation" Controller="SQ" Action="IndexNew" />
+      <MenuItem  FawsIcon="fa fa-circle-o" DisplayText="Delivery Order / Invoice" Controller="DO" Action="IndexNew" />
+      <MenuItem  FawsIcon="fa fa-circle-o" DisplayText="Stock Loan" Controller="StockLoan" Action="Index" />
+      <MenuItem  FawsIcon="fa fa-circle-o" DisplayText="Cash Sale" Controller="CashSales" Action="IndexNew" />
+      <MenuItem  FawsIcon="fa fa-circle-o" DisplayText="Cash Sale Credit Note" Controller="CashSalesCredit" Action="Index" />
+      <MenuItem  FawsIcon="fa fa-circle-o" DisplayText="Purchase Quotation" Controller="PQ" Action="Index" />
+      <MenuItem  FawsIcon="fa fa-circle-o" DisplayText="Purchase Order" Controller="PO" Action="Index" />
+      <MenuItem  FawsIcon="fa fa-circle-o" DisplayText="Purchase Order (SAP)" Controller="SAPPO" Action="Index" />
+      <MenuItem  FawsIcon="fa fa-circle-o" DisplayText="Purchase Delivery Note" Controller="GRPO" Action="Index" />
+      <MenuItem  FawsIcon="fa fa-circle-o" DisplayText="Stock Issue (Out)" Controller="StockIssue" Action="Index" />
+      <MenuItem  FawsIcon="fa fa-circle-o" DisplayText="Stock Receipt (In)" Controller="StockReceipt" Action="Index" />
+      <MenuItem  FawsIcon="fa fa-circle-o" DisplayText="Stock Transfer" Controller="StockTrans" Action="Index" />
+      <MenuItem  FawsIcon="fa fa-circle-o" DisplayText="Payment" Controller="Payment" Action="Index" />
+    </MenuItem>
+  </MenuItem>
+  <MenuItem CssClass="treeview" FawsIcon="fa fa-dashboard" DisplayText="Reports">
+    <MenuItem CssClass="treeview-menu">
+      <MenuItem  FawsIcon="fa fa-circle-o" DisplayText="Inventory Movement Report" Controller="InventoryMovement" Action="Index" />
+      <MenuItem  FawsIcon="fa fa-circle-o" DisplayText="Sales by Customer" Controller="WForms/" Action="SalesReportByCustomer.aspx" />
+      <MenuItem  FawsIcon="fa fa-circle-o" DisplayText="Monthly Customer Collection" Controller="WForms/" Action="MonthlyCollectionByCustomer.aspx" />
+      <MenuItem  FawsIcon="fa fa-circle-o" DisplayText="Daily All Sales" Controller="WForms/" Action="DailyAllSales.aspx" />
+      <MenuItem  FawsIcon="fa fa-circle-o" DisplayText="Statement of Account" Controller="WForms/" Action="SOA.aspx" />
+      <MenuItem  FawsIcon="fa fa-circle-o" DisplayText="Day End Collection by Location" Controller="WForms/" Action="DayEndCollection.aspx" />
+      <MenuItem  FawsIcon="fa fa-circle-o" DisplayText="Items With Wrong Location" Controller="WForms/" Action="ItemWithWrongLocation.aspx" />
+    </MenuItem>
+  </MenuItem>
+</Menu>

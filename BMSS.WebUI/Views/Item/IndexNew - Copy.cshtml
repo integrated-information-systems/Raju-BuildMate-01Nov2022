@@ -1,0 +1,123 @@
+﻿@using BMSS.WebUI.Models.ItemViewModels
+@model IEnumerable<ItemStockDetailViewModel>
+@using System.Globalization;
+@{
+    ViewBag.Title = "List of Stocks";
+}
+@section Styles {
+    @Styles.Render("~/DataTablesCss")
+}
+@section Content_Header {
+    <section class="content-header">
+        <h1>
+            Stocks
+            <small>SAP Stocks</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href='@Url.Action("Index", "Home")'><i class="fa fa-dashboard"></i>Administration</a></li>
+            <li class="active">Items</li>
+        </ol>
+    </section>
+}
+@using (Html.BeginForm("Detail", null, null, FormMethod.Get, new { id = "DetailForm" }))
+{
+    @Html.Hidden("ItemCode", "")
+}
+<div class="row">
+    <div class="col-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">List of Stocks</h3>
+            </div>
+            <div class="box-body">
+                <table id="ItemList" class="table table-bordered table-striped responsive nowrap bmdatatable dblEdit" data-fixed-header="true" data-auto-width="true" data-paging="true" data-searching="true" data-length-change="true" data-page-length="100" data-ordering="true" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Stock Code</th>
+                            <th>Stock Description</th>
+                            <th class="text-right">TRS In Stock</th>
+                            <th class="text-right">TRS On Order</th>
+                            <th class="text-right">ENS In Stock</th>
+                            <th class="text-right">ENS On Order</th>
+                            <th class="text-right">In Stock</th>
+                            <th class="text-right">On Order</th>
+                            <th class="text-center">INV Item</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/DataTables")
+    <script>
+        $(document).ready(function () {
+           var table = $('#ItemList').DataTable({
+                'processing': true,
+                'serverSide': true,
+                'serverMethod': 'post',
+                'ajax': {
+                    'url': '@Url.Action("IndexNewPagining", "Item", null)'
+                },
+                'columns': [
+                    {
+                        data: 'ItemCode', orderable: true
+                    },
+                    { data: 'ItemName', orderable: true },
+                    {
+                        data: 'TRSInStock',
+                        render: $.fn.dataTable.render.number(',', '.', 3, ''),
+                        className: "text-right",
+                        orderable: false
+                    },
+                    {
+                        data: 'TRSInOrder',
+                        render: $.fn.dataTable.render.number(',', '.', 3, ''),
+                        className: "text-right",
+                        orderable: false
+                    },
+                    {
+                        data: 'ENSInStock',
+                        render: $.fn.dataTable.render.number(',', '.', 3, ''),
+                        className: "text-right",
+                        orderable: false
+                    },
+                    {
+                        data: 'ENSInOrder',
+                        render: $.fn.dataTable.render.number(',', '.', 3, ''),
+                        className: "text-right",
+                        orderable: false
+                    },
+                    {
+                        data: 'InStock',
+                        render: $.fn.dataTable.render.number(',', '.', 3, ''),
+                        className: "text-right",
+                        orderable:false
+                    },
+                    {
+                        data: 'InOrder',
+                        render: $.fn.dataTable.render.number(',', '.', 3, ''),
+                        className: "text-right",
+                        orderable: false
+                    },
+                    {
+                        data: 'InvntItem', className: "text-center",
+                        orderable: false
+                    },
+                ]
+            });
+
+            $('#ItemList tbody').on('dblclick', 'tr', function () {
+                var data = table.row(this).data();
+                //$(this).addClass("highlight");
+                $("#ItemCode").val(data.ItemCode);
+                var itemcode = data.ItemCode;
+                //$("#ItemCode").closest("form").submit();  
+                window.open('@Url.Action("Detail", "Item")?ItemCode=' + itemcode);
+            });
+        });
+        
+
+    </script>
+}

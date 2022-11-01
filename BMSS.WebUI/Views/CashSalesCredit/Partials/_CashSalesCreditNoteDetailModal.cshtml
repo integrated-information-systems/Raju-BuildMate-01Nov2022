@@ -1,0 +1,34 @@
+﻿@using BMSS.WebUI.Models.CashSalesCreditViewModels
+@model CashSalesCreditNoteViewModel
+<div class="modalform modal fade" id="AddUpdateNoteModal" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Note</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm(null, null, null, FormMethod.Post, new { @class = "form-horizontal", data_bind = "submit: validateAndAddNote" }))
+            {
+                <div class="modal-body">
+
+                    @Html.ValidationSummary()
+                    <div class="col-12">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.Note, new { @class = "col-sm-2 col-form-label" })
+                            @Html.TextBoxFor(x => x.Note, new { @class = "form-control", data_bind = "textInput: CashSalesCreditNote.note" })
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default mr-auto" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+

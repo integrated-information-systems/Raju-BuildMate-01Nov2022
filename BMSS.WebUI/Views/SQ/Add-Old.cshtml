@@ -1,0 +1,762 @@
+﻿@using BMSS.WebUI.Models.SQViewModels
+@model SQViewModel
+@{
+    ViewBag.Title = "Add Sales Quotation";
+    IEnumerable<SelectListItem> CustomerNameList = ViewBag.CustomerNameList;
+    IEnumerable<SelectListItem> CustomerCodeList = CustomerNameList.Select(x => new SelectListItem
+    {
+        Text = x.Value,
+        Value = x.Value
+    }).ToList();
+
+    IEnumerable<SelectListItem> PaymentTermList = ViewBag.PaymentTermList;
+    IEnumerable<SelectListItem> SalesPersonList = ViewBag.SalesPersonList;
+    IEnumerable<SelectListItem> ItemNameList = ViewBag.ItemList;
+    IEnumerable<SelectListItem> ItemCodeList = ItemNameList.Select(x => new SelectListItem
+    {
+        Text = x.Value,
+        Value = x.Value
+    }).ToList();
+
+    IEnumerable<SelectListItem> WhsList = ViewBag.WhsList;
+    IEnumerable<SelectListItem> TaxCodeList = ViewBag.TaxCodeList;
+}
+@section Styles {
+    @Styles.Render("~/DataTablesCss")
+    @Styles.Render("~/Select2Css")
+    @Styles.Render("~/DatePicker")
+}
+@section Content_Header {
+    <section class="content-header">
+        <h1>
+            Add Sales Quotation
+            <small>Sales Quotation</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i>Transactions</a></li>
+            <li class="active"><a href='@Url.Action("Index", "SQ")'>Sales Quotations</a></li>
+        </ol>
+    </section>
+}
+<div class="row">
+    <div class="col-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">New Sales Quotation</h3>
+            </div>
+            @using (Html.BeginForm("Add", null, null, FormMethod.Post, new { @class = "form-horizontal" }))
+            {
+                @Html.ValidationSummary()
+                @Html.AntiForgeryToken()
+
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.CardCode)
+                                @Html.DropDownListFor(x => x.CardCode, CustomerCodeList, "Select", new { @class = "form-control select2 trigger", data_trigger_target = Html.NameFor(x => x.CardName), data_trigger_by = "Value", data_getdet_url = Url.Action("GetCustomerDetails", "Customer"), data_getdet_param = "{\"ParamName1\": \"" + Html.NameFor(x => x.CardCode) + "\"}" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.DocNum)
+                                @Html.TextBoxFor(x => x.DocNum, new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PrintedStatus)
+                                @Html.TextBoxFor(x => x.PrintedStatus, new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.Currency)
+                                @Html.TextBoxFor(x => x.Currency, new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.CreatedBy)
+                                @Html.TextBoxFor(x => x.CreatedBy, new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.CardName)
+                                @Html.DropDownListFor(x => x.CardName, CustomerNameList, "Select", new { @class = "form-control select2 trigger", data_trigger_target = Html.NameFor(x => x.CardCode), data_trigger_by = "Value", data_getdet_url = Url.Action("GetCustomerDetails", "Customer"), data_getdet_param = "{\"ParamName1\": \"" + Html.NameFor(x => x.CardCode) + "\"}" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.Status)
+                                @Html.TextBoxFor(x => x.Status, new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.CopiedDO)
+                                @Html.TextBoxFor(x => x.CopiedDO, new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.ExRate)
+                                @Html.TextBoxFor(x => x.ExRate, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl">
+                            <div class="form-group">                               
+                                @Html.LabelFor(x => x.CreatedOn)
+                                @if (Model.CreatedOn.ToString("dd'/'MM'/'yyyy").Equals("01/01/0001"))
+                                {
+                                    @Html.TextBox("CreatedOnString", null, null, new { @class = "form-control", disabled = "" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(x => x.CreatedOn, "{0:dd'/'MM'/'yyyy HH:mm:ss tt}", new { @class = "form-control", disabled = "" })
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.OfficeTelNo)
+                                @Html.TextBoxFor(x => x.OfficeTelNo, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.DocDate)
+                                @Html.TextBoxFor(x => x.DocDate, new { @class = "form-control datepicker" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PoNo)
+                                @Html.TextBoxFor(x => x.PoNo, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl">
+
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.UpdatedBy)
+                                @Html.TextBoxFor(x => x.UpdatedBy, new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.ContactID)
+                                @Html.DropDownListFor(x => x.ContactID, Enumerable.Empty<SelectListItem>(), new { @class = "form-control select2 trigger", data_trigger_target = "", data_trigger_by = "Text" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.DueDate)
+                                @Html.TextBoxFor(x => x.DueDate, new { @class = "form-control datepicker" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PaymentTerm)
+                                @Html.DropDownListFor(x => x.PaymentTerm, PaymentTermList, new { @class = "form-control select2 trigger", data_trigger_target = "", data_trigger_by = "Text" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl">
+                            &nbsp;
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.UpdatedOn)
+                                @if (Model.UpdatedOn.ToString("dd'/'MM'/'yyyy").Equals("01/01/0001"))
+                                {
+                                    @Html.TextBox("UpdatedOnString", null, null, new { @class = "form-control", disabled = "" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(x => x.UpdatedOn, "{0:dd'/'MM'/'yyyy HH:mm:ss tt}", new { @class = "form-control", disabled = "" })
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.ContactTelNo)
+                                @Html.TextBoxFor(x => x.ContactTelNo, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.DeliveryDate)
+                                @Html.TextBoxFor(x => x.DeliveryDate, new { @class = "form-control datepicker" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.SlpCode)
+                                @Html.DropDownListFor(x => x.SlpCode, SalesPersonList, new { @class = "form-control select2 trigger", data_trigger_target = "", data_trigger_by = "Text" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl">
+                            &nbsp;
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl">
+                            &nbsp;
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="nav-tabs-custom">
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item active"><a href="#tab_1" data-toggle="tab" class="nav-link active">Contents</a></li>
+                                    <li class="nav-item"><a href="#tab_2" data-toggle="tab" class="nav-link">Logistics</a></li>
+                                    <li class="nav-item"><a href="#tab_3" data-toggle="tab" class="nav-link">Notes</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="tab_1">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <button type="button" class="btn btn-primary float-right ">Delete</button>
+                                                <button type="button" class="btn btn-primary float-right mr-1" data-toggle="modal" data-target="#AddUpdateItemModal" data-tooltip="tooltip" title="Add Line">Add</button>
+
+                                            </div>
+                                        </div>
+
+                                         
+                                        <table id="ItemListTable" class="table table-striped table-bordered responsive nowrap bmdatatable dblEdit" data-fixed-header="true" data-auto-width="true" data-paging='false' data-searching="false" data-length-change="false" data-page-length="5" data-ordering="false" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Line No</th>
+                                                    <th>Stock Code</th>
+                                                    <th>Description</th>
+                                                    <th class="text-right">Qty</th>
+                                                    <th>UOM</th>
+                                                    <th>Location</th>
+                                                    <th class="text-right">Unit Price</th>
+                                                    <th>GST</th>
+                                                    <th>Line Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>                                                                                                                                          
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="tab-pane" id="tab_2">
+
+                                    </div>
+                                    <div class="tab-pane" id="tab_3">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div Class="box-footer">
+                    <Button type="button" Class="btn btn-default" data-dismiss="modal">Close</Button>
+                    <Button type="submit" Class="btn btn-primary">Submit</Button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section BootModals {
+    <div class="modalform modal fade" id="AddUpdateItemModal" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+        <div class="modal-dialog" style="max-width: 1050px!important;" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Item</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                @using (Html.BeginForm(null, null, null, FormMethod.Post, new { @class = "form-horizontal" , data_bind = "submit: validateAndAddline" }))
+                {
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col">
+                                <div class="box box-primary">
+                                    @Html.ValidationSummary()
+                                    <div class="box-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            @Html.Label("Item Code")
+                                                            @Html.DropDownList("ItemCode", ItemCodeList, "Select", new { @class = "form-control select2 trigger", style = "width:100%", data_val="true", data_val_required="The Item Code field is required", data_bind = "value: sQLine.itemCode" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            @Html.Label("Item Name")
+                                                            @Html.DropDownList("Description", ItemNameList, "Select", new { @class = "form-control select2 trigger", style = "width:100%", data_bind = "value: sQLine.description" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            @Html.Label("Overwrite Description")
+                                                            @Html.TextBox("OverwriteDescription", null, new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            @Html.Label("Additional Remarks")
+                                                            @Html.TextBox("Description2", null, new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            @Html.TextBox("Description3", null, new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            @Html.TextBox("Description4", null, new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            @Html.TextBox("Description5", null, new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            @Html.TextBox("Description6", null, new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            @Html.Label("Location")
+                                                            @Html.DropDownList("Location", WhsList, null, new { @class = "form-control select2 trigger", style = "width:100%", data_bind = "value: sQLine.location" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            @Html.Label("Quantity")
+                                                            @Html.TextBox("Quantity", "0", new { @class = "form-control", data_bind = "value: sQLine.quantity"  })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            @Html.Label("UOM")
+                                                            @Html.TextBox("UOM", "", new { @class = "form-control", data_bind = "value: sQLine.uom" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            @Html.Label("UnitPrice")
+                                                            @Html.TextBox("UnitPrice", "0", new { @class = "form-control", data_bind = "value: sQLine.unitPrice" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            @Html.Label("GST")
+                                                            @Html.DropDownList("GST", TaxCodeList, null, new { @class = "form-control select2 trigger", style = "width:100%",  data_bind = "value: sQLine.gst" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            @Html.Label("Total")
+                                                            @Html.TextBox("LineTotal", "0", new { @class = "form-control", data_bind = "value: sQLine.lineTotal" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default mr-auto" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="AddUpdateRow">Save</button>
+
+                    </div>
+                }
+                </div>
+        </div>
+    </div>
+
+}
+@section Scripts {
+    @Scripts.Render("~/DataTables")
+    @Scripts.Render("~/bundles/Jquery-Validation-and-Ajax")
+    @Scripts.Render("~/Select2")
+    @Scripts.Render("~/DatePickerJS")
+    @Scripts.Render("~/Knockout")
+
+    @*@Scripts.Render("~/Select2-Own")*@
+    <script>
+        
+        function SQViewModel(sQLines) {
+            var self = this;
+            self.sQLines = ko.observableArray([]);                       
+            self.sQLine = {
+                itemCode: ko.observable(),
+                description: ko.observable(),
+                quantity: ko.observable('0'),
+                uom: ko.observable('-'),
+                location: ko.observable(),
+                unitPrice: ko.observable('0'),
+                gst: ko.observable(),
+               
+            };
+            self.sQLine.lineTotal = ko.computed(function () {                 
+                return parseFloat(self.sQLine.quantity()) * parseFloat(self.sQLine.unitPrice());                
+            }, self)
+
+            self.validateAndAddline = function (form) {
+                // By default this fuction return false;
+                if (!$(form).valid()) {
+
+                  //Validations goes here
+                     
+                 
+                }
+                else {
+                   
+                    var InputDescription = $(form).find("#Description:first").find("option:selected").text();   
+                    var Location = $(form).find("#Location:first").find("option:selected").text();   
+                    var Gst = $(form).find("#GST:first").find("option:selected").text();   
+
+                    var quantity = self.sQLine.quantity();   
+                    if (isNaN(quantity)) {
+                        quantity = 0;                        
+                    }
+                    var unitPrice = self.sQLine.unitPrice();
+                    if (isNaN(unitPrice)) {
+                        unitPrice = 0;                       
+                    }
+                    self.sQLines.push({
+                        itemCode: self.sQLine.itemCode(),                       
+                        description: InputDescription,
+                        quantity: quantity,
+                        uom: self.sQLine.uom(),
+                        location: Location,
+                        unitPrice: unitPrice,
+                        gst: Gst,
+                        lineTotal: self.sQLine.lineTotal(),
+                    });
+                    //self.sQLines.push(self.sQLine);
+                    $(form).find(".validation-summary-errors ul li").remove(); // Remove All li if before Submission had client side errors
+                    $(form).find(".validation-summary-valid ul li").remove();
+                }
+
+                return false; // By default this fuction return false; even we dont put this statement      
+            }
+            self.enableDetails = function (rowid,data, event) {
+                console.log("event fired"+ rowid);
+            }
+            self.sQLines.subscribe(function (changes) {
+
+                   
+               //console.log(changes[0].value.itemCode);
+              
+                var table = $('#ItemListTable').DataTable();
+                var rowNode =  table.row.add([
+                    changes[0].index+1,
+                    changes[0].value.itemCode,
+                    changes[0].value.description,
+                    changes[0].value.quantity,
+                    changes[0].value.uom,
+                    changes[0].value.location,
+                    changes[0].value.unitPrice,
+                    changes[0].value.gst,
+                    changes[0].value.lineTotal                    
+                ]).draw().node();
+                $(rowNode).attr("row-id", changes[0].index);
+                $(rowNode).attr("data-bind", "event: { click: function(data, event) { enableDetails(" + changes[0].index  + ", data, event) } }");
+
+                ko.applyBindings(viewModel, rowNode);
+
+            }, self, "arrayChange");
+            
+        }
+
+        var viewModel = new SQViewModel(@Html.ViewModelToJson(Model.Lines));      
+        ko.applyBindings(viewModel);
+    </script>
+        <script>
+            function CalculateLineTotal() {
+
+                var Quantity = parseFloat($("#Quantity").val());
+            var UnitPrice = parseFloat($("#UnitPrice").val());
+            var LineTotal = Quantity * UnitPrice;
+
+            $("#LineTotal").val(roundToTwo(LineTotal));
+
+        }
+            $(document).on('show.bs.modal', '#AddUpdateItemModal', function (event) {
+
+                if (typeof event.relatedTarget !== "undefined") {
+                    if (event.relatedTarget.nodeName == "BUTTON") {
+                        $("#Description").val('').trigger('change');
+            $("#ItemCode").val('').trigger('change');
+            $("#Quantity").val('0');
+            $("#UOM").val('');
+            //$("#Location").val('').trigger('change');
+            $("#UnitPrice").val('0');
+            //$("#GST").val('').trigger('change');
+
+        }
+}
+});
+            $('#Quantity').on('change', function (e) {
+                //CalculateLineTotal();
+            });
+            $('#UnitPrice').on('change', function (e) {
+                //CalculateLineTotal();
+            });
+            $('#AddUpdateRow').on('click', function (e) {
+
+        //        var ItemCode = $("#ItemName").val();
+        //    var Description = $("#ItemName").find("option:selected").text();
+        //    var Quantity = $("#Quantity").val();
+        //    var UOM = $("#UOM").val();
+        //    var Location = $("#Location").val();
+        //    var LocationText = $("#Location").find("option:selected").text();
+        //    var UnitPrice = $("#UnitPrice").val();
+        //    var GST = $("#GST").val();
+        //    var LineTotal = $("#LineTotal").val();
+
+
+
+        //    var table = $('#ItemListTable').DataTable();
+        //    table.row.add([
+        //            table.rows().count() + 1 + '<input type="hidden" name=Lines[' + table.rows().count() + '].LineNo value="' + table.rows().count() + '">'
+        //            , ItemCode + '<input type="hidden" name=Lines[' + table.rows().count() + '].ItemCode value="' + ItemCode + '">'
+        //            , Description + '<input type="hidden" name=Lines[' + table.rows().count() + '].Description value="' + Description + '">'
+        //            , Quantity + '<input type="hidden" name=Lines[' + table.rows().count() + '].Quantity value="' + Quantity + '">'
+        //            , UOM + '<input type="hidden" name=Lines[' + table.rows().count() + '].UOM value="' + UOM + '">'
+        //            , LocationText + '<input type="hidden" name=Lines[' + table.rows().count() + '].Location value="' + Location + '">'
+        //            , UnitPrice + '<input type="hidden" name=Lines[' + table.rows().count() + '].UnitPrice value="' + UnitPrice + '">'
+        //            , GST + '<input type="hidden" name=Lines[' + table.rows().count() + '].GST value="' + GST + '">'
+        //            , LineTotal + '<input type="hidden" name=Lines[' + table.rows().count() + '].LineTotal value="' + LineTotal + '">'
+        //]).draw();
+
+});
+            $('#DocDate').on('change', function (e) {
+
+                var InputCurrency = $('#Currency').val();
+            var DocDate = $(this).val();
+
+                $.ajax({
+                type: "POST",
+            url: '/ExRate/GetExchangeRate',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+                    data: JSON.stringify({InputCurrency: InputCurrency, DocDate: DocDate }),
+                    success: function (data) {
+
+                $('#ExRate').val(data);
+
+            },
+                    error: function () { /*alert('Success');*/}
+            });
+
+        });
+
+            $('#Description').on('select2:select', function (e) {
+                var SelectedValue = $(this).find("option:selected").val();
+            $('#ItemCode').val(SelectedValue).trigger('change');
+        });
+            $('#ItemCode').on('select2:select', function (e) {
+                var SelectedValue = $(this).find("option:selected").val();
+                $('#Description').val(SelectedValue).trigger('change');
+        });
+
+            $('#CardName').on('select2:select', function (e) {
+                var SelectedValue = $(this).find("option:selected").val();
+            $('#CardCode').val(SelectedValue).trigger('change');
+
+
+            //Load Contact Persons
+                $.ajax({
+                type: "POST",
+            url: '/ContactPersons/GetContactPersons',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+                    data: JSON.stringify({CardCode: SelectedValue }),
+                    success: function (data) {
+                $('#ContactID').empty();
+            $.each(data, function (i, item) {
+                            var newOption = new Option(item.Text, item.Value, false, false);
+            $('#ContactID').append(newOption).trigger('change');
+        });
+
+
+
+                        $.ajax({
+                            type: "POST",
+                            url: '/Customer/GetCustomerDetails',
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            data: JSON.stringify({ CardCode: SelectedValue }),
+                            success: function (data) {
+                                $('#Currency').val(data.Currency)
+                                $('#OfficeTelNo').val(data.OfficeTelNo)
+                                let val = $('#ContactID').find("option:contains('" + data.ContactID + "')").val()
+                                $('#ContactID').val(val).trigger('change');
+
+
+                                $.ajax({
+                                    type: "POST",
+                                    url: '/ContactPersons/GetContactPersonsTelephoneNo',
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType: "json",
+                                    data: JSON.stringify({ ContactID: $('#ContactID').val() }),
+                                    success: function (data) {
+                                        $("#ContactTelNo").val(data.Tel1);
+                                    },
+                                    error: function () { /*alert('Success');*/ }
+                                });
+
+
+                            },
+                            error: function () { /*alert('Success');*/ }
+                        });
+
+
+        },
+                    error: function () { /*alert('Success');*/}
+            });
+
+        });
+            $('#CardCode').on('select2:select', function (e) {
+                var SelectedValue = $(this).find("option:selected").val();
+            $('#CardName').val(SelectedValue).trigger('change');
+
+
+
+            //Load Contact Persons
+                $.ajax({
+                type: "POST",
+            url: '/ContactPersons/GetContactPersons',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+                    data: JSON.stringify({CardCode: SelectedValue }),
+                    success: function (data) {
+                $('#ContactID').empty();
+            $.each(data, function (i, item) {
+                            var newOption = new Option(item.Text, item.Value, false, false);
+            $('#ContactID').append(newOption).trigger('change');
+        });
+
+
+
+                        $.ajax({
+                type: "POST",
+            url: '/Customer/GetCustomerDetails',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+                            data: JSON.stringify({CardCode: SelectedValue }),
+                            success: function (data) {
+                $('#Currency').val(data.Currency)
+                                $('#OfficeTelNo').val(data.OfficeTelNo)
+            let val = $('#ContactID').find("option:contains('" + data.ContactID + "')").val()
+            $('#ContactID').val(val).trigger('change');
+
+
+                                $.ajax({
+                type: "POST",
+            url: '/ContactPersons/GetContactPersonsTelephoneNo',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+                                    data: JSON.stringify({ContactID: $('#ContactID').val() }),
+                                    success: function (data) {
+                $("#ContactTelNo").val(data.Tel1);
+            },
+                                    error: function () { /*alert('Success');*/}
+            });
+
+
+        },
+                            error: function () { /*alert('Success');*/}
+            });
+
+
+        },
+                    error: function () { /*alert('Success');*/}
+            });
+
+
+
+        });
+
+            $('#ContactID').on('select2:select', function (e) {
+                $.ajax({
+                    type: "POST",
+                    url: '/ContactPersons/GetContactPersonsTelephoneNo',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify({ ContactID: $('#ContactID').val() }),
+                    success: function (data) {
+                        $("#ContactTelNo").val(data.Tel1);
+                    },
+                    error: function () { /*alert('Success');*/ }
+                });
+            });
+
+
+            $(function () {
+                //Date picker
+                $('.datepicker').datepicker({ format: 'dd'/'MM'/'yyyy', autoclose: true })
+
+                $('.select2.trigger').select2();
+
+                var table = $('table.bmdatatable').DataTable(
+                    {
+                    }
+                );
+                $('table.bmdatatable tbody').on('click', 'tr', function () {
+                    if ($(this).hasClass('highlight')) {
+                        $(this).removeClass('highlight');
+                    }
+                    else {
+                        table.$('tr.highlight').removeClass('highlight');
+                        $(this).addClass('highlight');
+                    }
+                });
+
+            });
+    </script>
+}

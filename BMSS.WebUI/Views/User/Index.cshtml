@@ -1,0 +1,49 @@
+﻿@using BMSS.WebUI.Models.UserViewModels
+@using BMSS.WebUI.Models.UserIdentity
+@model CreateUserModel
+@{
+    ViewBag.Title = "User Administration";
+    UserListModel Users = ViewBag.UserList;
+   
+}
+@section Styles {
+    @Styles.Render("~/DataTablesCss")
+    @Styles.Render("~/Select2Css")
+}
+
+@section Content_Header {
+    <section class="content-header">
+        <h1>
+            Users
+            <small>System Users</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href='@Url.Action("Index", "Home")'><i class="fa fa-dashboard"></i>Administration</a></li>
+            <li class="active">Users</li>
+        </ol>
+    </section>
+}
+<div class="row">
+    <div class="col-6" id="@Users.AjaxOptions.EditActionTargetId">
+        @Html.Partial("_AddUser", Model)
+    </div>
+    <div class="col-6" id="@Users.AjaxOptions.AddActionTargetId">
+
+        @Html.Partial("_UserList", Users)
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/DataTables")
+    @Scripts.Render("~/bundles/Jquery-Validation-and-Ajax")
+    @Scripts.Render("~/Select2")
+    @Scripts.Render("~/Own")
+    <script>
+        // Once Document Ready
+        $(function () {
+            $('.select2').select2();
+        });
+    </script>
+}
+@section BootModals {
+    @Html.Partial("_DeleteConfirmationModal")
+}

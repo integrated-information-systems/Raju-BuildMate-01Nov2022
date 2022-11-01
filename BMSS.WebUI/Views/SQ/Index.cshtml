@@ -1,0 +1,149 @@
+﻿@using BMSS.Domain
+@model IEnumerable<SQDocH>
+@using System.Globalization;
+@{
+    ViewBag.Title = "List of Sales Quotations";
+    AjaxOptions ajaxOpts = new AjaxOptions
+    {
+        OnSuccess = "CopiedToDO(data)",
+        Url = Url.Action("CopyToDO"),
+        HttpMethod = "POST"
+    };
+    int RowIndex = 0;
+}
+@section Styles {
+    @Styles.Render("~/DataTablesCss")
+}
+@section Content_Header {
+    <section class="content-header">
+        <h1>
+            Sales Quotation Listing
+            <small>Sales Quotations</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href='@Url.Action("Index", "Home")'><i class="fa fa-dashboard"></i>Transactions</a></li>
+            <li class="active">Sales Quotations</li>
+        </ol>
+    </section>
+}
+<div class="row">
+    <div class="col-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">List of Sales Quotations</h3>
+                <div class="box-tools" style="top: 3px;"><a class="btn btn-primary" href="@Url.Action("Add", "SQ")" role="button">Add</a></div>
+            </div>
+            <div class="box-body">
+                <table id="SalesQuotationList" class="table table-bordered table-striped responsive nowrap bmdatatable dblEdit" data-fixed-header="true" data-auto-width="true" data-paging="true" data-searching="true" data-length-change="true" data-page-length="100" data-ordering="true" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Doc #</th>
+                            <th>Date</th>
+                            <th>Account #</th>
+                            @*<th>Period</th>*@
+                            <th class="text-right">Amount</th>
+                            @*<th>Doc Status</th>*@
+                            <th>Print Status</th>
+                            <th>Del Date</th>
+                            <th>Del Time</th>
+                            <th>Customer Ref</th>
+                            <th data-priority="1">Copy to DO</th>
+                            <th>DO No</th>
+                            <th data-priority="1">Print</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var i in Model)
+                        {
+                        <tr data-toggle="tooltip" title="double click to edit">
+                            <td>
+                                @i.DocNum
+                                @using (Html.BeginForm("Edit", null, null, FormMethod.Get, new { id = "DetailForm" }))
+                                {
+                                    @Html.Hidden("DocNum", @i.DocNum)
+                                }
+                            </td>
+                            <td>@i.DocDate.ToString("dd'/'MM'/'yyyy")</td>
+                            <td>@i.CardCode</td>
+                            @*<td>@i.DocDate.ToString("MM'/'yyyy")</td>*@
+                            <td class="text-right">@i.GrandTotal</td>
+                            @*<td>@Html.GetDocStatusName(i.Status)</td>*@
+                            <td>@Html.GetPrintedStatusName(i.PrintedStatus)</td>
+                            @if (i.DeliveryDate.HasValue)
+                            {
+                                <td> @i.DeliveryDate.Value.ToString("dd'/'MM'/'yyyy")</td>
+                            }
+                            else
+                            {
+                                <td>&nbsp;</td>
+                            }
+
+                            <td>@i.DeliveryTime</td>
+                            <td>@i.CustomerRef</td>
+                            <td data-priority="1">
+                                @using (Ajax.BeginForm("CopyToDO", null, ajaxOpts, new { id = "CopyToDO" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.Hidden("DocNum", i.DocNum)
+                                    @Html.Hidden("rowNo", RowIndex)
+                                    <button type="submit" class="btn btn-primary btn-xs">Copy to DO</button>
+                                }
+                            </td>
+                            <td>@i.CopiedDO</td>
+                            <td data-priority="1"><a class="btn btn-primary btn-xs printPreview" data-row-index="@RowIndex" target="_blank" href="@Url.Action("SQViewer.aspx","WForms/", new { id = i.DocEntry})" role="button">Print</a></td>                          
+
+                        </tr>
+                            RowIndex = RowIndex + 1;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/DataTables")
+    @Scripts.Render("~/Own")
+    @Scripts.Render("~/bundles/Jquery-Validation-and-Ajax")
+    <script>
+    $(document).ready(function () {
+        $('.printPreview').click(function () {            
+            let SalesQuotationListTbl = $('#SalesQuotationList').DataTable();
+            let rowNo = $(this).data('row-index')
+            let temp = SalesQuotationListTbl.row(rowNo).data();
+            temp[4] = "Printed";
+            SalesQuotationListTbl.row(rowNo).data(temp).invalidate();
+        });
+    });
+    function CopiedToDO(data) {
+    if (data.Status === 200 || Boolean(data.IsModelValid) === true) {
+    $('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Success!</h4> Copied to Delivery Order Successfully</div>')
+    .prependTo($(".box-body"))
+    .delay(5000)
+    .slideUpAndRemove('slow');
+    var SalesQuotationListTbl = $('#SalesQuotationList').DataTable();
+    var rowNo = data.rowNo;
+    var temp = SalesQuotationListTbl.row(data.rowNo).data();
+    temp[9] = data.DODocNum;
+    SalesQuotationListTbl.row(data.rowNo).data(temp).invalidate();
+
+    }
+    else {
+    var ErrArray = data.ModelErrList;
+    if(ErrArray !== undefined){
+    $('<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Alert!</h4> ' + ErrArray[0] + ' </div>')
+    .prependTo($(".box-body"))
+    .delay(5000)
+    .slideUpAndRemove('slow');
+    }
+    else {
+    $('<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Alert!</h4> Cannot Copy: ' + data.ResultHtml +' </div>')
+    .prependTo($(".box-body"))
+    .delay(5000)
+    .slideUpAndRemove('slow');
+    }
+    }
+    }
+    </script>
+}

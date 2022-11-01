@@ -1,0 +1,676 @@
+﻿@using BMSS.Domain.Entities
+@using BMSS.WebUI.Models.NotesViewModels
+@using System.Globalization
+@using BMSS.Domain
+@using BMSS.Domain.Models
+@model OCRD
+@{
+    ViewBag.Title = "Customer Details - " + Model.CardName;
+    string ContactSecondary = ViewBag.ContactSecondary;
+    AgingBucket agingBucket = ViewBag.agingBucket;
+    IEnumerable<ORCT> LastPaids = ViewBag.LastPaids;
+
+    decimal LocalThisPeriod = ViewBag.ThisPeriod;
+    decimal LocalThisYTD = ViewBag.ThisYTD;
+    decimal LocalLastYTD = ViewBag.LastYTD;
+
+    IEnumerable<SQDocH> SQTrans = ViewBag.SQTrans;
+    IEnumerable<DODocH> DOTrans = ViewBag.DOTrans;
+    IEnumerable<CashSalesDocH> CSTrans = ViewBag.CSTrans;
+    IEnumerable<CashSalesCreditDocH> CSCTrans = ViewBag.CSCTrans;
+    CRD1 AddressInfo = Model.CustomerAddress.Where(e => e.Address.Equals(Model.BillToDef)).FirstOrDefault();
+    decimal ThisPeriod = Model.ARInvoices.Where(e => e.DocDate.Month.Equals(DateTime.Now.Month) && e.DocDate.Year.Equals(DateTime.Now.Year) && e.DocStatus.Equals("O") && e.CANCELED.Equals("N")).Sum(c => c.DocTotal) - Model.ARMemos.Where(e => e.DocDate.Month.Equals(DateTime.Now.Month) && e.DocDate.Year.Equals(DateTime.Now.Year) && e.DocStatus.Equals("O") && e.CANCELED.Equals("N")).Sum(c => c.DocTotal);
+    decimal ThisYTD = Model.ARInvoices.Where(e => e.DocDate.Year.Equals(DateTime.Now.Year) && e.DocStatus.Equals("O") && e.CANCELED.Equals("N")).Sum(c => c.DocTotal) - Model.ARMemos.Where(e => e.DocDate.Year.Equals(DateTime.Now.Year) && e.DocStatus.Equals("O") && e.CANCELED.Equals("N")).Sum(c => c.DocTotal);
+    decimal LastYTD = Model.ARInvoices.Where(e => e.DocDate.Year.Equals(DateTime.Now.Year - 1) && e.DocStatus.Equals("O") && e.CANCELED.Equals("N")).Sum(c => c.DocTotal) - Model.ARMemos.Where(e => e.DocDate.Year.Equals(DateTime.Now.Year - 1) && e.DocStatus.Equals("O") && e.CANCELED.Equals("N")).Sum(c => c.DocTotal);
+
+    ThisPeriod = ThisPeriod + LocalThisPeriod;
+    ThisYTD = ThisYTD + LocalThisYTD;
+    LastYTD = LastYTD + LocalLastYTD;
+    string LastPaid = ViewBag.LastPaid;
+    decimal CreditAvailable = Model.CreditLine-agingBucket.OutStandingBalance.Value ;
+}
+@section Styles {
+    @Styles.Render("~/DataTablesCss")
+    @Styles.Render("~/Select2Css")
+}
+@section Content_Header {
+    <section class="content-header">
+        <h1>
+            Customer Details
+            <small>SAP Customer Details</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><i class="fa fa-dashboard"></i> Administration</li>
+            <li class="active"><a href='@Url.Action("Index", "Customer")'>Customers</a></li>
+        </ol>
+    </section>
+}
+<div class="row">
+    <div class="col-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">@Model.CardName</h3>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.CardCode)
+                            @Html.TextBoxFor(x => x.CardCode, new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.CardName)
+                            @Html.TextBoxFor(x => x.CardName, new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.CustomerGroup.GroupName)
+                            @Html.TextBoxFor(x => x.CustomerGroup.GroupName, new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.SalesPerson.SlpName)
+                            @Html.TextBoxFor(x => x.SalesPerson.SlpName, new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                        <div class="form-group">
+                            @Html.Label("Payment Term")
+                            @Html.TextBoxFor(x => x.PaymentTerm.PymntGroup, new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                        <div class="form-group">
+                            @Html.Label("Status")
+                            @if (Model.frozenFor.Equals("N") && Model.validTo.Equals(null))
+                            {
+                                @Html.TextBox("Status", "Active", new { @class = "form-control", disabled = "" })
+                            }
+                            else
+                            {
+                                @Html.TextBox("Status", "Inactive", new { @class = "form-control", disabled = "" })
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                        <div class="form-group">
+                            @Html.Label("This Period")
+                            @Html.TextBox("ThisPeriod", ThisPeriod.ToString("N2", new CultureInfo("en-US")), new { @class = "form-control", disabled = "" })
+                        </div>
+
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                        <div class="form-group">
+                            @Html.Label("This YTD")
+                            @Html.TextBox("ThisYTD", ThisYTD.ToString("N2", new CultureInfo("en-US")), new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                        <div class="form-group">
+                            @Html.Label("Last YTD")
+                            @Html.TextBox("LastYTD", LastYTD.ToString("N2", new CultureInfo("en-US")), new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.Balance)
+                            @Html.TextBox("Balance", agingBucket.OutStandingBalance.Value.ToString("N2", new CultureInfo("en-US")), new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.CreditLine)
+                            @Html.TextBox("CreditLine", Model.CreditLine.ToString("N2", new CultureInfo("en-US")), new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                        <div class="form-group">
+                            @Html.Label("Credit Available")
+                            @Html.TextBox("CreditAvailable", CreditAvailable.ToString("N2", new CultureInfo("en-US")), new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                        <div class="form-group">
+                            @Html.Label("Paid-up Capital ")
+                            @Html.TextBox("paidup", Model.U_paidupcap, new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                        <div class="form-group">
+                            @Html.Label("Price Band")
+                            @Html.TextBox("PriceBand", Model.Pricelist.ListName, new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                        <div class="form-group">
+                            @Html.Label("Last Paid")
+                            @Html.TextBox("LastPaid", LastPaid, new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            @Html.Label("Current")
+                            @Html.TextBox("Current", agingBucket.Current.Value.ToString("N2", new CultureInfo("en-US")), new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            @Html.Label("1 Month")
+                            @Html.TextBox("1Month", agingBucket.Months1.Value.ToString("N2", new CultureInfo("en-US")), new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            @Html.Label("2 Months")
+                            @Html.TextBox("2Months", agingBucket.Months2.Value.ToString("N2", new CultureInfo("en-US")), new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            @Html.Label("3 Months")
+                            @Html.TextBox("3Months", agingBucket.Months3.Value.ToString("N2", new CultureInfo("en-US")), new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            @Html.Label("4 Months")
+                            @Html.TextBox("4Months", agingBucket.Months4.Value.ToString("N2", new CultureInfo("en-US")), new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            @Html.Label("over 4 Months")
+                            @Html.TextBox("5Months", agingBucket.Months5.Value.ToString("N2", new CultureInfo("en-US")), new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    @foreach (var item in LastPaids)
+                    {
+                        <div class="col">
+                            <div class="form-group">
+                                @Html.Label("Last Paid on " + item.DocDate.ToString("dd/MM/yyyy"))
+                                @Html.TextBox("4Months12", item.DocTotal.ToString("N2", new CultureInfo("en-US")), new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                    }
+                </div>
+                <section id="Address">
+                        <h4 class="page-header">Address</h4>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                <div class="form-group">
+                                    @Html.Label("Main Address")
+                                    @Html.TextBoxFor(x => x.BillToDef, new { @class = "form-control", disabled = "" })
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                <div class="form-group">
+                                    @Html.Label("Contact")
+                                    @Html.TextBoxFor(x => x.CntctPrsn, new { @class = "form-control", disabled = "" })
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                <div class="form-group">
+                                    @Html.Label("Line 1")
+                                    @if (AddressInfo != null)
+                                    {
+                                        @Html.TextBox("Line1", AddressInfo.Street, new { @class = "form-control", disabled = "" })
+                                    }
+                                    else
+                                    {
+                                        @Html.TextBox("Line1", null, new { @class = "form-control", disabled = "" })
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                <div class="form-group">
+                                    @Html.Label("E-Mail")
+                                    @Html.TextBoxFor(x => x.E_Mail, new { @class = "form-control", disabled = "" })
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                <div class="form-group">
+                                    @Html.Label("Line 2")
+                                    @if (AddressInfo != null)
+                                    {
+                                        @Html.TextBox("Line2", AddressInfo.Block, new { @class = "form-control", disabled = "" })
+                                    }
+                                    else
+                                    {
+                                        @Html.TextBox("Line2", null, new { @class = "form-control", disabled = "" })
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                <div class="form-group">
+                                    @Html.Label("Telephone")
+                                    @Html.TextBoxFor(x => x.phone1, new { @class = "form-control", disabled = "" })
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                <div class="form-group">
+                                    @Html.Label("Line 3")
+                                    @if (AddressInfo != null)
+                                    {
+                                        @Html.TextBox("Line3", AddressInfo.City, new { @class = "form-control", disabled = "" })
+                                    }
+                                    else
+                                    {
+                                        @Html.TextBox("Line3", null, new { @class = "form-control", disabled = "" })
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                <div class="form-group">
+                                    @Html.Label("Fax")
+                                    @Html.TextBoxFor(x => x.Fax, new { @class = "form-control", disabled = "" })
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                <div class="form-group">
+                                    @Html.Label("Line 4")
+                                    @if (AddressInfo != null)
+                                    {
+                                        @Html.TextBox("Line4", AddressInfo.County, new { @class = "form-control", disabled = "" })
+                                    }
+                                    else
+                                    {
+                                        @Html.TextBox("Line4", null, new { @class = "form-control", disabled = "" })
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                <div class="form-group">
+                                    @Html.Label("Mobile")
+                                    @Html.TextBoxFor(x => x.cellular, new { @class = "form-control", disabled = "" })
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                <div class="form-group">
+                                    @Html.Label("Line 5")
+                                    @Html.TextBoxFor(x => AddressInfo.StreetNo, new { @class = "form-control", disabled = "" })
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                <div class="form-group">
+                                    @Html.Label("Contact Secondary")
+                                    @Html.TextBox("ContactSecondary", ContactSecondary, new { @class = "form-control", disabled = "" })
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+
+                            </div>
+                        </div>
+
+                    </section>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="nav-tabs-custom">
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item active"><a href="#tab_1" data-toggle="tab" class="nav-link active">Sales Quotion List</a></li>
+                                    <li class="nav-item"><a href="#tab_2" data-toggle="tab" class="nav-link">Delivery Order / Invoice List</a></li>
+                                    <li class="nav-item"><a href="#tab_3" data-toggle="tab" class="nav-link">Cash Invoice List</a></li>
+                                    <li class="nav-item"><a href="#tab_4" data-toggle="tab" class="nav-link">Credit Note List</a></li>
+                                    <li class="nav-item"><a href="#tab_5" data-toggle="tab" class="nav-link">Notes (All)</a></li>
+                                    <li class="nav-item"><a href="#tab_6" data-toggle="tab" class="nav-link">Notes (Management)</a></li>
+                                    <li class="nav-item"><a href="#tab_7" data-toggle="tab" class="nav-link">Special Price</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="tab_1">
+                                        <table id="SalesQuotationList" class="table table-bordered table-striped responsive nowrap bmdatatable" data-fixed-header="true" data-auto-width="true" data-paging="true" data-searching="true" data-length-change="true" data-page-length="100" data-ordering="true" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Doc #</th>
+                                                    <th>Date</th>
+                                                    <th>Customer Ref</th>
+                                                    <th class="text-right">Amount</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                @foreach (var i in SQTrans)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @i.DocNum
+                                                        </td>
+                                                        <td>@i.DocDate.ToString("dd'/'MM'/'yyyy")</td>
+                                                        <td>@i.CustomerRef</td>
+                                                        <td class="text-right">@i.GrandTotal.ToString("N2", new CultureInfo("en-US"))</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="tab-pane" id="tab_2">
+                                        <table id="DeliveryOrderList" class="table table-bordered table-striped responsive nowrap bmdatatable" data-fixed-header="true" data-auto-width="true" data-paging="true" data-searching="true" data-length-change="true" data-page-length="100" data-ordering="true" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Doc #</th>
+                                                    <th>Date</th>
+                                                    <th>Customer Ref</th>
+                                                    <th class="text-right">Amount</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                @foreach (var i in DOTrans)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @i.DocNum
+                                                        </td>
+                                                        <td>@i.DocDate.ToString("dd'/'MM'/'yyyy")</td>
+                                                        <td>@i.CustomerRef</td>
+                                                        <td class="text-right">@i.GrandTotal.ToString("N2", new CultureInfo("en-US"))</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="tab-pane" id="tab_3">
+                                        <table id="CashSaleList" class="table table-bordered table-striped responsive nowrap bmdatatable" data-fixed-header="true" data-auto-width="true" data-paging="true" data-searching="true" data-length-change="true" data-page-length="100" data-ordering="true" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Doc #</th>
+                                                    <th>Date</th>
+                                                    <th>Customer Ref</th>
+                                                    <th class="text-right">Amount</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                @foreach (var i in CSTrans)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @i.DocNum
+                                                        </td>
+                                                        <td>@i.DocDate.ToString("dd'/'MM'/'yyyy")</td>
+                                                        <td>@i.CustomerRef</td>
+                                                        <td class="text-right">@i.GrandTotal.ToString("N2", new CultureInfo("en-US"))</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="tab-pane" id="tab_4">
+                                        <table id="CreditNoteList" class="table table-bordered table-striped responsive nowrap bmdatatable" data-fixed-header="true" data-auto-width="true" data-paging="true" data-searching="true" data-length-change="true" data-page-length="100" data-ordering="true" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Doc #</th>
+                                                    <th>Date</th>
+                                                    <th>Customer Ref</th>
+                                                    <th class="text-right">Amount</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                @foreach (var i in CSCTrans)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @i.DocNum
+                                                        </td>
+                                                        <td>@i.DocDate.ToString("dd'/'MM'/'yyyy")</td>
+                                                        <td>@i.CustomerRef</td>
+                                                        <td class="text-right">@i.GrandTotal.ToString("N2", new CultureInfo("en-US"))</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="tab-pane" id="tab_5">
+                                        <div class="box box-primary">
+                                            <div class="box-header">
+                                                <h3 class="box-title"></h3>
+
+                                                <div class="box-tools"><button type="button" class="btn btn-success" data-add-modal-title="Add Note" data-toggle="modal" data-target="#AddUpdateNoteModal" data-tooltip="tooltip" title="Add Note"><i class="fa fa-fw fa-plus"></i></button></div>
+
+                                            </div>
+                                            <div class="box-body">
+                                                <div class="row">
+                                                    <div class="col-12" id="NoteListTble">
+                                                        @{ Html.RenderAction("NoteList", "CNoteAll", new { CardCode = Model.CardCode }); }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="tab_6">
+                                        <div class="box box-primary">
+                                            <div class="box-header">
+                                                <h3 class="box-title"></h3>
+                                                @if (User.IsInRole("Notes"))
+                                                {
+                                                    @:<div class="box-tools"><button type="button" class="btn btn-success" data-add-modal-title="Add Note" data-toggle="modal" data-target="#AddUpdateMngtNoteModal" data-tooltip="tooltip" title="Add Note"><i class="fa fa-fw fa-plus"></i></button></div>
+                                                }
+                                            </div>
+                                            <div class="box-body">
+                                                <div class="row">
+                                                    <div class="col-12" id="MngtNoteListTble">
+                                                        @{ Html.RenderAction("NoteList", "CNoteMngt", new { CardCode = Model.CardCode }); }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="tab_7">
+                                        <div class="box box-primary">
+                                            <div class="box-header">
+                                                @*<h3 class="box-title">@Model.Pricelist.ListName</h3>*@
+                                            </div>
+                                            <div class="box-body">
+                                                @using (Html.BeginForm(null, null, null, FormMethod.Post, new { @id = "SpecialPriceForm", @class = "form-horizontal", data_bind = "submit: validateAndSubmit" }))
+                                                {
+                                                    @Html.ValidationSummary()
+                                                    @Html.AntiForgeryToken()
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+
+                                                            <div class="form-group">
+                                                                @Html.Label("Item Code")
+                                                                @Html.DropDownList("ItemCode", Enumerable.Empty<SelectListItem>(), null, new { @class = "form-control select2", style = "width:100%", required = "", data_bind = "options: ItemCodesAndNames, optionsText: 'Text', optionsValue: 'Value', value: ItemCode ,optionsCaption: 'Select Stock Code'" })
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                                            <button type="submit" class="btn btn-primary">Search</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row justify-content-around">
+                                                        <div class="col-8">
+                                                            <table id="SpecialPrices" class="table table-striped table-bordered responsive nowrap" data-scroll-y="200px" data-scroll-collapse="true" data-fixed-header="true" data-auto-width="true" data-paging='false' data-searching="false" data-length-change="false" data-page-length="5" data-ordering="false" style="width:100%">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="text-right">Quantity</th>
+                                                                        <th class="text-right">Discount</th>
+                                                                        <th class="text-right">Special Price</th>
+                                                                    </tr>
+                                                                </thead>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+
+
+                                                }
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/DataTables")
+    @Scripts.Render("~/bundles/Jquery-Validation-and-Ajax")
+    @Scripts.Render("~/Select2")
+    @Scripts.Render("~/Own")
+    @Scripts.Render("~/Knockout")
+    <script>
+      
+
+        function SpecialPriceViewModel(CardCode) {
+            var self = this;
+            self.ItemCode = ko.observable();
+            self.ItemCodesAndNames = ko.observableArray();
+            self.validateAndSubmit = function (form) {
+
+               
+               
+                    $.ajax({
+                        url: "@Url.Action("GetCustomerSpecialPrice", "ItemSpecialPrice", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ ItemCode: self.ItemCode, CardCode: CardCode}),
+                        success: function (data) {
+                            var table = $('#SpecialPrices').DataTable();
+                            table.clear().draw();
+                            if (data.length > 0) {
+                                for (var i = 0; i < data.length; i++) {
+                                    table.row.add([
+                                        data[i].Amount,
+                                        data[i].Discount,
+                                        data[i].Price,
+                                    ]).draw().node();
+                                }
+                            }
+                            else {
+                                //for (var i = 0; i < 25; i++) {
+                                //    table.row.add([
+                                //        "a",
+                                //        "b",
+                                //        "c",
+                                //        "d",
+                                //    ]).draw().node();
+                                //}
+                            }
+
+                        },
+                        error: function () { }
+                    })
+
+            }
+        }
+        // Once Document Ready
+        $(function () {
+           
+            var ItemCodesAndNames;
+            $.when(
+                // Initial Ajax Requests, while page loading
+                //Load Customers
+
+                //Load Item Codes
+                $.ajax({
+                    url: "@Url.Action("GetCustomerSpecialPriceItems", "ItemSpecialPrice", null)",
+                    type: 'post',
+                    contentType: 'application/x-www-form-urlencoded',
+                    data: ko.toJS({ CardCode: '@Model.CardCode' }),
+                    success: function (data) {
+                        ItemCodesAndNames = data;
+                    },
+                    error: function () { }
+                })
+            ).done(function () {
+                var SPVM = new SpecialPriceViewModel('@Model.CardCode');
+                SPVM.ItemCodesAndNames = ItemCodesAndNames;
+                ko.applyBindings(SPVM);
+            });
+           
+            var SpecialPricestable = $('#SpecialPrices').DataTable(
+                {
+                    "columnDefs": [
+                        { className: "text-right", "targets": [0, 1, 2] }
+                    ],
+                    "paging": false,
+                    "ordering": false,
+                    "info": false,
+                    "order": [[0, "desc"]]
+                });
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                var table = $('#SpecialPrices').DataTable();
+                table.columns.adjust().draw();
+            });
+
+            $('.select2').select2();
+            $('#SalesQuotationList tbody').on('dblclick', 'tr', function () {
+                    var table = $('#SalesQuotationList').DataTable();
+                    var data = table.row(this).data();
+                
+                    var docNum = data[0];
+                 
+                    window.open('@Url.Action("Edit", "SQ")?DocNum=' + docNum);
+                    
+                
+                });
+            $('#DeliveryOrderList tbody').on('dblclick', 'tr', function () {
+                var table = $('#DeliveryOrderList').DataTable();
+                    var data = table.row(this).data();
+                
+                    var docNum = data[0];
+                 
+                    window.open('@Url.Action("Edit", "DO")?DocNum=' + docNum);
+                    
+                
+            });
+            $('#CashSaleList tbody').on('dblclick', 'tr', function () {
+                var table = $('#CashSaleList').DataTable();
+                    var data = table.row(this).data();
+                
+                    var docNum = data[0];
+                 
+                    window.open('@Url.Action("Edit", "CashSales")?DocNum=' + docNum);
+                    
+                
+                });
+        });
+    </script>
+}
+@{ Html.RenderAction("NoteForm", "CNoteAll", new { CardCode = Model.CardCode }); }
+@{ Html.RenderAction("NoteForm", "CNoteMngt", new { CardCode = Model.CardCode }); }

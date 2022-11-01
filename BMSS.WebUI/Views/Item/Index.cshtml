@@ -1,0 +1,66 @@
+﻿@using BMSS.WebUI.Models.ItemViewModels
+@model IEnumerable<ItemStockDetailViewModel>
+@using System.Globalization;
+@{
+    ViewBag.Title = "List of Stocks";
+}
+@section Styles {
+    @Styles.Render("~/DataTablesCss")
+}
+@section Content_Header {
+    <section class="content-header">
+        <h1>
+            Stocks
+            <small>SAP Stocks</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href='@Url.Action("Index", "Home")'><i class="fa fa-dashboard"></i>Administration</a></li>
+            <li class="active">Items</li>
+        </ol>
+    </section>
+}
+<div class="row">
+    <div class="col-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">List of Stocks</h3>
+            </div>
+            <div class="box-body">
+                <table id="ItemList" class="table table-bordered table-striped responsive nowrap bmdatatable dblEdit" data-fixed-header="true" data-auto-width="true" data-paging="true" data-searching="true" data-length-change="true" data-page-length="100" data-ordering="true" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Stock Code</th>
+                            <th>Stock Description</th>
+                            <th class="text-right">In Stock</th>
+                            <th class="text-right">On Order</th>
+                            <th>inv item</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var i in Model)
+                        {
+                            <tr data-toggle="tooltip" data-placement="top" title="double click to edit">
+                                <td>
+                                    @i.ItemCode
+                                    @using (Html.BeginForm("Detail", null, null, FormMethod.Get, new { id = "DetailForm" }))
+                                    {
+                                        @Html.Hidden("ItemCode", @i.ItemCode)
+                                    }
+                                </td>
+                                <td>@i.ItemName</td>
+                                <td class="text-right">@i.InStock.Value.ToString("N3", new CultureInfo("en-US"))</td>
+                                <td class="text-right">@i.InOrder.Value.ToString("N3", new CultureInfo("en-US"))</td>
+                                <td>@i.InvntItem</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/DataTables")
+    @Scripts.Render("~/Own")
+
+}

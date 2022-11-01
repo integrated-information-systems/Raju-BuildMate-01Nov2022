@@ -1,0 +1,275 @@
+﻿@{
+    ViewBag.Title = "Document Numbering";
+}
+@section Content_Header {
+    <section class="content-header">
+        <h1>
+            Document Numbering
+            <small>Numbering settings</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><i class="fa fa-dashboard"></i> Administration</li>
+            <li class="active"><a href='@Url.Action("Index", "DocNumbering")'>Numbering</a></li>
+        </ol>
+    </section>
+}
+@section Styles {
+    @Styles.Render("~/DataTablesCss")
+}
+<div class="row">
+    <div class="col-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">&nbsp;</h3>
+            </div>
+            <div class="box-body">
+                <div class="box-group" id="accordion">
+                    <div class="card box box-info">
+                        <div class="card-header box-header with-border" id="headingOne">
+                            <h4 class="box-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Sales Quotation
+                                </a>
+                            </h4>
+                            <div class="box-tools" style="top: 3px;"><button type="button" class="btn btn-success" data-add-modal-title="Add Series" data-toggle="modal" data-target="#AddUpdateNumberingSQModal" data-tooltip="tooltip" title="Add Series"><i class="fa fa-fw fa-plus"></i></button></div>
+                        </div>
+                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                            <div class="card-body box-body">
+                                <div id="NumberingSQListTble">
+                                    @{ Html.RenderAction("NumberingList", "NumberingSQ"); }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card box box-info">
+                        <div class="card-header box-header with-border" id="headingTwo">
+                            <h4 class="box-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    Delivery Order / Invoice
+                                </a>
+                            </h4>
+                            <div class="box-tools" style="top: 3px;"><button type="button" class="btn btn-success" data-add-modal-title="Add Series" data-toggle="modal" data-target="#AddUpdateNumberingDOModal" data-tooltip="tooltip" title="Add Series"><i class="fa fa-fw fa-plus"></i></button></div>
+                        </div>
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                            <div class="card-body box-body">
+                                <div id="NumberingDOListTble">
+                                    @{ Html.RenderAction("NumberingList", "NumberingDO"); }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card box box-info">
+                        <div class="card-header box-header with-border" id="headingThree">
+                            <h4 class="box-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    Cash Sales
+                                </a>
+                            </h4>
+                            <div class="box-tools" style="top: 3px;"><button type="button" class="btn btn-success" data-add-modal-title="Add Series" data-toggle="modal" data-target="#AddUpdateNumberingCSaleModal" data-tooltip="tooltip" title="Add Series"><i class="fa fa-fw fa-plus"></i></button></div>
+                        </div>
+                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                            <div class="card-body box-body">
+                                <div id="NumberingCSaleListTble">
+                                    @{ Html.RenderAction("NumberingList", "NumberingCSale"); }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card box box-info">
+                        <div class="card-header box-header with-border" id="headingFour">
+                            <h4 class="box-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                    Cash Sales Credit Note
+                                </a>
+                            </h4>
+                            <div class="box-tools" style="top: 3px;"><button type="button" class="btn btn-success" data-add-modal-title="Add Series" data-toggle="modal" data-target="#AddUpdateNumberingCrSaleModal" data-tooltip="tooltip" title="Add Series"><i class="fa fa-fw fa-plus"></i></button></div>
+                        </div>
+                        <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+                            <div class="card-body box-body">
+                                <div id="NumberingCrSaleListTble">
+                                    @{ Html.RenderAction("NumberingList", "NumberingCrSale"); }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card box box-info">
+                        <div class="card-header box-header with-border" id="headingFive">
+                            <h4 class="box-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                    Purchase Order
+                                </a>
+                            </h4>
+                            <div class="box-tools" style="top: 3px;"><button type="button" class="btn btn-success" data-add-modal-title="Add Series" data-toggle="modal" data-target="#AddUpdateNumberingPOModal" data-tooltip="tooltip" title="Add Series"><i class="fa fa-fw fa-plus"></i></button></div>
+                        </div>
+                        <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
+                            <div class="card-body box-body">
+                                <div id="NumberingPOListTble">
+                                    @{ Html.RenderAction("NumberingList", "NumberingPO"); }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card box box-info">
+                        <div class="card-header box-header with-border" id="headingSix">
+                            <h4 class="box-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                                    Good Receipt Note
+                                </a>
+                            </h4>
+                            <div class="box-tools" style="top: 3px;"><button type="button" class="btn btn-success" data-add-modal-title="Add Series" data-toggle="modal" data-target="#AddUpdateNumberingGRNModal" data-tooltip="tooltip" title="Add Series"><i class="fa fa-fw fa-plus"></i></button></div>
+                        </div>
+                        <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion">
+                            <div class="card-body box-body">
+                                <div id="NumberingGRNListTble">
+                                    @{ Html.RenderAction("NumberingList", "NumberingGRN"); }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card box box-info">
+                        <div class="card-header box-header with-border" id="headingSeven">
+                            <h4 class="box-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                                    Stock Issue
+                                </a>
+                            </h4>
+                            <div class="box-tools" style="top: 3px;"><button type="button" class="btn btn-success" data-add-modal-title="Add Series" data-toggle="modal" data-target="#AddUpdateNumberingSIModal" data-tooltip="tooltip" title="Add Series"><i class="fa fa-fw fa-plus"></i></button></div>
+                        </div>
+                        <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordion">
+                            <div class="card-body box-body">
+                                <div id="NumberingSIListTble">
+                                    @{ Html.RenderAction("NumberingList", "NumberingSI"); }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card box box-info">
+                        <div class="card-header box-header with-border" id="headingEight">
+                            <h4 class="box-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
+                                    Stock Receipt
+                                </a>
+                            </h4>
+                            <div class="box-tools" style="top: 3px;"><button type="button" class="btn btn-success" data-add-modal-title="Add Series" data-toggle="modal" data-target="#AddUpdateNumberingSRModal" data-tooltip="tooltip" title="Add Series"><i class="fa fa-fw fa-plus"></i></button></div>
+                        </div>
+                        <div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#accordion">
+                            <div class="card-body box-body">
+                                <div id="NumberingSRListTble">
+                                    @{ Html.RenderAction("NumberingList", "NumberingSR"); }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card box box-info">
+                        <div class="card-header box-header with-border" id="headingNine">
+                            <h4 class="box-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
+                                    Stock Transfer
+                                </a>
+                            </h4>
+                            <div class="box-tools" style="top: 3px;"><button type="button" class="btn btn-success" data-add-modal-title="Add Series" data-toggle="modal" data-target="#AddUpdateNumberingSTModal" data-tooltip="tooltip" title="Add Series"><i class="fa fa-fw fa-plus"></i></button></div>
+                        </div>
+                        <div id="collapseNine" class="collapse" aria-labelledby="headingNine" data-parent="#accordion">
+                            <div class="card-body box-body">
+                                <div id="NumberingSTListTble">
+                                    @{ Html.RenderAction("NumberingList", "NumberingST"); }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card box box-info">
+                        <div class="card-header box-header with-border" id="headingTen">
+                            <h4 class="box-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+                                    Payment
+                                </a>
+                            </h4>
+                            <div class="box-tools" style="top: 3px;"><button type="button" class="btn btn-success" data-add-modal-title="Add Series" data-toggle="modal" data-target="#AddUpdateNumberingPayModal" data-tooltip="tooltip" title="Add Series"><i class="fa fa-fw fa-plus"></i></button></div>
+                        </div>
+                        <div id="collapseTen" class="collapse" aria-labelledby="headingTen" data-parent="#accordion">
+                            <div class="card-body box-body">
+                                <div id="NumberingPayListTble">
+                                    @{ Html.RenderAction("NumberingList", "NumberingPay"); }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card box box-info">
+                        <div class="card-header box-header with-border" id="headingEleven">
+                            <h4 class="box-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseEleven" aria-expanded="false" aria-controls="collapseEleven">
+                                    Allocation of Payment
+                                </a>
+                            </h4>
+                            <div class="box-tools" style="top: 3px;"><button type="button" class="btn btn-success" data-add-modal-title="Add Series" data-toggle="modal" data-target="#AddUpdateNumberingAlPayModal" data-tooltip="tooltip" title="Add Series"><i class="fa fa-fw fa-plus"></i></button></div>
+                        </div>
+                        <div id="collapseEleven" class="collapse" aria-labelledby="headingEleven" data-parent="#accordion">
+                            <div class="card-body box-body">
+                                <div id="NumberingAlPayListTble">
+                                    @{ Html.RenderAction("NumberingList", "NumberingAlPay"); }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card box box-info">
+                        <div class="card-header box-header with-border" id="headingTwelve">
+                            <h4 class="box-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwelve" aria-expanded="false" aria-controls="collapseTwelve">
+                                    Stock Loan
+                                </a>
+                            </h4>
+                            <div class="box-tools" style="top: 3px;"><button type="button" class="btn btn-success" data-add-modal-title="Add Series" data-toggle="modal" data-target="#AddUpdateNumberingSLModal" data-tooltip="tooltip" title="Add Series"><i class="fa fa-fw fa-plus"></i></button></div>
+                        </div>
+                        <div id="collapseTwelve" class="collapse" aria-labelledby="headingTwelve" data-parent="#accordion">
+                            <div class="card-body box-body">
+                                <div id="NumberingSLListTble">
+                                    @{ Html.RenderAction("NumberingList", "NumberingSL"); }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card box box-info">
+                        <div class="card-header box-header with-border" id="headingThirteen">
+                            <h4 class="box-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThirteen" aria-expanded="false" aria-controls="collapseThirteen">
+                                    Purchase Qutation
+                                </a>
+                            </h4>
+                            <div class="box-tools" style="top: 3px;"><button type="button" class="btn btn-success" data-add-modal-title="Add Series" data-toggle="modal" data-target="#AddUpdateNumberingPQModal" data-tooltip="tooltip" title="Add Series"><i class="fa fa-fw fa-plus"></i></button></div>
+                        </div>
+                        <div id="collapseThirteen" class="collapse" aria-labelledby="headingThirteen" data-parent="#accordion">
+                            <div class="card-body box-body">
+                                <div id="NumberingPQListTble">
+                                    @{ Html.RenderAction("NumberingList", "NumberingPQ"); }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/DataTables")
+    @Scripts.Render("~/bundles/Jquery-Validation-and-Ajax")
+    @Scripts.Render("~/Own")
+}
+
+@section BootModals {
+    @{ Html.RenderAction("NumberingForm", "NumberingSQ"); }
+    @{ Html.RenderAction("NumberingForm", "NumberingDO"); }
+    @{ Html.RenderAction("NumberingForm", "NumberingCSale"); }
+    @{ Html.RenderAction("NumberingForm", "NumberingCrSale"); }
+    @{ Html.RenderAction("NumberingForm", "NumberingPO"); }
+    @{ Html.RenderAction("NumberingForm", "NumberingGRN"); }
+    @{ Html.RenderAction("NumberingForm", "NumberingSI"); }
+    @{ Html.RenderAction("NumberingForm", "NumberingSR"); }
+    @{ Html.RenderAction("NumberingForm", "NumberingST"); }
+    @{ Html.RenderAction("NumberingForm", "NumberingPay"); }
+    @{ Html.RenderAction("NumberingForm", "NumberingAlPay"); }
+    @{ Html.RenderAction("NumberingForm", "NumberingSL"); }
+    @{ Html.RenderAction("NumberingForm", "NumberingPQ"); }
+    @Html.Partial("_DeleteConfirmationModal")
+}

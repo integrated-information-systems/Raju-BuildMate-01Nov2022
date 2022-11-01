@@ -1,0 +1,197 @@
+﻿<error errorId="c125da90-d842-49c0-b82d-bc2b5184fe7c" host="DESKTOP-I7NGPI4" type="System.Web.HttpException" message="A public action method 'GetPQLastPriceHistory' was not found on controller 'BMSS.WebUI.Controllers.PQController'." source="System.Web.Mvc" detail="System.Web.HttpException (0x80004005): A public action method 'GetPQLastPriceHistory' was not found on controller 'BMSS.WebUI.Controllers.PQController'.&#xD;&#xA;   at System.Web.Mvc.Controller.HandleUnknownAction(String actionName)&#xD;&#xA;   at System.Web.Mvc.Controller.&lt;&gt;c.&lt;BeginExecuteCore&gt;b__152_1(IAsyncResult asyncResult, ExecuteCoreState innerState)&#xD;&#xA;   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncVoid`1.CallEndDelegate(IAsyncResult asyncResult)&#xD;&#xA;   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResultBase`1.End()&#xD;&#xA;   at System.Web.Mvc.Controller.EndExecuteCore(IAsyncResult asyncResult)&#xD;&#xA;   at System.Web.Mvc.Controller.&lt;&gt;c.&lt;BeginExecute&gt;b__151_2(IAsyncResult asyncResult, Controller controller)&#xD;&#xA;   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncVoid`1.CallEndDelegate(IAsyncResult asyncResult)&#xD;&#xA;   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResultBase`1.End()&#xD;&#xA;   at System.Web.Mvc.Controller.EndExecute(IAsyncResult asyncResult)&#xD;&#xA;   at System.Web.Mvc.Controller.System.Web.Mvc.Async.IAsyncController.EndExecute(IAsyncResult asyncResult)&#xD;&#xA;   at System.Web.Mvc.MvcHandler.&lt;&gt;c.&lt;BeginProcessRequest&gt;b__20_1(IAsyncResult asyncResult, ProcessRequestState innerState)&#xD;&#xA;   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncVoid`1.CallEndDelegate(IAsyncResult asyncResult)&#xD;&#xA;   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResultBase`1.End()&#xD;&#xA;   at System.Web.Mvc.MvcHandler.EndProcessRequest(IAsyncResult asyncResult)&#xD;&#xA;   at System.Web.Mvc.MvcHandler.System.Web.IHttpAsyncHandler.EndProcessRequest(IAsyncResult result)&#xD;&#xA;   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()&#xD;&#xA;   at System.Web.HttpApplication.ExecuteStepImpl(IExecutionStep step)&#xD;&#xA;   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean&amp; completedSynchronously)" user="Admin" time="2020-07-27T11:57:37.1953101Z" statusCode="404">
+  <serverVariables>
+    <item name="ALL_HTTP">
+      <value string="HTTP_CONNECTION:keep-alive&#xD;&#xA;HTTP_CONTENT_LENGTH:25&#xD;&#xA;HTTP_CONTENT_TYPE:application/x-www-form-urlencoded&#xD;&#xA;HTTP_ACCEPT:*/*&#xD;&#xA;HTTP_ACCEPT_ENCODING:gzip, deflate&#xD;&#xA;HTTP_ACCEPT_LANGUAGE:en-US,en;q=0.5&#xD;&#xA;HTTP_COOKIE:__RequestVerificationToken=z1xZKFKIw_MWRWDTzjt-ABW9clb6PK_Iabl1p03G4NWh43SYBrru-CTMHzCsxfT-CgJlMaVrU26IVCqykVtREz84_VkMQXI5AkuW3iEjVFE1; ASP.NET_SessionId=1bujcrt5shylkym0zn2baywl; __RequestVerificationToken_L0NGUENSZXBvcnRpbmdQb3J0YWw1=GBN-imGEx5iTRXipJEj4byZf7MN3OOLsxEPIYsZIVC63AVV_QdFkonh19vC5cun_PSzJ2YF3DXRvZTrE2MjNlcTUKCmpxpi35DFaE7fl-XY1; __RequestVerificationToken_L0JNU1NOZXc1=81WPxc4H15gE0dxdySpbrKeJsISx4HeKmqPOxxP9FkqOR8cWVC0NjnkoQk0Ubcch35IGGIRKujH_xuSn6hedRKeCvMosP0M6bHK1_Y9_yCY1; .AspNet.ApplicationCookie=Rln--dbCr2K4VT61hdbMhuRNKep07MdSLDE-g_rdAoTUG2nnVJMHY4B27pqdHToeNQlvevWJ_wbH-3IVKIZDR74GtB5pKD3YTJxDyLmvjZdJ0TC6u26va5f9yJjaEsUir4lEUE1757mpSE577Sk_3NoTLym7yRWygu7qHUqfF16_tzL5jkeARaSfcdMfdScscgnqMYSc22PDR9AtPSBVxDV3LGtRDhqCzBNAgWVilhoDHOzHJFEvPsDY9YttbIGjtPyz56nG1yMqrPrbX93ENAjLbGC2nksY_q57sA_jODyNtwvohPGF4Cjm1A5hcUN5454NApYysAXBjKjCTuzwkQ_BvyVuHQv7UCog65cOIyfN2kvVjMM-3wEWRSsXZEy1rcd_wqD0s2pLluqhNkmmMv_6lIOgRt5b2mnBIeDdXWS31nYYEFB25ufCZlXDT0WIiJwXqAkg9F04n-Pf1K7jln0gYHoMkpXOArXhvwPVKbmS9737dJfp7eRskBGWc9Za15juEUJ3Q2x2S2dIO3QhBDDISVRLgkCNDrrY1zLbL7oO1n0WQbQ4YYEOl6bxieipSL5p9j97s7WgTP5olPLUPHZAi5lFXDyWryUBjpIX1aW0WuPn5jvZLPOnToo-LTvuZt5rdDRloUJPLqIy1HbzrrMAzWe_zxkIuipdKagD0pGbwbA6KuxV805orgGwCEJnAT7JEeY3_XVqYfZ5mU8Z7a_BnPd1fkOHcXSnAZyKmSU; __RequestVerificationToken_L0NGUENSZXBvcnRpbmdQb3J0YWxOZXc1=O2FkUbH0LNn5v2cN6f2Uh-9zrkWQAFfsijmTOZl8JLwNk-FOooFKRIGZ9AQ7b3s42r-FPRl5MTG3sU19o3Uqpt08IL2_evcMa1TIEJxodEc1&#xD;&#xA;HTTP_HOST:localhost:50878&#xD;&#xA;HTTP_REFERER:http://localhost:50878/PQ/Add&#xD;&#xA;HTTP_USER_AGENT:Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101 Firefox/78.0&#xD;&#xA;HTTP_X_REQUESTED_WITH:XMLHttpRequest&#xD;&#xA;HTTP_ORIGIN:http://localhost:50878&#xD;&#xA;" />
+    </item>
+    <item name="ALL_RAW">
+      <value string="Connection: keep-alive&#xD;&#xA;Content-Length: 25&#xD;&#xA;Content-Type: application/x-www-form-urlencoded&#xD;&#xA;Accept: */*&#xD;&#xA;Accept-Encoding: gzip, deflate&#xD;&#xA;Accept-Language: en-US,en;q=0.5&#xD;&#xA;Cookie: __RequestVerificationToken=z1xZKFKIw_MWRWDTzjt-ABW9clb6PK_Iabl1p03G4NWh43SYBrru-CTMHzCsxfT-CgJlMaVrU26IVCqykVtREz84_VkMQXI5AkuW3iEjVFE1; ASP.NET_SessionId=1bujcrt5shylkym0zn2baywl; __RequestVerificationToken_L0NGUENSZXBvcnRpbmdQb3J0YWw1=GBN-imGEx5iTRXipJEj4byZf7MN3OOLsxEPIYsZIVC63AVV_QdFkonh19vC5cun_PSzJ2YF3DXRvZTrE2MjNlcTUKCmpxpi35DFaE7fl-XY1; __RequestVerificationToken_L0JNU1NOZXc1=81WPxc4H15gE0dxdySpbrKeJsISx4HeKmqPOxxP9FkqOR8cWVC0NjnkoQk0Ubcch35IGGIRKujH_xuSn6hedRKeCvMosP0M6bHK1_Y9_yCY1; .AspNet.ApplicationCookie=Rln--dbCr2K4VT61hdbMhuRNKep07MdSLDE-g_rdAoTUG2nnVJMHY4B27pqdHToeNQlvevWJ_wbH-3IVKIZDR74GtB5pKD3YTJxDyLmvjZdJ0TC6u26va5f9yJjaEsUir4lEUE1757mpSE577Sk_3NoTLym7yRWygu7qHUqfF16_tzL5jkeARaSfcdMfdScscgnqMYSc22PDR9AtPSBVxDV3LGtRDhqCzBNAgWVilhoDHOzHJFEvPsDY9YttbIGjtPyz56nG1yMqrPrbX93ENAjLbGC2nksY_q57sA_jODyNtwvohPGF4Cjm1A5hcUN5454NApYysAXBjKjCTuzwkQ_BvyVuHQv7UCog65cOIyfN2kvVjMM-3wEWRSsXZEy1rcd_wqD0s2pLluqhNkmmMv_6lIOgRt5b2mnBIeDdXWS31nYYEFB25ufCZlXDT0WIiJwXqAkg9F04n-Pf1K7jln0gYHoMkpXOArXhvwPVKbmS9737dJfp7eRskBGWc9Za15juEUJ3Q2x2S2dIO3QhBDDISVRLgkCNDrrY1zLbL7oO1n0WQbQ4YYEOl6bxieipSL5p9j97s7WgTP5olPLUPHZAi5lFXDyWryUBjpIX1aW0WuPn5jvZLPOnToo-LTvuZt5rdDRloUJPLqIy1HbzrrMAzWe_zxkIuipdKagD0pGbwbA6KuxV805orgGwCEJnAT7JEeY3_XVqYfZ5mU8Z7a_BnPd1fkOHcXSnAZyKmSU; __RequestVerificationToken_L0NGUENSZXBvcnRpbmdQb3J0YWxOZXc1=O2FkUbH0LNn5v2cN6f2Uh-9zrkWQAFfsijmTOZl8JLwNk-FOooFKRIGZ9AQ7b3s42r-FPRl5MTG3sU19o3Uqpt08IL2_evcMa1TIEJxodEc1&#xD;&#xA;Host: localhost:50878&#xD;&#xA;Referer: http://localhost:50878/PQ/Add&#xD;&#xA;User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101 Firefox/78.0&#xD;&#xA;X-Requested-With: XMLHttpRequest&#xD;&#xA;Origin: http://localhost:50878&#xD;&#xA;" />
+    </item>
+    <item name="APPL_MD_PATH">
+      <value string="/LM/W3SVC/2/ROOT" />
+    </item>
+    <item name="APPL_PHYSICAL_PATH">
+      <value string="D:\WebApplications\BuildMateSalesSystem-From07Nov2019\BMSS.WebUI\" />
+    </item>
+    <item name="AUTH_TYPE">
+      <value string="ApplicationCookie" />
+    </item>
+    <item name="AUTH_USER">
+      <value string="Admin" />
+    </item>
+    <item name="AUTH_PASSWORD">
+      <value string="" />
+    </item>
+    <item name="LOGON_USER">
+      <value string="Admin" />
+    </item>
+    <item name="REMOTE_USER">
+      <value string="Admin" />
+    </item>
+    <item name="CERT_COOKIE">
+      <value string="" />
+    </item>
+    <item name="CERT_FLAGS">
+      <value string="" />
+    </item>
+    <item name="CERT_ISSUER">
+      <value string="" />
+    </item>
+    <item name="CERT_KEYSIZE">
+      <value string="" />
+    </item>
+    <item name="CERT_SECRETKEYSIZE">
+      <value string="" />
+    </item>
+    <item name="CERT_SERIALNUMBER">
+      <value string="" />
+    </item>
+    <item name="CERT_SERVER_ISSUER">
+      <value string="" />
+    </item>
+    <item name="CERT_SERVER_SUBJECT">
+      <value string="" />
+    </item>
+    <item name="CERT_SUBJECT">
+      <value string="" />
+    </item>
+    <item name="CONTENT_LENGTH">
+      <value string="25" />
+    </item>
+    <item name="CONTENT_TYPE">
+      <value string="application/x-www-form-urlencoded" />
+    </item>
+    <item name="GATEWAY_INTERFACE">
+      <value string="CGI/1.1" />
+    </item>
+    <item name="HTTPS">
+      <value string="off" />
+    </item>
+    <item name="HTTPS_KEYSIZE">
+      <value string="" />
+    </item>
+    <item name="HTTPS_SECRETKEYSIZE">
+      <value string="" />
+    </item>
+    <item name="HTTPS_SERVER_ISSUER">
+      <value string="" />
+    </item>
+    <item name="HTTPS_SERVER_SUBJECT">
+      <value string="" />
+    </item>
+    <item name="INSTANCE_ID">
+      <value string="2" />
+    </item>
+    <item name="INSTANCE_META_PATH">
+      <value string="/LM/W3SVC/2" />
+    </item>
+    <item name="LOCAL_ADDR">
+      <value string="::1" />
+    </item>
+    <item name="PATH_INFO">
+      <value string="/PQ/GetPQLastPriceHistory" />
+    </item>
+    <item name="PATH_TRANSLATED">
+      <value string="D:\WebApplications\BuildMateSalesSystem-From07Nov2019\BMSS.WebUI\PQ\GetPQLastPriceHistory" />
+    </item>
+    <item name="QUERY_STRING">
+      <value string="" />
+    </item>
+    <item name="REMOTE_ADDR">
+      <value string="::1" />
+    </item>
+    <item name="REMOTE_HOST">
+      <value string="::1" />
+    </item>
+    <item name="REMOTE_PORT">
+      <value string="53110" />
+    </item>
+    <item name="REQUEST_METHOD">
+      <value string="POST" />
+    </item>
+    <item name="SCRIPT_NAME">
+      <value string="/PQ/GetPQLastPriceHistory" />
+    </item>
+    <item name="SERVER_NAME">
+      <value string="localhost" />
+    </item>
+    <item name="SERVER_PORT">
+      <value string="50878" />
+    </item>
+    <item name="SERVER_PORT_SECURE">
+      <value string="0" />
+    </item>
+    <item name="SERVER_PROTOCOL">
+      <value string="HTTP/1.1" />
+    </item>
+    <item name="SERVER_SOFTWARE">
+      <value string="Microsoft-IIS/10.0" />
+    </item>
+    <item name="URL">
+      <value string="/PQ/GetPQLastPriceHistory" />
+    </item>
+    <item name="HTTP_CONNECTION">
+      <value string="keep-alive" />
+    </item>
+    <item name="HTTP_CONTENT_LENGTH">
+      <value string="25" />
+    </item>
+    <item name="HTTP_CONTENT_TYPE">
+      <value string="application/x-www-form-urlencoded" />
+    </item>
+    <item name="HTTP_ACCEPT">
+      <value string="*/*" />
+    </item>
+    <item name="HTTP_ACCEPT_ENCODING">
+      <value string="gzip, deflate" />
+    </item>
+    <item name="HTTP_ACCEPT_LANGUAGE">
+      <value string="en-US,en;q=0.5" />
+    </item>
+    <item name="HTTP_COOKIE">
+      <value string="__RequestVerificationToken=z1xZKFKIw_MWRWDTzjt-ABW9clb6PK_Iabl1p03G4NWh43SYBrru-CTMHzCsxfT-CgJlMaVrU26IVCqykVtREz84_VkMQXI5AkuW3iEjVFE1; ASP.NET_SessionId=1bujcrt5shylkym0zn2baywl; __RequestVerificationToken_L0NGUENSZXBvcnRpbmdQb3J0YWw1=GBN-imGEx5iTRXipJEj4byZf7MN3OOLsxEPIYsZIVC63AVV_QdFkonh19vC5cun_PSzJ2YF3DXRvZTrE2MjNlcTUKCmpxpi35DFaE7fl-XY1; __RequestVerificationToken_L0JNU1NOZXc1=81WPxc4H15gE0dxdySpbrKeJsISx4HeKmqPOxxP9FkqOR8cWVC0NjnkoQk0Ubcch35IGGIRKujH_xuSn6hedRKeCvMosP0M6bHK1_Y9_yCY1; .AspNet.ApplicationCookie=Rln--dbCr2K4VT61hdbMhuRNKep07MdSLDE-g_rdAoTUG2nnVJMHY4B27pqdHToeNQlvevWJ_wbH-3IVKIZDR74GtB5pKD3YTJxDyLmvjZdJ0TC6u26va5f9yJjaEsUir4lEUE1757mpSE577Sk_3NoTLym7yRWygu7qHUqfF16_tzL5jkeARaSfcdMfdScscgnqMYSc22PDR9AtPSBVxDV3LGtRDhqCzBNAgWVilhoDHOzHJFEvPsDY9YttbIGjtPyz56nG1yMqrPrbX93ENAjLbGC2nksY_q57sA_jODyNtwvohPGF4Cjm1A5hcUN5454NApYysAXBjKjCTuzwkQ_BvyVuHQv7UCog65cOIyfN2kvVjMM-3wEWRSsXZEy1rcd_wqD0s2pLluqhNkmmMv_6lIOgRt5b2mnBIeDdXWS31nYYEFB25ufCZlXDT0WIiJwXqAkg9F04n-Pf1K7jln0gYHoMkpXOArXhvwPVKbmS9737dJfp7eRskBGWc9Za15juEUJ3Q2x2S2dIO3QhBDDISVRLgkCNDrrY1zLbL7oO1n0WQbQ4YYEOl6bxieipSL5p9j97s7WgTP5olPLUPHZAi5lFXDyWryUBjpIX1aW0WuPn5jvZLPOnToo-LTvuZt5rdDRloUJPLqIy1HbzrrMAzWe_zxkIuipdKagD0pGbwbA6KuxV805orgGwCEJnAT7JEeY3_XVqYfZ5mU8Z7a_BnPd1fkOHcXSnAZyKmSU; __RequestVerificationToken_L0NGUENSZXBvcnRpbmdQb3J0YWxOZXc1=O2FkUbH0LNn5v2cN6f2Uh-9zrkWQAFfsijmTOZl8JLwNk-FOooFKRIGZ9AQ7b3s42r-FPRl5MTG3sU19o3Uqpt08IL2_evcMa1TIEJxodEc1" />
+    </item>
+    <item name="HTTP_HOST">
+      <value string="localhost:50878" />
+    </item>
+    <item name="HTTP_REFERER">
+      <value string="http://localhost:50878/PQ/Add" />
+    </item>
+    <item name="HTTP_USER_AGENT">
+      <value string="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101 Firefox/78.0" />
+    </item>
+    <item name="HTTP_X_REQUESTED_WITH">
+      <value string="XMLHttpRequest" />
+    </item>
+    <item name="HTTP_ORIGIN">
+      <value string="http://localhost:50878" />
+    </item>
+  </serverVariables>
+  <form>
+    <item name="ItemCode">
+      <value string="" />
+    </item>
+    <item name="CardCode">
+      <value string="AWGINS" />
+    </item>
+  </form>
+  <cookies>
+    <item name="__RequestVerificationToken">
+      <value string="z1xZKFKIw_MWRWDTzjt-ABW9clb6PK_Iabl1p03G4NWh43SYBrru-CTMHzCsxfT-CgJlMaVrU26IVCqykVtREz84_VkMQXI5AkuW3iEjVFE1" />
+    </item>
+    <item name="ASP.NET_SessionId">
+      <value string="1bujcrt5shylkym0zn2baywl" />
+    </item>
+    <item name="__RequestVerificationToken_L0NGUENSZXBvcnRpbmdQb3J0YWw1">
+      <value string="GBN-imGEx5iTRXipJEj4byZf7MN3OOLsxEPIYsZIVC63AVV_QdFkonh19vC5cun_PSzJ2YF3DXRvZTrE2MjNlcTUKCmpxpi35DFaE7fl-XY1" />
+    </item>
+    <item name="__RequestVerificationToken_L0JNU1NOZXc1">
+      <value string="81WPxc4H15gE0dxdySpbrKeJsISx4HeKmqPOxxP9FkqOR8cWVC0NjnkoQk0Ubcch35IGGIRKujH_xuSn6hedRKeCvMosP0M6bHK1_Y9_yCY1" />
+    </item>
+    <item name=".AspNet.ApplicationCookie">
+      <value string="Rln--dbCr2K4VT61hdbMhuRNKep07MdSLDE-g_rdAoTUG2nnVJMHY4B27pqdHToeNQlvevWJ_wbH-3IVKIZDR74GtB5pKD3YTJxDyLmvjZdJ0TC6u26va5f9yJjaEsUir4lEUE1757mpSE577Sk_3NoTLym7yRWygu7qHUqfF16_tzL5jkeARaSfcdMfdScscgnqMYSc22PDR9AtPSBVxDV3LGtRDhqCzBNAgWVilhoDHOzHJFEvPsDY9YttbIGjtPyz56nG1yMqrPrbX93ENAjLbGC2nksY_q57sA_jODyNtwvohPGF4Cjm1A5hcUN5454NApYysAXBjKjCTuzwkQ_BvyVuHQv7UCog65cOIyfN2kvVjMM-3wEWRSsXZEy1rcd_wqD0s2pLluqhNkmmMv_6lIOgRt5b2mnBIeDdXWS31nYYEFB25ufCZlXDT0WIiJwXqAkg9F04n-Pf1K7jln0gYHoMkpXOArXhvwPVKbmS9737dJfp7eRskBGWc9Za15juEUJ3Q2x2S2dIO3QhBDDISVRLgkCNDrrY1zLbL7oO1n0WQbQ4YYEOl6bxieipSL5p9j97s7WgTP5olPLUPHZAi5lFXDyWryUBjpIX1aW0WuPn5jvZLPOnToo-LTvuZt5rdDRloUJPLqIy1HbzrrMAzWe_zxkIuipdKagD0pGbwbA6KuxV805orgGwCEJnAT7JEeY3_XVqYfZ5mU8Z7a_BnPd1fkOHcXSnAZyKmSU" />
+    </item>
+    <item name="__RequestVerificationToken_L0NGUENSZXBvcnRpbmdQb3J0YWxOZXc1">
+      <value string="O2FkUbH0LNn5v2cN6f2Uh-9zrkWQAFfsijmTOZl8JLwNk-FOooFKRIGZ9AQ7b3s42r-FPRl5MTG3sU19o3Uqpt08IL2_evcMa1TIEJxodEc1" />
+    </item>
+  </cookies>
+</error>

@@ -1,0 +1,120 @@
+﻿@using BMSS.Domain.Entities
+@using BMSS.WebUI.Models.NotesViewModels
+@using System.Globalization
+@model IEnumerable<OCRD>
+@{
+    ViewBag.Title = "List of Suppliers";
+}
+@section Styles {
+    @Styles.Render("~/DataTablesCss")
+}
+@section Content_Header {
+    <section class="content-header">
+        <h1>
+            Suppliers
+            <small>SAP Suppliers</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href='@Url.Action("Index", "Home")'><i class="fa fa-dashboard"></i>Administration</a></li>
+            <li class="active">Suppliers</li>
+        </ol>
+    </section>
+}
+<div class="row">
+    <div class="col-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">List of Suppliers</h3>
+            </div>
+            <div class="box-body">
+                <table id="CustomerList" class="table table-bordered table-striped responsive nowrap bmdatatable dblEdit" data-fixed-header="true" data-auto-width="true" data-paging="true" data-searching="true" data-length-change="true" data-page-length="100" data-ordering="true" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Acc No</th>
+                            <th>Company</th>
+                            @*<th>Group</th>*@
+                            <th>Supplier Sales Person</th>
+                            <th>Phone No</th>
+                            <th>Fax</th>
+                            <th>Status</th>
+                            <th class="text-right">Outstanding Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var i in Model)
+                        {
+                            <tr data-toggle="tooltip" title="double click to edit">
+                                <td>
+                                    @i.CardCode
+                                    @using (Html.BeginForm("Detail", null, null, FormMethod.Get, new { id = "DetailForm" }))
+                                    {
+                                        @Html.Hidden("CardCode", @i.CardCode)
+                                    }
+                                </td>
+                                <td>@i.CardName</td>
+                                @*<td>@i.CustomerGroup.GroupName</td>*@
+                                <td>@i.SalesPerson.SlpName</td>
+                                <td>@i.phone1</td>
+                                <td>@i.Fax</td>
+                                <td>
+                                    @if (i.frozenFor.Equals("N") && i.validTo.Equals(null))
+                                    {
+                                        @:Active
+                                    }
+                                    else
+                                    {
+                                        @:Inactive
+                                    }
+                                </td>
+                                <td class="text-right">
+                                    @i.Balance.ToString("N2", new CultureInfo("en-US"))
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/DataTables")
+    <script>
+    $(document).ready(function () {
+        var table = $('#CustomerList').DataTable({
+
+        });
+
+        $(document).on("dblclick", 'table.bmdatatable.dblEdit tr', function () {
+
+
+            var unid = $(this).attr('data-unid');
+            $(this).addClass("highlight");
+            if (jQuery.type(unid) !== "undefined") {
+                //Forms in 1st Column
+                var Forms = $(this).find("td:nth-child(1) form");
+                if (Forms.length > 0) {
+                    $(this).find("td:nth-child(1) form").find("input[id$='ID'][type = hidden]").val(unid);
+                    $(this).find("td:nth-child(1) form").submit();
+                }
+                else {
+                    //Forms in 2nd Column
+                    var Forms2ndColumn = $(this).find("td:nth-child(2) form");
+                    if (Forms2ndColumn.length > 0) {
+                        $(this).find("td:nth-child(2) form").find("input[id$='ID'][type = hidden]").val(unid);
+                        $(this).find("td:nth-child(2) form").submit();
+                    }
+                }
+            }
+            else {
+
+                $(this).find("td:nth-child(1)").find("form#DetailForm").submit();
+            }
+        });
+
+    });
+
+
+    </script>
+    @*@Scripts.Render("~/Own")*@
+}

@@ -1,0 +1,75 @@
+﻿@using BMSS.WebUI.Models.DOViewModels
+@model DOPlannerRowViewModel
+    @{ 
+
+    }
+<div class="modalform modal fade" id="DOPlannerRowModal" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 1250px!important;" role="document">
+        <div class="modal-content">
+            @using (Html.BeginForm(null, null, null, FormMethod.Post, new { @class = "form-horizontal", data_bind = "submit: validateAndPostLine" }))
+            {
+            <div class="modal-body">
+                @Html.ValidationSummary()
+                @Html.AntiForgeryToken()
+                <div class="container col-12">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.DocType)
+                                @Html.DropDownListFor(x => x.DocType, new List<SelectListItem>
+                                     {
+                                        new SelectListItem{ Text="Delivery/Collection", Value = "Delivery/Collection" },
+                                        new SelectListItem{ Text="Text", Value = "Delivery/Collection" }
+                                     }, new { @class = "form-control select2", style = "width:100%", data_bind = "value: DOPlannerLine.docType" })
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.CreatorLocation)
+                                @Html.DropDownListFor(x => x.CreatorLocation, Model.Warehouses, new { @class = "form-control select2", style = "width:100%", data_bind = "value: DOPlannerLine.creatorLocation" })
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.ReferenceNo)
+                                    @Html.TextBoxFor(x => x.ReferenceNo, new { @class = "form-control", data_bind = "value: DOPlannerLine.referenceNo", disabled = "" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.DeliveryLocation)
+                                @Html.TextBoxFor(x => x.DeliveryLocation, new { @class = "form-control", data_bind = "value: DOPlannerLine.deliveryLocation" })
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.DeliveryDate)
+                                @Html.TextBoxFor(x => x.DeliveryDate, new { @class = "form-control datepicker", data_bind = "value: DOPlannerLine.deliveryDate" })
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.DeliveryTime)
+                                @Html.TextBoxFor(x => x.DeliveryTime, new { @class = "form-control", data_bind = "value: DOPlannerLine.deliveryTime" })
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.Remarks)
+                                @Html.TextBoxFor(x => x.Remarks, new { @class = "form-control", data_bind = "value: DOPlannerLine.remarks" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>                   
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default mr-auto" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="AddUpdateRow">Save</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

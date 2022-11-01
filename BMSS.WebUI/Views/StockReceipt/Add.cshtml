@@ -1,0 +1,1261 @@
+﻿@using BMSS.WebUI.Models.StockReceiptViewModels
+@model StockReceiptViewModel
+@{
+
+    var isCreating = Model.DocNum == "New";
+    ViewBag.Title = (isCreating) ? "Add New Stock Receipt (In)" : "Edit Stock Receipt (In) #" + Model.DocNum;
+}
+@section Content_Header {
+    <section class="content-header">
+        <h1>
+            @ViewBag.Title
+            <small>Stock Receipt (In)</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i>Transactions</a></li>
+            <li class="active"><a href='@Url.Action("Index", "StockReceipt")'>Stock Receipt (In)</a></li>
+        </ol>
+    </section>
+}
+@section Styles {
+    @Styles.Render("~/DataTablesCss")
+    @Styles.Render("~/Select2Css")
+    @Styles.Render("~/DatePicker")
+}
+<div class="row" id="MainContent">
+    <div class="col-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">Stock Receipt (In)</h3>
+            </div>
+            @using (Html.BeginForm(null, null, null, FormMethod.Post, new { @id = "StockReceiptForm", @class = "form-horizontal", data_bind = "submit: validateAndSubmit" }))
+            {
+                @Html.ValidationSummary()
+                @Html.AntiForgeryToken()
+                <div class="box-body">
+
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.DocNum)
+                                @Html.TextBoxFor(x => x.DocNum, new { @class = "form-control", disabled = "", data_bind = "value: StockReceipt.docNum" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PrintedStatus)
+                                @Html.TextBoxFor(x => x.PrintedStatus, new { @class = "form-control", disabled = "", data_bind = "value: StockReceipt.printedStatusName" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.CreatedBy)
+                                @Html.TextBoxFor(x => x.CreatedBy, new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.DocDate)
+                                @Html.TextBoxFor(x => x.DocDate, new { @class = "form-control datepicker", data_bind = "value: StockReceipt.docDate" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.Status)
+                                @Html.TextBox("Status", Html.GetDocStatusName(Model.Status), new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.CreatedOn)
+                                @if (Model.CreatedOn.ToString("dd'/'MM'/'yyyy").Equals("01/01/0001"))
+                                {
+                                    @Html.TextBox("CreatedOnString", null, null, new { @class = "form-control", disabled = "" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(x => x.CreatedOn, "{0:dd'/'MM'/'yyyy HH:mm:ss tt}", new { @class = "form-control", disabled = "" })
+                                }
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+
+
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.Ref)
+                                @Html.TextBoxFor(x => x.Ref, new { @class = "form-control", data_bind = "value: StockReceipt.ref" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.SyncStatus)
+                                @Html.TextBox("Status", Html.GetSyncStatusName(Model.SyncStatus), new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.UpdatedBy)
+                                @Html.TextBoxFor(x => x.UpdatedBy, new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.UpdatedOn)
+                                @if (Model.UpdatedOn.ToString("dd'/'MM'/'yyyy").Equals("01/01/0001"))
+                                {
+                                    @Html.TextBox("UpdatedOnString", null, null, new { @class = "form-control", disabled = "" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(x => x.UpdatedOn, "{0:dd'/'MM'/'yyyy HH:mm:ss tt}", new { @class = "form-control", disabled = "" })
+                                }
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl"></div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="nav-tabs-custom">
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item active"><a href="#tab_1" data-toggle="tab" class="nav-link active">Contents</a></li>
+                                    <li class="nav-item"><a href="#tab_2" data-toggle="tab" class="nav-link">Notes</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="tab_1">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <button type="button" class="btn btn-primary float-right mr-1" data-bind="click: addStockReceiptLine">Add</button>
+                                            </div>
+                                        </div>
+
+                                        <table id="ItemListTable" class="table table-striped table-bordered responsive nowrap bmdatatable" data-fixed-header="true" data-auto-width="true" data-paging='false' data-searching="false" data-length-change="false" data-page-length="5" data-ordering="false" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Line No</th>
+                                                    <th>Stock Code</th>
+                                                    <th>Description</th>
+                                                    <th class="text-right">Qty</th>
+                                                    <th>Location</th>
+                                                    <th class="text-right">Unit Price</th>
+                                                    <th>Delete</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+
+                                    </div>
+
+                                    <div class="tab-pane" id="tab_2">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <button type="button" class="btn btn-primary float-right mr-1" data-bind="click: addStockReceiptNote">Add</button>
+                                            </div>
+                                        </div>
+                                        <table id="NoteListTable" class="table table-striped table-bordered responsive nowrap bmdatatable dblEdit" data-fixed-header="true" data-auto-width="false" data-paging='false' data-searching="false" data-length-change="false" data-page-length="5" data-ordering="false" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 10%;">Line No</th>
+                                                    <th style="width: 80%;">Note</th>
+                                                    <th style="width: 10%;">Delete</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+
+                    <Button type="submit" Class="btn btn-primary" data-bind="attr : {'disabled' : isDisabled}">Save</Button>
+                    <a class="btn btn-primary" href="@Url.Action("Index")" role="button">Close w/o Saving</a>
+                    @*<a class="btn btn-primary" target="_blank" href="@Url.Action("SRViewer.aspx","WForms/", new { id = Model.DocEntry })" role="button">Print</a>*@
+                    <a class="btn btn-primary" target="_blank" href="#" data-bind="click: printPreview" role="button">Print</a>
+                    <Button type="submit" Class="btn btn-primary" data-bind="click: validateAndSubmitToSAP, attr : {'disabled' : isDisabled}">Submit To SAP</Button>
+                    <Button type="submit" Class="btn btn-primary" data-bind="click: validateAndSubmitToSAP, attr : {'disabled' : isDisabledResubmit}">Re-Submit To SAP</Button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section BootModals {
+    @Html.Partial("_StockReceiptLineDetailModal", new StockReceiptLineViewModel() { });
+    @Html.Partial("_StockReceiptNoteDetailModal", new StockReceiptNoteViewModel() { });
+}
+@section Scripts {
+    @Scripts.Render("~/DataTables")
+    @Scripts.Render("~/bundles/Jquery-Validation-and-Ajax")
+    @Scripts.Render("~/Select2")
+    @Scripts.Render("~/DatePickerJS")
+    @Scripts.Render("~/Knockout")
+
+    <script>
+        function StockReceiptViewModel(sR) {
+            var self = this;
+            self.isCreating = sR.docNum == "New";
+            self.previewUrl = ko.observable('@Url.Action("SRViewer.aspx", "WForms/", new { id = Model.DocEntry })');
+
+            // Loaded from ajax - Observable Arrays
+            self.isDisabled = ko.observable(false);
+            self.isDisabledResubmit = ko.observable(true);
+
+            self.ItemCodesAndNames = ko.observableArray();
+            self.LocationCodeAndNames = ko.observableArray();
+            self.ChildItemDetails = ko.observableArray();
+
+            self.CopyDescToOwDesc = function () {
+                self.StockReceiptLine.overwriteDescription($('#AddUpdateItemModal').find("#Description:first").find("option:selected").text());
+            }
+
+            // Model Binding
+            self.StockReceipt = {              
+                docNum: ko.observable(sR.docNum),
+                docDate: ko.observable(sR.docDate),
+                ref: ko.observable(sR.ref),
+                printedStatus: ko.observable(sR.printedStatus), 
+                submittedToSAP: ko.observable(sR.submittedToSAP),
+                syncedToSAP: ko.observable(sR.syncedToSAP),
+                syncStatus: ko.observable(sR.syncStatus),
+                lines: ko.observableArray(sR.lines),
+                noteLines: ko.observableArray(sR.noteLines),
+            }
+
+            if (sR.printedStatus === 0) {
+                self.StockReceipt.printedStatusName = ko.observable('Not Printed');
+            }
+            else {
+                self.StockReceipt.printedStatusName = ko.observable('Printed');
+            }
+            self.StockReceipt.printedStatus.subscribe(function (newValue) {
+                if (newValue === 0)
+                    self.StockReceipt.printedStatusName('Not Printed');
+                else
+                    self.StockReceipt.printedStatusName('Printed');
+            })
+            self.printPreview = function () {
+              
+                $.ajax({
+                url: "@Url.Action("CanPrint", "StockReceipt", null)",
+                type: 'post',
+                contentType: 'application/x-www-form-urlencoded',
+                data: { DocEntry: @Model.DocEntry },
+                success: function (data)
+                {
+                    if (data.canAccess) {                       
+                        self.StockReceipt.printedStatus(1);
+                        window.open(self.previewUrl(), '_blank');
+                    }
+                    else {                        
+                        let form = $('form[id="StockReceiptForm"]');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        $('<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Alert!</h4><p>Access denied</p></div>')
+                            .prependTo($(form))
+                            .delay(5000)
+                            .slideUpAndRemove('slow');   
+                    }
+                            
+                },
+                error: function ()
+                {
+                             
+                }
+                });
+            }
+
+
+            self.isDisabled(self.StockReceipt.submittedToSAP());
+            if (self.isDisabled() === false) {
+                self.isDisabled(self.StockReceipt.syncedToSAP());
+            }
+            if (self.StockReceipt.syncStatus() == 3) { // Sync Failed
+                self.isDisabledResubmit(false);
+                if (self.isDisabled() === false) {
+                    self.isDisabled(true);
+                }
+            }
+            else {
+                self.isDisabledResubmit(true);
+
+            }
+            var originalState = sR;
+
+            //Single StockReceiptLine Object Setup
+            self.StockReceiptLine = {
+                lineNum: ko.observable(),
+                itemCode: ko.observable(),
+                description: ko.observable(),
+                overwriteDescription: ko.observable(),
+                description2: ko.observable(),
+                description3: ko.observable(),
+                description4: ko.observable(),
+                description5: ko.observable(),
+                description6: ko.observable(),
+                serialNumber: ko.observable(),
+                qty: ko.observable(),
+                location: ko.observable(),
+                locationText: '',
+                unitPrice: ko.observable(),
+            }
+            //Single StockReceiptNote Object Setup
+            self.StockReceiptNote = {
+                lineNum: ko.observable(),
+                note: ko.observable(),
+            }
+            self.StockReceiptLine.lineTotal = ko.computed(function () {
+                var calculated = parseFloat(self.StockReceiptLine.qty()) * parseFloat(self.StockReceiptLine.unitPrice());
+                if (isNaN(calculated)) {
+                    return 0;
+                }
+                else {
+                    return roundToTwo(calculated);
+                }
+            }, self) //Computed observable
+
+
+            // Add/Update/Delete StockReceipt Lines
+            self.validateAndAddline = function (form) {
+                if (!$(form).valid()) {
+                    $('#AddUpdateItemModal').scrollTop(0);
+                }
+                else {
+                    var lineNum = 0;
+                    if (self.StockReceipt.lines() !== null) {
+                        lineNum = self.StockReceipt.lines().length;
+                    }
+
+                    // Remove All li before submission, which he had in the previous validation
+                    $(form).find(".validation-summary-errors ul li").remove();
+                    $(form).find(".validation-summary-valid ul li").remove();
+                    var InputDescription = $(form).find("#Description:first").find("option:selected").text();
+                    var LocationText = $(form).find("#Location:first").find("option:selected").text();
+
+
+                    if (self.StockReceiptLine.lineNum() === "") {
+                        self.StockReceipt.lines.push({
+                            lineNum: lineNum,
+                            itemCode: self.StockReceiptLine.itemCode(),
+                            description: InputDescription,
+                            overwriteDescription: self.StockReceiptLine.overwriteDescription(),
+                            description2: self.StockReceiptLine.description2(),
+                            description3: self.StockReceiptLine.description3(),
+                            description4: self.StockReceiptLine.description4(),
+                            description5: self.StockReceiptLine.description5(),
+                            description6: self.StockReceiptLine.description6(),
+                            serialNumber: self.StockReceiptLine.serialNumber(),
+                            qty: parseFloat(self.StockReceiptLine.qty()).toFixed(3),
+                            location: self.StockReceiptLine.location(),
+                            locationText: LocationText,
+                            unitPrice: parseFloat(self.StockReceiptLine.unitPrice()).toFixed(4),
+
+                        });
+                    }
+                    else {
+                        var LineIndex = parseInt(self.StockReceiptLine.lineNum());
+
+                        self.StockReceipt.lines.replace(self.StockReceipt.lines()[LineIndex], {
+                            lineNum: self.StockReceiptLine.lineNum(),
+                            itemCode: self.StockReceiptLine.itemCode(),
+                            description: InputDescription,
+                            overwriteDescription: self.StockReceiptLine.overwriteDescription(),
+                            description2: self.StockReceiptLine.description2(),
+                            description3: self.StockReceiptLine.description3(),
+                            description4: self.StockReceiptLine.description4(),
+                            description5: self.StockReceiptLine.description5(),
+                            description6: self.StockReceiptLine.description6(),
+                            serialNumber: self.StockReceiptLine.serialNumber(),
+                            qty: parseFloat(self.StockReceiptLine.qty()).toFixed(3),
+                            location: self.StockReceiptLine.location(),
+                            locationText: LocationText,
+                            unitPrice: parseFloat(self.StockReceiptLine.unitPrice()).toFixed(4),
+
+                        });
+                    }
+                }
+            }
+            self.editStockReceiptLine = function (rowid, data, event) {
+
+                var clickedRowId = parseInt(rowid);
+                if (clickedRowId < self.StockReceipt.lines().length) {
+                    self.StockReceiptLine.lineNum(clickedRowId);
+
+                    var itemcode = self.StockReceipt.lines()[clickedRowId].itemCode;
+                    $('#ItemCode').val(itemcode).trigger('change');
+
+                    self.StockReceiptLine.itemCode(itemcode);
+                    self.StockReceiptLine.description(itemcode);
+                    self.StockReceiptLine.overwriteDescription(self.StockReceipt.lines()[clickedRowId].overwriteDescription);
+                    self.StockReceiptLine.description2(self.StockReceipt.lines()[clickedRowId].description2);
+                    self.StockReceiptLine.description3(self.StockReceipt.lines()[clickedRowId].description3);
+                    self.StockReceiptLine.description4(self.StockReceipt.lines()[clickedRowId].description4);
+                    self.StockReceiptLine.description5(self.StockReceipt.lines()[clickedRowId].description5);
+                    self.StockReceiptLine.description6(self.StockReceipt.lines()[clickedRowId].description6);
+                    self.StockReceiptLine.serialNumber(self.StockReceipt.lines()[clickedRowId].serialNumber);
+                    self.StockReceiptLine.qty(self.StockReceipt.lines()[clickedRowId].qty);
+
+                    var location = self.StockReceipt.lines()[clickedRowId].location;
+                    self.StockReceiptLine.location(location);
+                    $('#Location').val(location).trigger('change');
+
+                    self.StockReceiptLine.unitPrice(self.StockReceipt.lines()[clickedRowId].unitPrice);
+
+
+                    //self.StockReceiptLine.lineTotal(self.StockReceiptLine.lineTotal); //Computed automatically
+                    $('#AddUpdateItemModal').modal('show');
+                }
+            }
+            self.addStockReceiptLine = function () {
+                $('#AddUpdateItemModal').modal('show');
+                self.InitializeStockReceiptLine();
+            }
+            self.deleteStockReceiptLine = function (rowid, data, event) {
+                var clickedRowId = parseInt(rowid);
+
+                if (clickedRowId < self.StockReceipt.lines().length) {
+                    self.StockReceipt.lines.remove(self.StockReceipt.lines()[clickedRowId]);
+
+                }
+
+
+                var table = $('#ItemListTable').DataTable();
+
+                if (self.StockReceipt.lines().length > 0) {
+                    table.clear();
+
+                    var i;
+                    for (i = 0; i < self.StockReceipt.lines().length; i++) {
+                        var AddtionalRemarks = '';
+                        var defaultDescription = '-';
+                        if (self.StockReceipt.lines()[i].overwriteDescription === null) {
+                            defaultDescription = self.StockReceipt.lines()[i].description;
+                        }
+                        else if (self.StockReceipt.lines()[i].overwriteDescription === "") {
+                            defaultDescription = self.StockReceipt.lines()[i].description;
+                        }
+                        else {
+                            defaultDescription = self.StockReceipt.lines()[i].overwriteDescription;
+                        }
+                        if (self.StockReceipt.lines()[i].description2 !== null) {
+                            if (self.StockReceipt.lines()[i].description2 !== "") {
+                                AddtionalRemarks = AddtionalRemarks + self.StockReceipt.lines()[i].description2 + "<br/>"
+                            }
+                        }
+                        if (self.StockReceipt.lines()[i].description3 !== null) {
+                            if (self.StockReceipt.lines()[i].description3 !== "") {
+                                AddtionalRemarks = AddtionalRemarks + self.StockReceipt.lines()[i].description3 + "<br/>"
+                            }
+                        }
+                        if (self.StockReceipt.lines()[i].description4 !== null) {
+                            if (self.StockReceipt.lines()[i].description4 !== "") {
+                                AddtionalRemarks = AddtionalRemarks + self.StockReceipt.lines()[i].description4 + "<br/>"
+                            }
+                        }
+                        if (self.StockReceipt.lines()[i].description5 !== null) {
+                            if (self.StockReceipt.lines()[i].description5 !== "") {
+                                AddtionalRemarks = AddtionalRemarks + self.StockReceipt.lines()[i].description5 + "<br/>"
+                            }
+                        }
+                        if (self.StockReceipt.lines()[i].description6 !== null) {
+                            if (self.StockReceipt.lines()[i].description6 !== "") {
+                                AddtionalRemarks = AddtionalRemarks + self.StockReceipt.lines()[i].description6 + "<br/>"
+                            }
+                        }
+                        defaultDescription = defaultDescription + "<span data-toggle='popover' data-trigger='hover' data-placement='top' data-html='true' data-content='" + AddtionalRemarks + "' data-title='Additional Remarks'><i class='fa fa-fw fa-info-circle'></i></span>";
+
+
+
+                        var rowNode = table.row.add([
+                            i + 1,
+                            self.StockReceipt.lines()[i].itemCode,
+                            defaultDescription,
+                            self.StockReceipt.lines()[i].qty,
+                            self.StockReceipt.lines()[i].locationText,
+                            self.StockReceipt.lines()[i].unitPrice,
+                            "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteStockReceiptLine("
+                            + i + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                        ]).draw().node();
+                        $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editStockReceiptLine(" + i + ", data, event) } }");
+                        ko.applyBindings(self, rowNode);
+                    }
+
+                }
+                else {
+                    table.clear().draw();
+                }
+
+
+
+                ////Deletes Row from html table and by calling draw datatable will be redrawn
+                //var table = $('#ItemListTable').DataTable();
+                //table.row(clickedRowId).remove().draw();
+
+            }
+            self.InitializeStockReceiptLine = function () {
+                self.StockReceiptLine.lineNum('');
+                self.StockReceiptLine.itemCode('');
+                self.StockReceiptLine.description('');
+                self.StockReceiptLine.overwriteDescription('');
+                self.StockReceiptLine.description2('');
+                self.StockReceiptLine.description3('');
+                self.StockReceiptLine.description4('');
+                self.StockReceiptLine.description5('');
+                self.StockReceiptLine.description6('');
+                self.StockReceiptLine.serialNumber('');
+                self.StockReceiptLine.qty('');
+                self.StockReceiptLine.location('');
+                $('#Location').val('').trigger('change');
+                self.StockReceiptLine.unitPrice('');
+
+            }
+            //Data Table operations
+            self.StockReceipt.lines.subscribe(function (changes) {
+
+
+                // Add Lines
+                if (changes[0].status === "deleted") {
+
+
+                }
+                else if (self.StockReceiptLine.lineNum() === "") {
+                    var table = $('#ItemListTable').DataTable();
+                    var AddtionalRemarks = '';
+                    var defaultDescription = '-';
+                    if (changes[0].value.overwriteDescription === null) {
+                        defaultDescription = changes[0].value.description;
+                    }
+                    else if (changes[0].value.overwriteDescription === "") {
+                        defaultDescription = changes[0].value.description;
+                    }
+                    else {
+                        defaultDescription = changes[0].value.overwriteDescription;
+                    }
+                    if (changes[0].value.description2 !== null) {
+                        if (changes[0].value.description2 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description2 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description3 !== null) {
+                        if (changes[0].value.description3 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description3 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description4 !== null) {
+                        if (changes[0].value.description4 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description4 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description5 !== null) {
+                        if (changes[0].value.description5 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description5 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description6 !== null) {
+                        if (changes[0].value.description6 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description6 + "<br/>"
+                        }
+                    }
+                    defaultDescription = defaultDescription + "<span data-toggle='popover' data-trigger='hover' data-placement='top' data-html='true' data-content='" + AddtionalRemarks + "' data-title='Additional Remarks'><i class='fa fa-fw fa-info-circle'></i></span>";
+
+
+
+                    var rowNode = table.row.add([
+                        changes[0].index + 1,
+                        changes[0].value.itemCode,
+                        defaultDescription,
+                        changes[0].value.qty,
+                        changes[0].value.locationText,
+                        changes[0].value.unitPrice,
+                        "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteStockReceiptLine("
+                        + changes[0].index + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                    ]).draw().node();
+                    $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editStockReceiptLine(" + changes[0].index + ", data, event) } }");
+
+                    ko.applyBindings(self, rowNode);
+                } //Update Lines
+                else {
+
+                    var table = $('#ItemListTable').DataTable();
+                    var LineIndex = parseInt(self.StockReceiptLine.lineNum());
+                    var AddtionalRemarks = '';
+                    var defaultDescription = '-';
+                    if (changes[0].value.overwriteDescription === null) {
+                        defaultDescription = changes[0].value.description;
+                    }
+                    else if (changes[0].value.overwriteDescription === "") {
+                        defaultDescription = changes[0].value.description;
+                    }
+                    else {
+                        defaultDescription = changes[0].value.overwriteDescription;
+                    }
+                    if (changes[0].value.description2 !== null) {
+                        if (changes[0].value.description2 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description2 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description3 !== null) {
+                        if (changes[0].value.description3 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description3 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description4 !== null) {
+                        if (changes[0].value.description4 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description4 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description5 !== null) {
+                        if (changes[0].value.description5 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description5 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description6 !== null) {
+                        if (changes[0].value.description6 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description6 + "<br/>"
+                        }
+                    }
+                    defaultDescription = defaultDescription + "<span data-toggle='popover' data-trigger='hover' data-placement='top' data-html='true' data-content='" + AddtionalRemarks + "' data-title='Additional Remarks'><i class='fa fa-fw fa-info-circle'></i></span>";
+
+
+
+
+                    var rowNode = table.row(LineIndex).data([
+                        changes[0].index + 1,
+                        changes[0].value.itemCode,
+                        defaultDescription,
+                        changes[0].value.qty,
+                        changes[0].value.locationText,
+                        changes[0].value.unitPrice,
+                        "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteStockReceiptLine("
+                        + changes[0].index + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                    ]).draw().node();
+
+                    table.columns.adjust().draw();
+                    ko.cleanNode(rowNode);
+                    ko.applyBindings(self, rowNode);
+                    //ko.applyBindings(StockReceiptVM, rowNode);
+                }
+
+                $('#AddUpdateItemModal').modal('hide');
+
+            }, self, "arrayChange");
+
+
+
+            // Add/Update/Delete StockReceipt Notes
+            self.InitializeStockReceiptNote = function () {
+                self.StockReceiptNote.lineNum('');
+                self.StockReceiptNote.note('');
+            }
+            self.validateAndAddNote = function (form) {
+                if (!$(form).valid()) {
+
+                    $('#AddUpdateNoteModal').scrollTop(0);
+                }
+                else {
+
+                    var lineNum = 0;
+                    if (self.StockReceipt.noteLines() !== null) {
+                        lineNum = self.StockReceipt.noteLines().length;
+                    }
+
+                    if (self.StockReceiptNote.lineNum() === "") {
+                        self.StockReceipt.noteLines.push({
+                            lineNum: lineNum,
+                            note: self.StockReceiptNote.note(),
+                        });
+                    }
+                    else {
+
+                        var LineIndex = parseInt(self.StockReceiptNote.lineNum());
+
+                        self.StockReceipt.noteLines.replace(self.StockReceipt.noteLines()[LineIndex], {
+                            lineNum: self.StockReceiptNote.lineNum(),
+                            note: self.StockReceiptNote.note(),
+                        });
+                    }
+                }
+            }
+            self.StockReceipt.noteLines.subscribe(function (changes) {
+
+                if (changes[0].status === "deleted") {
+
+
+                }
+                else if (self.StockReceiptNote.lineNum() === "") {
+
+                    var table = $('#NoteListTable').DataTable();
+                    var rowNode = table.row.add([
+                        changes[0].index + 1,
+                        changes[0].value.note,
+                        "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteStockReceiptNote("
+                        + changes[0].index + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                    ]).draw().node();
+                    $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editStockReceiptNote(" + changes[0].index + ", data, event) } }");
+                    ko.applyBindings(self, rowNode);
+                } //Update Lines
+                else {
+
+                    var table = $('#NoteListTable').DataTable();
+                    var LineIndex = parseInt(self.StockReceiptNote.lineNum());
+                    var rowNode = table.row(LineIndex).data([
+                        changes[0].index + 1,
+                        changes[0].value.note,
+                        "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteStockReceiptNote("
+                        + changes[0].index + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                    ]).draw().node();
+
+                    table.columns.adjust().draw();
+                    ko.cleanNode(rowNode);
+                    ko.applyBindings(self, rowNode);
+                }
+
+
+                $('#AddUpdateNoteModal').modal('hide');
+
+            }, self, "arrayChange");
+            self.editStockReceiptNote = function (rowid, data, event) {
+
+                var clickedRowId = parseInt(rowid);
+                if (clickedRowId < self.StockReceipt.noteLines().length) {
+                    self.StockReceiptNote.lineNum(clickedRowId);
+                    self.StockReceiptNote.note(self.StockReceipt.noteLines()[clickedRowId].note);
+
+                    //self.StockReceiptLine.lineTotal(self.StockReceiptLine.lineTotal); //Computed automatically
+                    $('#AddUpdateNoteModal').modal('show');
+                }
+            }
+            self.addStockReceiptNote = function () {
+                $('#AddUpdateNoteModal').modal('show');
+                self.InitializeStockReceiptNote();
+            }
+            self.deleteStockReceiptNote = function (rowid, data, event) {
+                var clickedRowId = parseInt(rowid);
+
+                if (clickedRowId < self.StockReceipt.noteLines().length) {
+                    self.StockReceipt.noteLines.remove(self.StockReceipt.noteLines()[clickedRowId]);
+
+                }
+
+
+                var table = $('#NoteListTable').DataTable();
+
+                if (self.StockReceipt.noteLines().length > 0) {
+                    table.clear();
+
+                    var i;
+                    for (i = 0; i < self.StockReceipt.noteLines().length; i++) {
+
+                        var rowNode = table.row.add([
+                            i + 1,
+                            self.StockReceipt.noteLines()[i].note,
+                            "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteStockReceiptNote("
+                            + i + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                        ]).draw().node();
+                        $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editStockReceiptNote(" + i + ", data, event) } }");
+                        ko.applyBindings(self, rowNode);
+                    }
+
+                }
+                else {
+                    table.clear().draw();
+                }
+
+
+
+
+
+            }
+
+
+
+             // on Change of ItemCode - ItemName value will be selected
+            self.StockReceiptLine.itemCode.subscribe(function (newValue) {
+                //self.StockReceiptLine.description(newValue);
+                // Above statement is enough to trigger the change of selection in knockout
+                // because of select2 is used we have to use below statement to trigger the change of selection
+                $('#Description').val(newValue).trigger('change');
+                self.LoadItemDetails();
+            });
+
+            self.LoadItemDetails = function () {
+                if (self.StockReceiptLine.itemCode() !== null) {
+                    var LocationStocktable = $('#LocationStock').DataTable();
+                    LocationStocktable.clear().draw();
+                    $.ajax({
+                        url: "@Url.Action("GetLocationStockQty", "Item", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ ItemCode: self.StockReceiptLine.itemCode() }),
+                        success: function (data) {
+
+                            var LocStockLines = data;
+                            if (LocStockLines !== null) {
+
+                                for (var i = 0; i < LocStockLines.length; i++) {
+                                    LocationStocktable.row.add([
+                                        LocStockLines[i].WarhouseName,
+                                        parseFloat(LocStockLines[i].AvailableQty).toFixed(3),
+                                    ]).draw().node();
+                                }
+                            }
+
+                        },
+                        error: function () { }
+                    });
+
+                    var PriceHistorytable = $('#PriceHistory').DataTable();
+                    PriceHistorytable.clear().draw();
+                    $.ajax({
+                        url: "@Url.Action("GetStockReceiptLastPriceHistory", "StockReceipt", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ ItemCode: self.StockReceiptLine.itemCode() }),
+                        success: function (data) {
+
+                            var PriceHistoryLines = data;
+                            if (PriceHistoryLines !== null) {
+
+                                for (var i = 0; i < PriceHistoryLines.length; i++) {
+                                    PriceHistorytable.row.add([
+                                        PriceHistoryLines[i].DocDate,
+                                        PriceHistoryLines[i].DocNum,
+                                        parseFloat(PriceHistoryLines[i].Qty).toFixed(3),
+                                        parseFloat(PriceHistoryLines[i].UnitPrice).toFixed(4),
+                                    ]).draw().node();
+                                }
+                            }
+
+                        },
+                        error: function () { }
+                    });
+
+                    $.ajax({
+                        url: "@Url.Action("GetItemDefaultWhs", "Item", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ ItemCode: self.StockReceiptLine.itemCode() }),
+                        success: function (data) {
+                            if (jQuery.type(self.StockReceiptLine.location()) == "undefined") {
+                                let LocationCodeVal = data.DefaultWhs;
+                                $('#Location').val(LocationCodeVal).trigger('change');
+                            }
+                            else if (self.StockReceiptLine.location() == '') {
+                                let LocationCodeVal = data.DefaultWhs;
+                                $('#Location').val(LocationCodeVal).trigger('change');
+                            }     
+                        },
+                        error: function () { }
+                    });
+
+                      $.ajax({
+                            url: "@Url.Action("GetItemDetails", "Item", null)",
+                            type: 'post',
+                            contentType: 'application/x-www-form-urlencoded',
+                            data: ko.toJS({ ItemCode: self.StockReceiptLine.itemCode() }),
+                            success: function (data) {
+
+                                let DefaultTaxVal = data.DefaultTax;
+                                $('#GstName').val(DefaultTaxVal).trigger('change');
+
+                            },
+                            error: function () { }
+                      });
+                    $.ajax({
+                            url: "@Url.Action("GetChildItems", "Item", null)",
+                            type: 'post',
+                            contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ ParentItemCode: self.StockReceiptLine.itemCode() }),
+                            success: function (data) {                                 
+                                    self.ChildItemDetails(data);
+                            },
+                            error: function () { }
+                        });
+
+                }
+            }
+
+            // on Change of ItemName - ItemCode value will be selected
+            self.StockReceiptLine.description.subscribe(function (newValue) {
+                //self.StockReceiptLine.itemCode(newValue);
+                // Above statement is enough to trigger the change of selection in knockout
+                // because of select2 is used we have to use below statement to trigger the change of selection
+                $('#ItemCode').val(newValue).trigger('change');
+            });
+
+            // Initialize Add/Update StockReceipt Model to the Initial State of page loaded first
+            self.Initialize = function () { // Used to initialize Form
+
+
+
+
+
+                self.StockReceipt.docDate(originalState.docDate);
+
+                self.StockReceipt.ref(originalState.ref);
+
+                if (originalState.lines !== null) {
+                    //Original state lines are not nul
+                    self.StockReceipt.lines(originalState.lines);
+                }
+                else {
+                    //Original state lines are null
+
+                    self.StockReceipt.lines.removeAll();
+                }
+
+
+            }
+
+
+            self.validateAndSubmitToSAP = function () {
+                var form = $('form[id="StockReceiptForm"]');
+
+                if (!$(form).valid()) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+                else {
+
+                    // Remove All li before submission, which he had in the previous validation
+                    $(form).find(".validation-summary-errors ul li").remove();
+                    $(form).find(".validation-summary-valid ul li").remove();
+
+                    self.StockReceipt.__RequestVerificationToken = $(form).find('input[name="__RequestVerificationToken"]').val();
+                    self.StockReceipt.submittedToSAP(true);
+
+                    $.ajax({
+                        url: "@Url.Action("Add", "StockReceipt", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS(self.StockReceipt),
+                        success: function (data)
+                        {
+                            self.successfulSave(form, data);
+                        },
+                        error: function ()
+                        {
+                            self.errorSave(form);
+                        }
+                    });
+                }
+            }
+            // StockReceipt Form Submission using Ajax
+            self.validateAndSubmit = function (form) {
+
+                //By Default this function will return false, so form submission will not happen
+                if (!$(form).valid()) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                }
+                else {
+
+                    // Remove All li before submission, which he had in the previous validation
+                    $(form).find(".validation-summary-errors ul li").remove();
+                    $(form).find(".validation-summary-valid ul li").remove();
+
+                    self.StockReceipt.__RequestVerificationToken = form[0].value;
+                    $.ajax({
+                        url: "@Url.Action("Add", "StockReceipt", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS(self.StockReceipt),
+                        success: function (data)
+                        {
+                            self.successfulSave(form, data);
+                        },
+                        error: function ()
+                        {
+                            self.errorSave(form);
+                        }
+                    });
+
+                }
+            }
+
+            self.removeDocID = function (URL) {
+                var res = URL.split("/");
+                res.pop();
+                URL = res.join("/") + "/"
+                return URL;
+            }
+
+            self.successfulSave = function (form, data) {
+                if (Boolean(data.IsModelValid) === true) {
+
+                    if (self.isCreating) {
+                        //self.Initialize();
+                        //var table = $('#ItemListTable').DataTable();
+                        //table.clear().draw();
+
+                        self.StockReceipt.docNum(data.DocNum);
+                        self.isCreating = false;
+
+                        URL = self.removeDocID(self.previewUrl());
+                        URL = URL + data.DocEntry;
+                        self.previewUrl(URL);
+
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        $('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Success!</h4> Stock Receipt (In) ' + data.DocNum + ' Saved Successfully</div>')
+                            .prependTo($(form))
+                            .delay(5000)
+                            .slideUpAndRemove('slow');
+
+                    } else {
+                        if (self.StockReceipt.submittedToSAP()) {
+                            self.isDisabled(self.StockReceipt.submittedToSAP());
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                            $('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Success!</h4> Stock Receipt (In) ' + self.StockReceipt.docNum() + ' Updated Successfully</div>')
+                                .prependTo($(form))
+                                .delay(5000)
+                                .slideUpAndRemove('slow');
+                        }
+                        else {
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                            $('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Success!</h4> Stock Receipt (In) ' + self.StockReceipt.docNum() + ' Updated Successfully</div>')
+                                .prependTo($(form))
+                                .delay(5000)
+                                .slideUpAndRemove('slow');
+                        }
+
+                    }
+
+
+                }
+                else {
+
+                    var ErrArray = data.ModelErrList;
+
+                        $(form).find(".validation-summary-errors ul li").remove(); // Remove All li if before Submission had client side errors
+                        $(form).find(".validation-summary-valid ul li").remove();  // Remove one li with diplay:none style if before Submission didn't had any client side errors
+
+                        for (var i = 0; i < data.ModelErrList.length; i++) {
+                            $(form).find(".validation-summary-errors ul").append("<li>" + ErrArray[i] + "</li>");
+                            $(form).find(".validation-summary-valid ul").append("<li>" + ErrArray[i] + "</li>");
+                        }
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+
+            }
+            self.errorSave = function (form) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                $('<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Alert!</h4><p>Sorry, Some thing went wrong, Please contact website adminitrator</p></div>')
+                    .prependTo($(form))
+                    .delay(5000)
+                    .slideUpAndRemove('slow');
+            }
+
+
+
+
+
+
+        }
+        // Once Document Ready
+        $(function () {
+
+
+
+            var ItemCodesAndNames;
+            var LocationCodeAndNames;
+
+            $.when(
+                // Initial Ajax Requests, while page loading
+
+                //Load Item Codes
+                $.ajax({
+                url: "@Url.Action("GetActiveItems", "Item", null)",
+                type: 'get',
+                contentType: 'application/x-www-form-urlencoded',
+                success: function (data) {
+
+                    ItemCodesAndNames = data;
+
+                    $("#ItemCode").parent().parent().find('.overlay').hide();
+                    $("#Description").parent().parent().find('.overlay').hide();
+                },
+                error: function () { }
+                }),
+                //Load Location Codes
+                $.ajax({
+                    url: "@Url.Action("GetWarehouses", "Location", null)",
+                    type: 'get',
+                    contentType: 'application/x-www-form-urlencoded',
+                    success: function (data) {
+
+                       LocationCodeAndNames = data;
+                        $("#Location").parent().parent().find('.overlay').hide();
+                    },
+                    error: function () { }
+                })
+            ).done(function () {
+                   //View Model Object Initialization
+                var StockReceiptVM = new StockReceiptViewModel(@Html.ViewModelToJson(Model));
+
+                StockReceiptVM.ItemCodesAndNames = ItemCodesAndNames;
+                StockReceiptVM.LocationCodeAndNames = LocationCodeAndNames;
+
+
+                ko.applyBindings(StockReceiptVM);
+
+                    //Editing StockReceipt
+                    var ExisingStockReceipt = @Html.ViewModelToJson(Model);
+
+                    var SrLines = ExisingStockReceipt.lines;
+                    if (SrLines !== null) {
+                        for (var i = 0; i < SrLines.length; i++) {
+                            var srlinetable = $('#ItemListTable').DataTable();
+                            var defaultDescription = '-';
+                            var AddtionalRemarks = '';
+                            if (SrLines[i].overwriteDescription !== null) {
+                                defaultDescription = SrLines[i].overwriteDescription;
+                            }
+                            else {
+                                defaultDescription = SrLines[i].description;
+                            }
+                            if (SrLines[i].description2 !== null) {
+                                AddtionalRemarks = AddtionalRemarks + SrLines[i].description2 + "<br/>"
+                            }
+                            if (SrLines[i].description3 !== null) {
+                                AddtionalRemarks = AddtionalRemarks + SrLines[i].description3 + "<br/>"
+                            }
+                            if (SrLines[i].description4 !== null) {
+                                AddtionalRemarks = AddtionalRemarks + SrLines[i].description4 + "<br/>"
+                            }
+                            if (SrLines[i].description5 !== null) {
+                                AddtionalRemarks = AddtionalRemarks + SrLines[i].description5 + "<br/>"
+                            }
+                            if (SrLines[i].description6 !== null) {
+                                AddtionalRemarks = AddtionalRemarks + SrLines[i].description6
+                            }
+                            defaultDescription = defaultDescription + "<span data-toggle='popover' data-trigger='hover' data-placement='top' data-html='true' data-content='" + AddtionalRemarks + "' data-title='Additional Remarks'><i class='fa fa-fw fa-info-circle'></i></span>";
+                            var rowNode = srlinetable.row.add([
+                                i + 1,
+                                SrLines[i].itemCode,
+                                defaultDescription,
+                                parseFloat(SrLines[i].qty).toFixed(3),
+                                SrLines[i].locationText,
+                                parseFloat(SrLines[i].unitPrice).toFixed(4),
+
+                                "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteStockReceiptLine("
+                                + i + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                            ]).draw().node();
+                            $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editStockReceiptLine(" + i + ", data, event) } }");
+
+                            ko.applyBindings(StockReceiptVM, rowNode);
+                        }
+                    }
+                var SqNoteLines = ExisingStockReceipt.noteLines;
+
+                if (SqNoteLines !== null) {
+                    if (jQuery.type(SqNoteLines) !== "undefined") {
+
+                        for (var i = 0; i < SqNoteLines.length; i++) {
+                            var sqnotetable = $('#NoteListTable').DataTable();
+                            var rowNode = sqnotetable.row.add([
+                                i + 1,
+                                SqNoteLines[i].note,
+                                "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteStockReceiptNote("
+                                + i + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                            ]).draw().node();
+                            $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editStockReceiptNote(" + i + ", data, event) } }");
+
+                            ko.applyBindings(StockReceiptVM, rowNode);
+                        }
+                    }
+                }
+
+            });
+
+
+
+
+
+            $('.select2').select2();
+            $('.datepicker').datepicker({ format: 'dd/mm/yyyy', autoclose: true });
+            var table = $('#ItemListTable').DataTable(
+                {
+                    "columnDefs": [
+                        { className: "text-right", "targets": [3, 5] }
+                    ]
+                }
+            );
+            var LocationStocktable = $('#LocationStock').DataTable({
+                "columnDefs": [
+                    { className: "text-right", "targets": [1] }
+                ]
+            });
+
+            var PriceHistorytable = $('#PriceHistory').DataTable(
+                {
+                    "columnDefs": [
+                        { className: "text-right", "targets": [2, 3] }
+                    ]
+                });
+
+            var NoteListTable = $('#NoteListTable').DataTable(
+                {
+
+                });
+
+
+
+
+
+            $('table.bmdatatable tbody').on('click', 'tr td button.btn-danger', function () {
+
+                table.row($(this).parents('tr')).remove().draw();
+                //if ($(this).parent().parent().hasClass('highlight')) {
+                //    $(this).parent().parent().removeClass('highlight');
+                //}
+                //else {
+                //    table.$('tr.highlight').removeClass('highlight');
+                //    $(this).parent().parent().addClass('highlight');
+                //}
+            });
+
+            // Datables Need to be re-drawn again if datatable intialised in hidden area(That is when we put datatables inside tabs)
+            // So here we are call draw to redraw table when each tabs become visible
+            $(document).on('shown.bs.modal', '#AddUpdateItemModal', function (event) {
+                var table = $('#PriceHistory').DataTable();
+                table.columns.adjust().draw();
+            });
+            $('body').popover({
+                selector: '[data-toggle="popover"]',
+                trigger: 'hover',
+                html: true,
+            });
+        });
+    </script>
+}

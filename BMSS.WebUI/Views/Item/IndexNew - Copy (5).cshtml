@@ -1,0 +1,386 @@
+﻿@using BMSS.WebUI.Models.ItemViewModels
+@model IEnumerable<ItemStockDetailViewModelV1>
+@using System.Globalization;
+@{
+    ViewBag.Title = "List of Stocks";
+    IEnumerable<WareHouseDetails> wareHouseDetails = ViewBag.wareHouseDetails;
+    string SelectedWareHouse = "SelectedWareHouse";
+}
+@section Styles {
+    @*@Styles.Render("https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css")*@
+    @Styles.Render("~/DataTablesCss")
+
+
+}
+@section Content_Header {
+    <section class="content-header">
+        <h1>
+            Stocks
+            <small>SAP Stocks</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href='@Url.Action("Index", "Home")'><i class="fa fa-dashboard"></i>Administration</a></li>
+            <li class="active">Items</li>
+        </ol>
+    </section>
+}
+@using (Html.BeginForm("Detail", null, null, FormMethod.Get, new { id = "DetailForm" }))
+{
+    @Html.Hidden("ItemCode", "")
+}
+<div class="row">
+    <div class="col-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">List of Stocks</h3>
+            </div>
+            @*<div class="box-header">
+                    <h3 class="box-title">@Html.Label("Warehouse: ")</h3>
+                    @Html.DropDownListFor(x => SelectedWareHouse, new SelectList(wareHouseDetails, "WhsCode", "WhsName"), new { @class = "form-control select2", style = "width:100px" })
+
+
+                </div>*@
+            <div class="box-body">
+
+
+                <table id="WareHouseTbl" cellspacing="0" cellpadding="0" style="width:100px">
+                    <thead>
+                        <tr>
+                            <th>  @Html.Label("Location: ")</th>
+
+                            <th>@Html.DropDownListFor(x => SelectedWareHouse, new SelectList(wareHouseDetails, "WhsCode", "WhsName"), new { @class = "form-control select2", style = "width:100px", onchange = "WareHouseDetailsOnChange()" })</th>
+                        </tr>
+                    </thead>
+                </table>
+
+
+            </div>
+
+            <div class="box-body">
+                <table id="ItemList" class="table table-bordered table-striped responsive nowrap bmdatatable dblEdit" data-fixed-header="true" data-auto-width="true" data-paging="true" data-searching="true" data-length-change="true" data-page-length="100" data-ordering="true" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Stock Code</th>
+                            <th style="width:100px">Stock Description</th>
+                            <th>Location</th>
+                            <th class="text-right">In Stock</th>
+                            <th class="text-right">Committed</th>
+                            <th class="text-right">Draft Receipt (+)</th>
+                            <th class="text-right">Draft Issue (-)</th>
+                            <th class="text-right">Draft Credit (+)</th>
+                            <th class="text-center">SO Available</th>
+                            <th class="text-center">Ordered</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+
+    @*@Scripts.Render("https://code.jquery.com/jquery-3.5.1.js")
+        @Scripts.Render("~/DataTables")*@
+
+
+    @Scripts.Render("~/Jquery")
+    @*@Scripts.Render("https://code.jquery.com/jquery-3.5.1.js")*@
+    @Scripts.Render("~/DataTableOnly")
+    @*@Scripts.Render("https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js")*@
+    @Scripts.Render("~/DataTablesHeaderFix")
+
+    @Scripts.Render("~/Knockout")
+
+    @*@Scripts.Render("https://code.jquery.com/jquery-3.5.1.js")
+        @Scripts.Render("https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js")
+        @Scripts.Render("~/DataTablesHeaderFix")*@
+
+
+
+    <script>
+
+        /* Formatting function for row details - modify as you need */
+        function format(MonthYr, Quantity) {
+            // `d` is the original data object for the row
+
+            return (
+                '<td>' +
+                    '<table><tr> <td> ' +
+                        MonthYr +
+                    ' </td> </tr>' +
+                    '<tr> <td> ' +
+                        Quantity +
+                    ' </td> </tr> </table>' +
+                '</td>'
+
+            );
+        }
+
+        function WareHouseDetailsOnChange() {
+
+            var whsCode = $('#SelectedWareHouse').val();
+
+            GetDataTableDataV1(whsCode);
+        }
+
+        function GetDataTableData(whsCode) {
+
+
+            //if ($.fn.dataTable.isDataTable('#ItemList')) {
+
+            //    var table = $('#ItemList').DataTable({
+            //        destroy: true,
+            //        searching: false
+            //    });
+            //    table.destroy();
+            //}
+
+
+           @*var table = $('#ItemList').DataTable({
+                'processing': true,
+                'serverSide': true,
+                'serverMethod': 'post',
+                'ajax': {
+                    'url': '@Url.Action("IndexNewPagining", "Item")?WhsCode=' + whsCode
+
+                },
+                'columns': [
+                    {
+                        data: 'ItemCode', orderable: true
+                    },
+                    { data: 'ItemName', orderable: true },
+                    { data: 'WhsCode', orderable: true },
+                    {
+                        data: 'onhand',
+                        render: $.fn.dataTable.render.number(',', '.', 3, ''),
+                        className: "text-right",
+                        orderable: false
+                    },
+                    {
+                        data: 'isCommited',
+                        render: $.fn.dataTable.render.number(',', '.', 3, ''),
+                        className: "text-right",
+                        orderable: false
+                    },
+                    {
+                        data: 'DraftGoodsReceipt',
+                        render: $.fn.dataTable.render.number(',', '.', 3, ''),
+                        className: "text-right",
+                        orderable: false
+                    },
+                    {
+                        data: 'DraftGoodsIssue',
+                        render: $.fn.dataTable.render.number(',', '.', 3, ''),
+                        className: "text-right",
+                        orderable: false
+                    },
+                    {
+                        data: 'DraftCreditNote',
+                        render: $.fn.dataTable.render.number(',', '.', 3, ''),
+                        className: "text-right",
+                        orderable:false
+                    },
+                    {
+                        data: 'SOAvailable',
+                        render: $.fn.dataTable.render.number(',', '.', 3, ''),
+                        className: "text-right",
+                        orderable: false
+                    },
+                    {
+                        data: 'onOrder',
+                        render: $.fn.dataTable.render.number(',', '.', 3, ''),
+                        className: "text-right",
+                        orderable: false
+                    },
+                    {
+                        className: 'dt-control',
+                        orderable: false,
+                        data: null,
+                        defaultContent: '',
+                    },
+                ]
+            });*@
+        }
+
+
+        function GetDataTableDataV1(whsCode) {
+
+            if ($.fn.dataTable.isDataTable('#ItemList')) {
+
+                var table = $('#ItemList').DataTable();
+                table.clear().draw();
+                table.destroy();
+            }
+
+             var table = $('#ItemList').DataTable({
+                 'processing': true,
+                 "language": {
+                     'processing': '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading..n.</span>'
+                 },
+                 'serverSide': true,                 
+                'serverMethod': 'post',
+                'ajax': {
+                    'url': '@Url.Action("IndexNewPagining", "Item")?WhsCode=' + whsCode
+
+                },
+                'columns': [
+                    {
+                        data: 'ItemCode', orderable: true
+                    },
+                    { data: 'ItemName', orderable: true },
+                    { data: 'WhsCode', orderable: true },
+                    {
+                        data: 'onhand',
+                        render: $.fn.dataTable.render.number(',', '.', 3, ''),
+                        className: "text-right",
+                        orderable: false
+                    },
+                    {
+                        data: 'isCommited',
+                        render: $.fn.dataTable.render.number(',', '.', 3, ''),
+                        className: "text-right",
+                        orderable: false
+                    },
+                    {
+                        data: 'DraftGoodsReceipt',
+                        render: $.fn.dataTable.render.number(',', '.', 3, ''),
+                        className: "text-right",
+                        orderable: false
+                    },
+                    {
+                        data: 'DraftGoodsIssue',
+                        render: $.fn.dataTable.render.number(',', '.', 3, ''),
+                        className: "text-right",
+                        orderable: false
+                    },
+                    {
+                        data: 'DraftCreditNote',
+                        render: $.fn.dataTable.render.number(',', '.', 3, ''),
+                        className: "text-right",
+                        orderable:false
+                    },
+                    {
+                        data: 'SOAvailable',
+                        render: $.fn.dataTable.render.number(',', '.', 3, ''),
+                        className: "text-right",
+                        orderable: false
+                    },
+                    {
+                        data: 'onOrder',
+                        render: $.fn.dataTable.render.number(',', '.', 3, ''),
+                        className: "text-right",
+                        orderable: false
+                    },
+                    {
+                        className: 'dt-control',
+                        orderable: false,
+                        data: null,
+                        defaultContent: '',
+                    },
+                ]
+            });
+
+
+            $('#ItemList tbody').off('dblclick', 'tr');
+
+            $('#ItemList tbody').on('dblclick', 'tr', function () {
+                var data = table.row(this).data();
+                //$(this).addClass("highlight");
+                $("#ItemCode").val(data.ItemCode);
+                var itemcode = data.ItemCode;
+                //$("#ItemCode").closest("form").submit();
+                window.open('@Url.Action("Detail", "Item")?ItemCode=' + itemcode);
+            });
+
+            $('#ItemList tbody').off('click', 'td.dt-control');
+            // Add event listener for opening and closing details
+         $('#ItemList tbody').on('click', 'td.dt-control', function () {
+
+                var tr = $(this).closest('tr');
+                var row = table.row(tr);
+                var varItemCode = row.data().ItemCode;
+
+             alert(varItemCode);
+
+
+
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    row.child.hide();
+                    tr.removeClass('shown');
+                } else {
+                    // Open this row
+                    // Call the data
+
+
+                    $.ajax({
+                    url: "@Url.Action("GetItemMthlySales", "Item", null)",
+                    type: 'post',
+                    contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ ItemCode: varItemCode}),
+                    success: function (data) {
+
+                        if (data.length > 0) {
+                            var rowTableStr;
+                            rowTableStr = ' <table style="width:100%;border-style:solid;border-color: #96D4D4;"> ' +
+                                ' <tr> ';
+
+                            var NewRow = '';
+
+                            for (var i = 0; i < data.length; i++) {
+
+                                if (i == 12) {
+                                    rowTableStr = rowTableStr + ' <tr> ';
+                                    NewRow = 'Y';
+                                }
+
+
+                                rowTableStr = rowTableStr + format(data[i].MonthYr, parseFloat(data[i].Quantity).toFixed(3));
+                            }
+
+                            if (NewRow == 'Y') {
+                                rowTableStr = rowTableStr + ' </tr> ';
+
+                            }
+
+                            rowTableStr = rowTableStr + '</tr> ' + ' </table> ';
+
+
+                            // Open this row
+                            row.child(rowTableStr).show();
+                            tr.addClass('shown');
+
+                        }
+
+
+                    },
+                    error: function () { }
+                    });
+
+                }
+
+
+            });
+
+            table.draw();
+
+            return true;
+
+        }
+
+
+
+
+        $(document).ready(function () {
+
+            var whsCode = 'ALL';
+
+            GetDataTableDataV1(whsCode);
+
+
+        });
+
+
+    </script>
+}

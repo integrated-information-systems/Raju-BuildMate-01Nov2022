@@ -1,0 +1,155 @@
+﻿@using BMSS.Domain
+@model IEnumerable<CashSalesDocH>
+@using System.Globalization;
+@{
+    ViewBag.Title = "List of Cash Sales";
+}
+@section Styles {
+    @Styles.Render("~/DataTablesCss")
+}
+@section Content_Header {
+    <section class="content-header">
+        <h1>
+            Cash Sale Listing
+            <small>Cash Sales</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href='@Url.Action("Index", "Home")'><i class="fa fa-dashboard"></i>Transactions</a></li>
+            <li class="active">Cash Sales</li>
+        </ol>
+    </section>
+}
+<div class="row">
+    <div class="col-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">List of Cash Sales</h3>
+                <div class="box-tools" style="top: 3px;"><a class="btn btn-primary" href="@Url.Action("Add", "CashSales")" role="button">Add</a></div>
+            </div>
+            <div class="box-body">
+                <table id="DeliveryOrderList" class="table table-bordered table-striped responsive nowrap bmdatatable dblEdit" data-fixed-header="true" data-auto-width="true" data-paging="true" data-searching="true" data-length-change="true" data-page-length="100" data-ordering="true" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Doc #</th>
+                            <th>Date</th>
+                            <th>Account #</th>
+                            <th class="text-right">Amount</th>
+                            <th>Print Status</th>
+                            <th>SAP Status</th>
+                            <th>Del Date</th>
+                            <th>Del Time</th>
+                            <th>Customer Ref</th>
+                            <th data-priority="1">To Planner</th>
+                            <th>Sent</th>
+                            <td data-priority="1">Print</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int rowid = 0;
+                        }
+                        @foreach (var i in Model)
+                        {
+                        <tr data-toggle="tooltip" title="double click to edit">
+                            <td>
+                                @i.DocNum
+                                @using (Html.BeginForm("Edit", null, null, FormMethod.Get, new { id = "DetailForm" }))
+                                {
+                                    @Html.Hidden("DocNum", @i.DocNum)
+                                }
+                            </td>
+                            <td>@i.DocDate.ToString("dd'/'MM'/'yyyy")</td>
+                            <td>@i.CardCode</td>
+                            <td class="text-right">@i.GrandTotal.ToString("N2", new CultureInfo("en-US"))</td>
+                            <td>@Html.GetPrintedStatusName(i.PrintedStatus)</td>
+                            <td>
+                                @Html.GetSyncStatusName(i.SyncStatus)
+                                @if (i.SyncStatus > 1)
+                                {
+                                    <span data-toggle='popover' data-trigger='hover' data-placement='right' data-html='true' data-content='@i.SyncRemarks' data-title='Sync Remarks'><i class='fa fa-fw fa-info-circle'></i></span>
+                                }
+                            </td>
+                            @if (i.DeliveryDate.HasValue)
+                            {
+                                <td>@i.DeliveryDate.Value.ToString("dd'/'MM'/'yyyy")</td>
+                            }
+                            else
+                            {
+                                <td>&nbsp;</td>
+                            }
+                            <td>@i.DeliveryTime</td>
+                            <td>@i.CustomerRef</td>
+                            <td data-priority="1"><button type="button" class="btn btn-primary btn-xs">To Planner</button></td>
+                            <td></td>
+                            <td data-priority="1">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        Print
+                                    </button>
+                                    <ul class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px,15px, 10px);">
+                                        <li class="btn-xs"><a target="_blank" class="printPreviewTax" data-row-docnum="@i.DocNum" data-row-index="@rowid" href="@Url.Action("CSTaxInvoiceViewer.aspx","WForms/", new { id = @i.DocEntry })">Cash Tax Invoice</a></li>
+                                        <li class="btn-xs"><a target="_blank" class="printPreview" data-row-index="@rowid" href="@Url.Action("CSViewer.aspx","WForms/", new { id = @i.DocEntry })">Delivery Order</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                            rowid = rowid + 1;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/DataTables")
+    @Scripts.Render("~/Own")
+    <script>
+        $(document).ready(function () {
+            $('.printPreview').click(function () {
+                let DeliveryOrderList = $('#DeliveryOrderList').DataTable();
+                let rowNo = $(this).data('row-index');
+                let temp = DeliveryOrderList.row(rowNo).data();
+                temp[4] = "Printed";
+                DeliveryOrderList.row(rowNo).data(temp).invalidate();
+            });
+        });
+        $(document).on('click', '.printPreviewTax', function (e) {
+            e.preventDefault();
+            let rowNo = $(this).data('row-index');
+            let DocNumber = $(this).data('row-docnum');
+            let URL = $(this).attr("href");             
+            $.ajax({
+                url: "@Url.Action("CanPrintInvoice", "CashSales", null)",
+                type: 'post',
+                contentType: 'application/x-www-form-urlencoded',
+                data: { DocNumber: DocNumber },
+                success: function (data)
+                {
+                    if (data.canAccess) {
+                       
+                        let DeliveryOrderList = $('#DeliveryOrderList').DataTable();
+                               
+                        let temp = DeliveryOrderList.row(rowNo).data();
+                        temp[4] = "Printed";
+                        DeliveryOrderList.row(rowNo).data(temp).invalidate();
+                        window.open(URL, '_blank');
+                               
+                    }
+                    else {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        $('<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Alert!</h4><p>Access denied</p></div>')
+                            .prependTo($('.box-body'))
+                            .delay(5000)
+                            .slideUpAndRemove('slow');   
+                    }
+                            
+                },
+                error: function ()
+                {
+                             
+                }
+            });
+        });
+    </script>
+}

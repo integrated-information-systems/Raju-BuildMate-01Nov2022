@@ -1,0 +1,607 @@
+﻿@using BMSS.Domain.Entities
+@using BMSS.Domain
+@using BMSS.WebUI.Models.ItemViewModels
+@using System.Globalization
+@model OITM
+@{
+    ViewBag.Title = "Stock Details - " + Model.ItemName;
+    IEnumerable<LocationStockViewModel> LocationStockQty = ViewBag.LocationStockQty;
+    IEnumerable<ItemLastPriceViewModel> LastPriceList = ViewBag.LastPriceList;
+    IEnumerable<ItemPricesViewModel> ItemPriceList = ViewBag.ItemPriceList;
+    IEnumerable<SPP2> SpecialPrices = ViewBag.SpecialPrices;
+    IEnumerable<OINM> LedgerInfoTransactions = ViewBag.LedgerInfo;
+    IEnumerable<InvMovmentView> LedgerInfoLocalTransactions = ViewBag.LedgerInfoLocal;
+    decimal TotalStock = ViewBag.TotalStock;
+    decimal TotalOnOrderStock = ViewBag.TotalOnOrderStock;
+    decimal TotalMinumumStock = ViewBag.TotalMinumumStock;
+}
+@section Styles {
+    @Styles.Render("~/DataTablesCss")
+    @Styles.Render("~/Select2Css")
+}
+@section Content_Header {
+    <section class="content-header">
+        <h1>
+            Stock Details
+            <small>SAP Stock Details</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i>Administration</a></li>
+            <li class="active"><a href='@Url.Action("Index", "Item")'>Stocks</a></li>
+        </ol>
+    </section>
+}
+<div class="row">
+    <div class="col-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">@Model.ItemName</h3>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.ItemCode)
+                            @Html.TextBoxFor(x => x.ItemCode, new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.ItemName)
+                            @Html.TextBoxFor(x => x.ItemName, new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.ItemGroup.ItmsGrpNam)
+                            @Html.TextBoxFor(x => x.ItemGroup.ItmsGrpNam, new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.EvalSystem)
+                            @Html.TextBoxFor(x => x.EvalSystem, new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.MinLevel)
+                            @Html.TextBoxFor(x => x.MinLevel, "{0:0.000}", new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.InvntryUom)
+                            @Html.TextBoxFor(x => x.InvntryUom, new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                    @*<div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.SalUnitMsr)
+                                @Html.TextBoxFor(x => x.SalUnitMsr, new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>*@
+                </div>
+                @*<div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.NumInSale)
+                                @Html.TextBoxFor(x => x.NumInSale, "{0:0.00}", new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.BuyUnitMsr)
+                                @Html.TextBoxFor(x => x.BuyUnitMsr, new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.NumInBuy)
+                                @Html.TextBoxFor(x => x.NumInBuy, "{0:0.00}", new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                    </div>*@
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                        <div class="form-group">
+                            @Html.Label("Unit Weight")
+                            @Html.TextBoxFor(x => x.IWeight1, new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="nav-tabs-custom">
+                            <ul class="nav nav-tabs">
+                                <li class="nav-item active"><a href="#tab_1" data-toggle="tab" class="nav-link active">Stock Qty by Location</a></li>
+                                @*<li class="nav-item"><a href="#tab_2" data-toggle="tab" class="nav-link">Last price</a></li>*@
+                                <li class="nav-item"><a href="#tab_3" data-toggle="tab" class="nav-link">Price Band</a></li>
+                                <li class="nav-item"><a href="#tab_4" data-toggle="tab" class="nav-link">Quantity Break</a></li>
+                                <li class="nav-item"><a href="#tab_5" data-toggle="tab" class="nav-link">Notes (All)</a></li>
+                                <li class="nav-item"><a href="#tab_6" data-toggle="tab" class="nav-link">Notes (Management)</a></li>
+                                <li class="nav-item"><a href="#tab_7" data-toggle="tab" class="nav-link">Ledger</a></li>
+                                <li class="nav-item"><a href="#tab_8" data-toggle="tab" class="nav-link">Quantity Break 1</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="tab_1">
+                                    <div class="row justify-content-around">
+                                        <div class="col-6">
+                                            <table id="LocationStock" class="table table-striped table-bordered responsive nowrap bmdatatable" data-fixed-header="true" data-auto-width="true" data-paging='false' data-searching="false" data-length-change="false" data-page-length="5" data-ordering="false" style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Warehouse</th>
+                                                        <th class="text-right">In Stock</th>
+                                                        <th class="text-right">On Order</th>
+                                                        <th class="text-right">Minimum Stock</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var i in LocationStockQty)
+                                                    {
+                                                        <tr>
+                                                            <td>@i.WarhouseName</td>
+                                                            @if (i.AvailableQty == null)
+                                                            {
+                                                                <td class="text-right">0.00</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td class="text-right">@i.AvailableQty.Value.ToString("N3", new CultureInfo("en-US"))</td>
+                                                            }
+                                                            <td class="text-right">@i.OnOrder.Value.ToString("N3", new CultureInfo("en-US"))</td>
+                                                            @if (i.MinStock == null)
+                                                            {
+                                                                <td class="text-right">0.00</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td class="text-right">@i.MinStock.Value.ToString("N3", new CultureInfo("en-US"))</td>
+                                                            }
+                                                        </tr>
+
+                                                    }
+                                                    <tr>
+                                                        <td class="text-right"><b>Total</b></td>
+                                                        <td class="text-right">@TotalStock.ToString("N3", new CultureInfo("en-US"))</td>
+                                                        <td class="text-right">@TotalOnOrderStock.ToString("N3", new CultureInfo("en-US"))</td></td>
+                                                        <td class="text-right">@TotalMinumumStock.ToString("N3", new CultureInfo("en-US"))</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                @*<div class="tab-pane" id="tab_2">
+            <div class="row justify-content-around">
+                <div class="col-8">
+                    <table id="LastPriceList" class="table table-striped table-bordered responsive nowrap bmdatatable" data-scroll-y="200px" data-scroll-collapse="true" data-auto-width="true" data-paging='false' data-searching="false" data-length-change="false" data-page-length="5" data-ordering="false" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Quantity</th>
+                                <th class="text-right">Unit Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var i in LastPriceList)
+                            {
+                                <tr>
+                                    <td>@i.DocDate.ToString("dd'/'MM'/'yyyy")</td>
+                                    <td>@i.Quantity.ToString("F3")</td>
+                                    <td>@i.Price.ToString("N4", new CultureInfo("en-US"))</td>
+                                </tr>
+
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>*@
+                                <div class="tab-pane" id="tab_3">
+                                    <div class="row justify-content-around">
+                                        <div class="col-3">
+                                            <table id="ItemPricesList" class="table table-striped table-bordered responsive nowrap bmdatatable" data-fixed-header="true" data-auto-width="true" data-paging='false' data-searching="false" data-length-change="false" data-page-length="5" data-ordering="false" style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Price Band</th>
+                                                        @*<th>Currency</th>*@
+                                                        <th class="text-right">Unit Price</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var i in ItemPriceList)
+                                                    {
+                                                        <tr>
+                                                            <td>@i.PriceListName</td>
+                                                            @*<td>@i.Currency</td>*@
+                                                            <td class="text-right">@i.Price.ToString("N4", new CultureInfo("en-US"))</td>
+                                                        </tr>
+
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tab_4">
+                                    <div class="row justify-content-around">
+                                        <div class="col-5">
+                                            @*<table id="SpecialPrices" class="table table-striped table-bordered responsive nowrap bmdatatable" data-fixed-header="true" data-auto-width="true" data-paging='false' data-searching="false" data-length-change="false" data-page-length="5" data-ordering="false" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th class="text-right">Quantity</th>
+                                <th class="text-right">Discount</th>
+                                <th class="text-right">Special Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var i in SpecialPrices)
+                            {
+                                <tr>
+                                    <td class="text-right">@i.Amount.ToString("N3", new CultureInfo("en-US"))</td>
+                                    <td class="text-right">@i.Discount.ToString("N4", new CultureInfo("en-US"))</td>
+                                    <td class="text-right">@i.Price.ToString("N4", new CultureInfo("en-US"))</td>
+                                </tr>
+
+                            }
+                        </tbody>
+                    </table>*@
+                                            @using (Html.BeginForm(null, null, null, FormMethod.Post, new { @id = "SpecialPriceForm", @class = "form-horizontal", data_bind = "submit: validateAndSubmit" }))
+                                            {
+                                                @Html.ValidationSummary()
+                                                @Html.AntiForgeryToken()
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
+                                                        <div class="form-group">
+                                                            @Html.Label("Price List")
+                                                            @Html.DropDownList("PriceList", Enumerable.Empty<SelectListItem>(), null, new { @class = "form-control select2", style = "width:100%", required = "", data_bind = "options: PriceListCodesAndNames, optionsText: 'Text', optionsValue: 'Value', value: PriceList ,optionsCaption: 'Select Price List'" })
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                                        <button type="submit" class="btn btn-primary">Search</button>
+                                                    </div>
+                                                </div>
+                                                <table id="SpecialPrices" class="table table-striped table-bordered responsive nowrap " data-fixed-header="true" data-auto-width="true" data-paging='false' data-searching="false" data-length-change="false" data-page-length="5" data-ordering="false" style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-right">Quantity</th>
+                                                            <th class="text-right">Discount</th>
+                                                            <th class="text-right">Special Price</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @*@foreach (var i in SpecialPrices)
+                                {
+                                    <tr>
+                                        <td class="text-right">@i.Amount.ToString("N3", new CultureInfo("en-US"))</td>
+                                        <td class="text-right">@i.Discount.ToString("N4", new CultureInfo("en-US"))</td>
+                                        <td class="text-right">@i.Price.ToString("N4", new CultureInfo("en-US"))</td>
+                                    </tr>
+
+                                }*@
+                                                    </tbody>
+                                                </table>
+
+
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tab_5">
+                                    <div class="box box-primary">
+                                        <div class="box-header">
+                                            <h3 class="box-title"></h3>
+                                            <div class="box-tools"><button type="button" class="btn btn-success" data-add-modal-title="Add Note" data-toggle="modal" data-target="#AddUpdateNoteModal" data-tooltip="tooltip" title="Add Note"><i class="fa fa-fw fa-plus"></i></button></div>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="row">
+                                                <div class="col-12" id="NoteListTble">
+                                                    @{ Html.RenderAction("NoteList", "INoteAll", new { ItemCode = Model.ItemCode }); }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tab_6">
+                                    <div class="box box-primary">
+                                        <div class="box-header">
+                                            <h3 class="box-title"></h3>
+                                            <div class="box-tools"><button type="button" class="btn btn-success" data-add-modal-title="Add Note" data-toggle="modal" data-target="#AddUpdateMngtNoteModal" data-tooltip="tooltip" title="Add Note"><i class="fa fa-fw fa-plus"></i></button></div>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="row">
+                                                <div class="col-12" id="MngtNoteListTble">
+                                                    @{ Html.RenderAction("NoteList", "INoteMngt", new { ItemCode = Model.ItemCode }); }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tab_7">
+                                    <div class="row justify-content-around">
+                                        <div class="col-12">
+
+                                            @*<table id="LedgerInfoTransactions" class="table table-striped table-bordered responsive nowrap bmdatatable" data-scroll-y="500px" data-scroll-collapse="true" data-auto-width="true" data-paging='false' data-searching="true" data-length-change="false" data-page-length="5" data-ordering="false" style="width:100%">*@@*<table id="LedgerInfoTransactions" class="table table-striped table-bordered responsive nowrap bmdatatable" data-scroll-y="500px" data-scroll-collapse="true" data-auto-width="true" data-paging='false' data-searching="true" data-length-change="false" data-page-length="5" data-ordering="false" style="width:100%">*@
+                                            <table id="LedgerInfoTransactions" class="table table-striped table-bordered responsive nowrap " data-fixed-header="true" data-auto-width="true" data-paging='false' data-searching="false" data-length-change="false" data-page-length="5" data-ordering="false" style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Posting Date</th>
+                                                        <th>Doc #</th>
+                                                        <th>Location</th>
+                                                        <th>SAP Doc #</th>
+                                                        <th>Customer/Supplier Code</th>
+                                                        <th>Customer/Supplier Name</th>
+                                                        <th class="text-right">Received Qty</th>
+                                                        <th class="text-right">Issued Qty</th>
+                                                        <th class="text-right">Price</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+
+                                                    @foreach (var i in LedgerInfoLocalTransactions)
+                                                    {
+                                                        <tr>
+                                                            <td>@i.DocDate.ToString("dd-MM-yyy")</td>
+                                                            <td>@i.DocNum</td>
+                                                            <td>@i.Location</td>
+                                                            <td>
+                                                                
+                                                                @{
+                                                                    string TransType = i.TransType;
+                                                                    int.TryParse(TransType, out int IntTransType);
+                                                                }
+                                                                @switch (IntTransType)
+                                                                {
+                                                                    case -2:
+                                                                        @:Opening Balance
+                                                                        break;
+                                                                    case 10000071:
+                                                                        @:Inventory Posting
+                                                                        break;
+                                                                    case 132:
+                                                                        @:Correction Invoice
+                                                                        break;
+                                                                    case 13:
+                                                                        @:A/R Invoice
+                                                                        break;
+                                                                    case 14:
+                                                                        @:A/R Credit Note
+                                                                        break;
+                                                                    case 15:
+                                                                        @:Delivery
+                                                                        break;
+                                                                    case 18:
+                                                                        @:A/P Invoice
+                                                                        break;
+                                                                    case 19:
+                                                                        @:A/P Credit Memo
+                                                                        break;
+                                                                    case 20:
+                                                                        @:Goods Receipt
+                                                                        break;
+                                                                    case 21:
+                                                                        @:Goods Return
+                                                                        break;
+                                                                    case 58:
+                                                                        @:Stock Update
+                                                                        break;
+                                                                    case 59:
+                                                                        @:Goods Receipt
+                                                                        break;
+                                                                    case 162:
+                                                                        @:Inventory Revaluation
+                                                                        break;
+
+                                                                    default:
+                                                                        @i.TransType
+                                                                        break;
+                                                                }
+                                                                - @i.BASE_REF
+                                                            </td>
+
+                                                            <td>@i.CardCode</td>
+                                                            <td>@i.CardName</td>
+                                                            @if (i.InQty == null)
+                                                            {
+                                                                <td>&nbsp;</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td class="text-right">    @i.InQty.ToString("N3", new CultureInfo("en-US"))</td>
+                                                            }
+                                                            @if (i.OutQty == null)
+                                                            {
+                                                                <td>&nbsp;</td>
+                                                            }
+                                                            else if (i.TransType.Equals("Stock Transfer"))
+                                                            {
+                                                                <td class="text-right">@i.InQty.ToString("N3", new CultureInfo("en-US"))</td>
+                                                            }
+                                                            else
+                                                            {
+
+                                                                <td class="text-right">@i.OutQty.ToString("N3", new CultureInfo("en-US"))</td>
+                                                            }
+                                                            @if (i.UnitPrice != -1)
+                                                            {
+                                                                <td class="text-right">@i.UnitPrice.ToString("N4", new CultureInfo("en-US"))</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td class="text-right"></td>
+                                                            }
+                                                        </tr>
+
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tab_8">
+                                    <div class="row justify-content-around">
+                                        <div class="col-4">
+                                            @foreach (var j in ViewBag.SpecialPrices1)
+                                            {
+                                                <table id="SpecialPrices1" class="table table-striped table-bordered responsive nowrap SpecialPrices1" data-fixed-header="true" data-auto-width="true" data-paging='false' data-searching="false" data-length-change="false" data-page-length="5" data-ordering="false" style="width:100%">
+                                                    <thead>
+                                                        <tr><th colspan="2">Price Band @j.Key</th></tr>
+                                                        <tr>
+                                                            <th class="text-right">Quantity</th>
+                                                            <th class="text-right">Special Price</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var i in j.List)
+                                                        {
+                                                            <tr>
+                                                                <td class="text-right">@i.Amount.ToString("N3", new CultureInfo("en-US"))</td>
+                                                                <td class="text-right">@i.Price.ToString("N4", new CultureInfo("en-US"))</td>
+                                                            </tr>
+
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            }
+                                        </div>
+                                       
+
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/DataTables")
+    @Scripts.Render("~/bundles/Jquery-Validation-and-Ajax")
+    @Scripts.Render("~/Select2")
+    @Scripts.Render("~/Own")
+    @Scripts.Render("~/Knockout")
+    <script>
+
+        function SpecialPriceViewModel(ItemCode) {
+            var self = this;
+            self.ItemCode = ko.observable(ItemCode);
+            self.PriceList = ko.observable();
+            self.PriceListCodesAndNames = ko.observableArray();
+            self.validateAndSubmit = function (form) {
+
+                var table = $('#SpecialPrices').DataTable();
+                table.clear().draw();
+
+                    $.ajax({
+                        url: "@Url.Action("GetItemSpecialPrice", "ItemSpecialPrice", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ PriceListNum: self.PriceList, ItemCode: self.ItemCode}),
+                        success: function (data) {
+
+                            if (data.length > 0) {
+                                for (var i = 0; i < data.length; i++) {
+                                    table.row.add([
+                                        parseFloat(data[i].Amount).toFixed(3),
+                                        parseFloat(data[i].Discount).toFixed(4),
+                                        parseFloat(data[i].Price).toFixed(4)
+                                    ]).draw().node();
+                                }
+                            }
+                            else {
+                                //for (var i = 0; i < 25; i++) {
+                                //    table.row.add([
+                                //        "a",
+                                //        "b",
+                                //        "c",
+                                //        "d",
+                                //    ]).draw().node();
+                                //}
+                            }
+
+                        },
+                        error: function () { }
+                    })
+
+            }
+        }
+        // Once Document Ready
+        $(function () {
+
+            var PriceListCodesAndNames;
+            $.when(
+                // Initial Ajax Requests, while page loading
+                //Load Customers
+
+                //Load Item Codes
+                $.ajax({
+                    url: "@Url.Action("GetPriceLists", "ItemSpecialPrice", null)",
+                    type: 'post',
+                    contentType: 'application/x-www-form-urlencoded',
+                    data: ko.toJS({}),
+                    success: function (data) {
+                        PriceListCodesAndNames = data;
+                    },
+                    error: function () { }
+                })
+            ).done(function () {
+                var SPVM = new SpecialPriceViewModel('@Model.ItemCode');
+                SPVM.PriceListCodesAndNames = PriceListCodesAndNames;
+                ko.applyBindings(SPVM);
+            });
+            var SpecialPricestable = $('#SpecialPrices').DataTable(
+                {
+                    "columnDefs": [
+                        { className: "text-right", "targets": [0, 1, 2] }
+                    ]
+                });
+            var SpecialPrices1table = $('.SpecialPrices1').DataTable(
+                {
+                    "columnDefs": [
+                        { className: "text-right", "targets": [0, 1] }                        
+                    ],
+                    "info": false
+                });
+            var LedgerInfoTransactionstable = $('#LedgerInfoTransactions').DataTable(
+                {
+                    
+                });
+            
+
+            $('.select2').select2();
+
+            $('#LedgerInfoTransactions tbody').on('dblclick', 'tr', function () {
+                var data = LedgerInfoTransactionstable.row(this).data();
+                console.log(data);
+                var docNum = data[1];
+                var docType = data[3];
+                var ARInvoice = docNum.includes("SIN");
+                var Delivery = docNum.includes("SRI");
+                if (ARInvoice === true) {
+                    window.open('@Url.Action("Edit", "DO")?DocNum=' + docNum);
+                }
+                else if (Delivery === true) {
+                    window.open('@Url.Action("Edit", "CashSales")?DocNum=' + docNum);
+                }
+                
+            });
+        });
+    </script>
+}
+@{ Html.RenderAction("NoteForm", "INoteAll", new { ItemCode = Model.ItemCode }); }
+@{ Html.RenderAction("NoteForm", "INoteMngt", new { ItemCode = Model.ItemCode }); }

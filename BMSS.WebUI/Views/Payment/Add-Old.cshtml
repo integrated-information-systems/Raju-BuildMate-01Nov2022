@@ -1,0 +1,842 @@
+﻿@using BMSS.WebUI.Models.PaymentViewModels
+@model PaymentViewModel
+@{
+
+    var isCreating = Model.DocNum == "New";
+    ViewBag.Title = (isCreating) ? "Add New Payment" : "Edit Payment #" + Model.DocNum;
+}
+@section Content_Header {
+    <section class="content-header">
+        <h1>
+            @ViewBag.Title
+            <small>Payment</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i>Transactions</a></li>
+            <li class="active"><a href='@Url.Action("Index", "Payment")'>Payment</a></li>
+        </ol>
+    </section>
+}
+@section Styles {
+    @Styles.Render("~/DataTablesCss")
+    @Styles.Render("~/Select2Css")
+    @Styles.Render("~/DatePicker")
+}
+<div class="row" id="MainContent">
+    <div class="col-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">Payment</h3>
+            </div>
+            @using (Html.BeginForm(null, null, null, FormMethod.Post, new { @id = "PaymentForm", @class = "form-horizontal", data_bind = "submit: validateAndSubmitToSAP" }))
+            {
+                @Html.ValidationSummary()
+                @Html.AntiForgeryToken()
+                <div class="box-body">
+
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.CardCode)
+                                @Html.DropDownListFor(x => x.CardCode, Enumerable.Empty<SelectListItem>(), null, new { @class = "form-control select2", data_bind = "options: CustomerNameCodes, optionsText: 'Value', optionsValue: 'Value', value: Payment.cardCode ,optionsCaption: 'Select Customer Code'" })
+                            </div>
+                            <div class="overlay">
+                                <i class="fa fa-refresh fa-spin text-gray"></i>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.DocNum)
+                                @Html.TextBoxFor(x => x.DocNum, new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PrintedStatus)
+                                @Html.TextBox("PrintedStatus", Html.GetPrintedStatusName(Model.PrintedStatus), new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.CreatedBy)
+                                @Html.TextBoxFor(x => x.CreatedBy, new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+
+                        </div>                        
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.CardName)
+                                @Html.DropDownListFor(x => x.CardName, Enumerable.Empty<SelectListItem>(), null, new { @class = "form-control select2", data_bind = "options: CustomerNameCodes, optionsText: 'Text', optionsValue: 'Value', value: Payment.cardName,optionsCaption: 'Select Company Name'" })
+                            </div>
+                            <div class="overlay">
+                                <i class="fa fa-refresh fa-spin text-gray"></i>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.DocDate)
+                                @Html.TextBoxFor(x => x.DocDate, new { @class = "form-control datepicker", data_bind = "value: Payment.docDate" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.Status)
+                                @Html.TextBox("Status", Html.GetDocStatusName(Model.Status), new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.CreatedOn)
+                                @if (Model.CreatedOn.ToString("dd'/'MM'/'yyyy").Equals("01/01/0001"))
+                                {
+                                    @Html.TextBox("CreatedOnString", null, null, new { @class = "form-control", disabled = "" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(x => x.CreatedOn, "{0:dd'/'MM'/'yyyy HH:mm:ss tt}", new { @class = "form-control", disabled = "" })
+                                }
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+
+
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.Ref)
+                                @Html.TextBoxFor(x => x.Ref, new { @class = "form-control", data_bind = "value: Payment.ref" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.SyncStatus)
+                                @Html.TextBox("Status", Html.GetSyncStatusName(Model.SyncStatus), new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                             
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                             
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="nav-tabs-custom">
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item active"><a href="#tab_1" data-toggle="tab" class="nav-link active">Contents</a></li>
+                                    <li class="nav-item"><a href="#tab_2" data-toggle="tab" class="nav-link">Pay To</a></li>
+                                    <li class="nav-item"><a href="#tab_3" data-toggle="tab" class="nav-link">Notes</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="tab_1">
+                                        <table id="ItemListTable" class="table table-striped table-bordered responsive nowrap bmdatatable" data-fixed-header="true" data-auto-width="true" data-paging='false' data-searching="false" data-length-change="false" data-page-length="5" data-ordering="false" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Line No</th>
+                                                    <th>Doc No</th>
+                                                    <th>Doc Type</th>
+                                                    <th>Date</th>
+                                                    <th class="text-right">Total</th>
+                                                    <th class="text-right">Balance Due</th>
+                                                    <th class="text-right">Payment</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody data-bind='foreach: Payment.lines'>
+                                                <tr>
+                                                    <td><span data-bind='text: lineNum, uniqueName: true' /></td>
+                                                    <td><span data-bind='text: referenceDocNum, uniqueName: true' /></td>
+                                                    <td><span data-bind='text: referenceDocType, uniqueName: true' /></td>
+                                                    <td><span data-bind='text: docDate, uniqueName: true' /></td>
+                                                    <td><span data-bind='text: docTotal, uniqueName: true' /></td>
+                                                    <td><span data-bind='text: balanceDue, uniqueName: true' /></td>
+                                                    <td><input class="form-control text-right" data-bind='value: paymentAmount, uniqueName: true' /></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                    <div class="tab-pane" id="tab_2">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(x => x.GLCode)
+                                                    @Html.DropDownListFor(x => x.GLCode, Enumerable.Empty<SelectListItem>(), null, new { @class = "form-control select2", style = "width:100%", data_bind = "options: GLCodes, optionsText: 'Text', optionsValue: 'Value', value: Payment.gLCode,optionsCaption: 'Select GL Code'" })
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(x => x.PaymentType)
+                                                    @Html.DropDownListFor(x => x.PaymentType, Enumerable.Empty<SelectListItem>(), null, new { @class = "form-control select2", style = "width:100%", data_bind = "options: PaymentTypes, optionsText: 'Text', optionsValue: 'Value', value: Payment.paymentType,optionsCaption: 'Select Payment Type'" })
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(x => x.PaidAmount)
+                                                    @Html.TextBoxFor(x => x.PaidAmount, new { @class = "form-control", data_bind = "textInput: Payment.paidAmount" })
+
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(x => x.ChequeNoReference)
+                                                    @Html.TextBoxFor(x => x.ChequeNoReference, new { @class = "form-control", data_bind = "value: Payment.chequeNoReference" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(x => x.PaymentRemarks)
+                                                    @Html.TextBoxFor(x => x.PaymentRemarks, new { @class = "form-control", data_bind = "value: Payment.paymentRemarks" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="tab_3">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <button type="button" class="btn btn-primary float-right mr-1" data-bind="click: addPaymentNote">Add</button>
+                                            </div>
+                                        </div>
+                                        <table id="NoteListTable" class="table table-striped table-bordered responsive nowrap bmdatatable dblEdit" data-fixed-header="true" data-auto-width="false" data-paging='false' data-searching="false" data-length-change="false" data-page-length="5" data-ordering="false" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 10%;">Line No</th>
+                                                    <th style="width: 80%;">Note</th>
+                                                    <th style="width: 10%;">Delete</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+
+                    <Button type="submit" Class="btn btn-primary" data-bind="attr : {'disabled' : isDisabled}">Submit To SAP</Button>
+                    <a class="btn btn-primary" href="@Url.Action("Index")" role="button">Close w/o Saving</a>
+                    @*<a class="btn btn-primary" href="@Url.Action("Index")" role="button">Duplicate</a>*@
+                    <a class="btn btn-primary" href="#" role="button">Preview</a>
+                    <a class="btn btn-primary" href="#" role="button">Print</a>                    
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section BootModals {    
+    @Html.Partial("_PaymentNoteDetailModal", new PaymentNoteViewModel() { });
+}
+@section Scripts {
+    @Scripts.Render("~/DataTables")
+    @Scripts.Render("~/bundles/Jquery-Validation-and-Ajax")
+    @Scripts.Render("~/Select2")
+    @Scripts.Render("~/DatePickerJS")
+    @Scripts.Render("~/Knockout")
+
+    <script>
+        function PaymentViewModel(Pay) {
+            var self = this;
+            self.isCreating = Pay.docNum == "New";
+            // Loaded from ajax - Observable Arrays
+            self.GLCodes = ko.observableArray();
+            self.PaymentTypes = ko.observableArray();
+            self.isDisabled = ko.observable(false);
+            self.CustomerNameCodes = ko.observableArray();
+
+           
+           self.LoadCustomerBasedDropdowns = function (cardcode) {
+                                             $.ajax({
+                                                url: "@Url.Action("GetDocList", "Payment", null)",
+                                                type: 'post',
+                                                contentType: 'application/x-www-form-urlencoded',
+                                                    data: ko.toJS({ CardCode: cardcode }),
+                                                 success: function (data) {
+                                                     //var table = $('#ItemListTable').DataTable();
+                                                     //table.clear();
+                                                     self.Payment.lines.removeAll();
+                                                    for (var i = 0; i < data.length; i++) {
+                                                        self.Payment.lines.push({
+                                                            lineNum: data[i].LineNum,
+                                                            referenceDocNum: data[i].ReferenceDocNum,
+                                                            referenceDocType: data[i].ReferenceDocType,
+                                                            paymentAmount: parseFloat(data[i].PaymentAmount).toFixed(2),
+                                                            docTotal: parseFloat(data[i].DocTotal).toFixed(2),
+                                                            balanceDue: parseFloat(data[i].BalanceDue).toFixed(2), 
+                                                            docDate: data[i].DocDate
+                                                        });
+                                                    }
+                                                },
+                                                error: function () { }
+                                            });    
+            };
+           
+            // Model Binding
+            self.Payment = {
+                docNum: Pay.docNum,
+                cardCode: ko.observable(Pay.cardCode),
+                cardName: ko.observable(Pay.cardName),
+                docDate: ko.observable(Pay.docDate),
+                ref: ko.observable(Pay.ref),
+                submittedToSAP: ko.observable(Pay.submittedToSAP),
+                gLCode: ko.observable(Pay.gLCode),
+                paymentType: ko.observable(Pay.paymentType),
+                paidAmount: ko.observable(Pay.paidAmount),
+                chequeNoReference: ko.observable(Pay.chequeNoReference),
+                paymentRemarks: ko.observable(Pay.paymentRemarks),
+                lines: ko.observableArray(Pay.lines),
+                noteLines: ko.observableArray(Pay.noteLines),
+            }
+           
+            self.isDisabled(self.Payment.submittedToSAP());
+
+            var originalState = Pay;
+
+            //Single PaymentLine Object Setup
+            self.PaymentLine = {
+                lineNum: '',
+                referenceDocNum: '',
+                referenceDocType:'',
+                paymentAmount: ko.observable(),
+                docTotal: ko.observable(),
+                balanceDue: ko.observable(),      
+                docDate: '',     
+            }
+            //Single PaymentNote Object Setup
+            self.PaymentNote = {
+                lineNum: ko.observable(),
+                note: ko.observable(),
+            }
+            
+
+             
+            self.InitializePaymentLine = function () {
+                self.PaymentLine.lineNum ='';
+                self.PaymentLine.referenceDocNum  ='';
+                self.PaymentLine.referenceDocType = '';
+                self.PaymentLine.paymentAmount('');
+                self.PaymentLine.docTotal('');
+                self.PaymentLine.balanceDue('');
+                self.PaymentLine.docDate = '';                 
+            }
+            //Data Table operations
+            self.Payment.lines.subscribe(function (changes) {
+
+
+                // Add Lines
+                if (changes[0].status === "deleted") {
+
+
+                }
+                else if (self.PaymentLine.lineNum === "") {
+                    //var table = $('#ItemListTable').DataTable();
+                    
+                    //var rowNode = table.row.add([
+                    //    changes[0].index + 1,
+                    //    changes[0].value.docNum,
+                    //    changes[0].value.docType,
+                    //    changes[0].value.docDate,
+                    //    parseFloat(changes[0].value.docTotal).toFixed(2),
+                    //    parseFloat(changes[0].value.balanceDue).toFixed(2),                        
+                    //    "<input class='form-control text-right' value='" + parseFloat(changes[0].value.paymentAmount).toFixed(2)   + "'>"                   
+                    //]).draw().node();  
+                    //ko.applyBindings(self, rowNode);
+                } //Update Lines
+                else {
+
+                    
+                    //ko.applyBindings(PaymentVM, rowNode);
+                }
+
+                $('#AddUpdateItemModal').modal('hide');
+
+            }, self, "arrayChange");
+
+
+
+            // Add/Update/Delete Payment Notes
+            self.InitializePaymentNote = function () {
+                self.PaymentNote.lineNum('');
+                self.PaymentNote.note('');
+            }
+            self.validateAndAddNote = function (form) {
+                if (!$(form).valid()) {
+
+                    $('#AddUpdateNoteModal').scrollTop(0);
+                }
+                else {
+
+                    var lineNum = 0;
+                    if (self.Payment.noteLines() !== null) {
+                        lineNum = self.Payment.noteLines().length;
+                    }
+
+                    if (self.PaymentNote.lineNum() === "") {
+                        self.Payment.noteLines.push({
+                            lineNum: lineNum,
+                            note: self.PaymentNote.note(),
+                        });
+                    }
+                    else {
+
+                        var LineIndex = parseInt(self.PaymentNote.lineNum());
+
+                        self.Payment.noteLines.replace(self.Payment.noteLines()[LineIndex], {
+                            lineNum: self.PaymentNote.lineNum(),
+                            note: self.PaymentNote.note(),
+                        });
+                    }
+                }
+            }
+            self.Payment.noteLines.subscribe(function (changes) {
+
+                if (changes[0].status === "deleted") {
+
+
+                }
+                else if (self.PaymentNote.lineNum() === "") {
+
+                    var table = $('#NoteListTable').DataTable();
+                    var rowNode = table.row.add([
+                        changes[0].index + 1,
+                        changes[0].value.note,
+                        "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deletePaymentNote("
+                        + changes[0].index + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                    ]).draw().node();
+                    $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editPaymentNote(" + changes[0].index + ", data, event) } }");
+                    ko.applyBindings(self, rowNode);
+                } //Update Lines
+                else {
+
+                    var table = $('#NoteListTable').DataTable();
+                    var LineIndex = parseInt(self.PaymentNote.lineNum());
+                    var rowNode = table.row(LineIndex).data([
+                        changes[0].index + 1,
+                        changes[0].value.note,
+                        "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deletePaymentNote("
+                        + changes[0].index + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                    ]).draw().node();
+
+                    table.columns.adjust().draw();
+                    ko.cleanNode(rowNode);
+                    ko.applyBindings(self, rowNode);
+
+                }
+
+
+                $('#AddUpdateNoteModal').modal('hide');
+
+            }, self, "arrayChange");
+            self.editPaymentNote = function (rowid, data, event) {
+
+                var clickedRowId = parseInt(rowid);
+                if (clickedRowId < self.Payment.noteLines().length) {
+                    self.PaymentNote.lineNum(clickedRowId);
+                    self.PaymentNote.note(self.Payment.noteLines()[clickedRowId].note);
+
+                    //self.PaymentLine.lineTotal(self.PaymentLine.lineTotal); //Computed automatically
+                    $('#AddUpdateNoteModal').modal('show');
+                }
+            }
+            self.addPaymentNote = function () {
+                $('#AddUpdateNoteModal').modal('show');
+                self.InitializePaymentNote();
+            }
+            self.deletePaymentNote = function (rowid, data, event) {
+                var clickedRowId = parseInt(rowid);
+
+                if (clickedRowId < self.Payment.noteLines().length) {
+                    self.Payment.noteLines.remove(self.Payment.noteLines()[clickedRowId]);
+
+                }
+
+
+                var table = $('#NoteListTable').DataTable();
+
+                if (self.Payment.noteLines().length > 0) {
+                    table.clear();
+
+                    var i;
+                    for (i = 0; i < self.Payment.noteLines().length; i++) {
+
+                        var rowNode = table.row.add([
+                            i + 1,
+                            self.Payment.noteLines()[i].note,
+                            "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deletePaymentNote("
+                            + i + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                        ]).draw().node();
+                        $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editPaymentNote(" + i + ", data, event) } }");
+                        ko.applyBindings(self, rowNode);
+                    }
+
+                }
+                else {
+                    table.clear().draw();
+                }
+
+
+
+
+
+            }
+
+ 
+            
+            // on Change of CardCode - CardName value will be selected
+            self.Payment.cardCode.subscribe(function (newValue) {
+                
+                //self.SQ.cardName(newValue);
+                // Above statement is enough to trigger the change of selection in knockout
+                // because of select2 is used we have to use below statement to trigger the change of selection
+              
+                    $('#CardName').val(newValue).trigger('change');
+                    //self.LoadCustomerDetails(newValue);
+                    self.LoadCustomerBasedDropdowns(newValue);
+               
+
+
+            });
+
+            // on Change of CardName - CardCode value will be selected
+            self.Payment.cardName.subscribe(function (newValue) {
+                //self.SQ.cardCode(newValue);
+                // Above statement is enough to trigger the change of selection in knockout
+                // because of select2 is used we have to use below statement to trigger the change of selection   
+                
+                $('#CardCode').val(newValue).trigger('change');                
+            });
+            // Initialize Add/Update Payment Model to the Initial State of page loaded first
+            self.Initialize = function () { // Used to initialize Form
+                self.Payment.cardCode(originalState.cardCode);
+                $('#CardCode').val(originalState.cardCode).trigger('change');
+                self.Payment.cardName(originalState.cardName);
+                $('#CardName').val(originalState.cardName).trigger('change');
+                self.Payment.docDate(originalState.docDate);
+
+                self.Payment.ref(originalState.ref);
+
+                if (originalState.lines !== null) {
+                    //Original state lines are not nul
+                    self.Payment.lines(originalState.lines);
+                }
+                else {
+                    //Original state lines are null
+
+                    self.Payment.lines.removeAll();
+                }
+
+
+            }
+
+
+            self.validateAndSubmitToSAP = function (form) {
+                var form = $('form[id="PaymentForm"]');
+
+                if (!$(form).valid()) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+                else {
+                   
+                   // Remove All li before submission, which he had in the previous validation
+                    $(form).find(".validation-summary-errors ul li").remove();
+                    $(form).find(".validation-summary-valid ul li").remove();
+
+                    self.Payment.__RequestVerificationToken = $(form).find('input[name="__RequestVerificationToken"]').val();
+                    self.Payment.submittedToSAP(true);
+
+                    $.ajax({
+                        url: "@Url.Action("Add", "Payment", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS(self.Payment),
+                        success: function (data)
+                        {
+                            self.successfulSave(form, data);
+                        },
+                        error: function ()
+                        {
+                            self.errorSave(form);
+                        }
+                    }); 
+                }
+            }
+            // Payment Form Submission using Ajax
+            self.validateAndSubmit = function (form) {
+
+                //By Default this function will return false, so form submission will not happen
+                if (!$(form).valid()) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                }
+                else {
+
+                    // Remove All li before submission, which he had in the previous validation
+                    $(form).find(".validation-summary-errors ul li").remove();
+                    $(form).find(".validation-summary-valid ul li").remove();
+
+                    self.Payment.__RequestVerificationToken = form[0].value;
+                    $.ajax({
+                        url: "@Url.Action("Add", "Payment", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS(self.Payment),
+                        success: function (data)
+                        {
+                           self.successfulSave(form, data);
+                        },
+                        error: function ()
+                        {
+                            self.errorSave(form);
+                        }
+                    });
+
+                }
+            }
+
+            self.successfulSave = function (form, data) {
+                if (Boolean(data.IsModelValid) === true) {
+
+                    if (self.isCreating) {
+                        self.Initialize();
+                        var table = $('#ItemListTable').DataTable();
+                        table.clear().draw();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        $('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Success!</h4> Payment Saved Successfully</div>')
+                            .prependTo($(form))
+                            .delay(5000)
+                            .slideUpAndRemove('slow');
+
+                    } else {
+                        if (self.Payment.submittedToSAP()) {
+                            self.isDisabled(self.Payment.submittedToSAP());
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                            $('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Success!</h4> Payment ' + self.Payment.docNum + ' Updated Successfully</div>')
+                                .prependTo($(form))
+                                .delay(5000)
+                                .slideUpAndRemove('slow');
+                        }
+                        else {
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                            $('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Success!</h4> Payment ' + self.Payment.docNum + ' Updated Successfully</div>')
+                                .prependTo($(form))
+                                .delay(5000)
+                                .slideUpAndRemove('slow');
+                        }
+
+                    }
+
+
+                }
+                else {
+
+                    var ErrArray = data.ModelErrList;
+
+                        $(form).find(".validation-summary-errors ul li").remove(); // Remove All li if before Submission had client side errors
+                        $(form).find(".validation-summary-valid ul li").remove();  // Remove one li with diplay:none style if before Submission didn't had any client side errors
+
+                        for (var i = 0; i < data.ModelErrList.length; i++) {
+                            $(form).find(".validation-summary-errors ul").append("<li>" + ErrArray[i] + "</li>");
+                            $(form).find(".validation-summary-valid ul").append("<li>" + ErrArray[i] + "</li>");
+                        }
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+
+            }
+            self.errorSave = function (form) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                $('<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Alert!</h4><p>Sorry, Some thing went wrong, Please contact website adminitrator</p></div>')
+                    .prependTo($(form))
+                    .delay(5000)
+                    .slideUpAndRemove('slow');
+            }
+
+
+
+
+
+
+        }
+        // Once Document Ready
+        $(function () {
+
+
+            var CustomerNameCodes;
+            var GLCodes;
+            var PaymentTypes;
+
+            $.when(
+                // Initial Ajax Requests, while page loading
+                //Load GL Codes
+                $.ajax({
+                    url: "@Url.Action("GetGLCodes", "GeneralLedger", null)",
+                    type: 'get',
+                    contentType: 'application/x-www-form-urlencoded',
+                    success: function (data) {
+
+                        GLCodes = data;
+                    },
+                    error: function () { }
+                }),
+                //Load Payment Types
+                $.ajax({
+                    url: "@Url.Action("GetPaymentTypes", "GeneralLedger", null)",
+                    type: 'get',
+                    contentType: 'application/x-www-form-urlencoded',
+                    success: function (data) {
+
+                        PaymentTypes = data;
+                    },
+                    error: function () { }
+                }),
+                //Load Customers
+                $.ajax({
+                    url: "@Url.Action("GetActiveCustomers", "Customer", null)",
+                    type: 'get',
+                    contentType: 'application/x-www-form-urlencoded',
+                    success: function (data) {
+
+                        CustomerNameCodes = data;
+
+                        $("#CardCode").parent().parent().find('.overlay').hide();
+                        $("#CardName").parent().parent().find('.overlay').hide();
+                    },
+                    error: function () { }
+                }) 
+                 
+            ).done(function () {
+                   //View Model Object Initialization
+                var PaymentVM = new PaymentViewModel(@Html.ViewModelToJson(Model));
+
+                
+                PaymentVM.CustomerNameCodes = CustomerNameCodes;
+                PaymentVM.GLCodes = GLCodes;
+                PaymentVM.PaymentTypes = PaymentTypes;
+                ko.applyBindings(PaymentVM);
+
+                    //Editing Payment
+                    var ExisingPayment = @Html.ViewModelToJson(Model);
+
+                    var SqLines = ExisingPayment.lines;
+                    //if (SqLines !== null) {
+                    //    for (var i = 0; i < SqLines.length; i++) {
+                    //        var dolinetable = $('#ItemListTable').DataTable();
+                    //        var rowNode = dolinetable.row.add([
+                    //            i + 1,
+                    //            SqLines[i].itemCode,
+                    //            SqLines[i].description,
+                    //            parseFloat(SqLines[i].qty).toFixed(3),
+                    //            SqLines[i].locationText,
+                    //            parseFloat(SqLines[i].unitPrice).toFixed(4),
+
+                    //            "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deletePaymentLine("
+                    //            + i + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                    //        ]).draw().node();
+                    //        $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editPaymentLine(" + i + ", data, event) } }");
+
+                    //        ko.applyBindings(PaymentVM, rowNode);
+                    //    }
+                    //}
+                var SqNoteLines = ExisingPayment.noteLines;
+
+                if (SqNoteLines !== null) {
+                    if (jQuery.type(SqNoteLines) !== "undefined") {
+
+                        for (var i = 0; i < SqNoteLines.length; i++) {
+                            var sqnotetable = $('#NoteListTable').DataTable();
+                            var rowNode = sqnotetable.row.add([
+                                i + 1,
+                                SqNoteLines[i].note,
+                                "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deletePaymentNote("
+                                + i + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                            ]).draw().node();
+                            $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editPaymentNote(" + i + ", data, event) } }");
+
+                            ko.applyBindings(PaymentVM, rowNode);
+                        }
+                    }
+                }
+
+            });
+
+
+
+
+
+            $('.select2').select2();
+            $('.datepicker').datepicker({ format: 'dd/mm/yyyy', autoclose: true });
+            var table = $('#ItemListTable').DataTable(
+                {
+                    "columnDefs": [
+                        { className: "text-right", "targets": [4, 5, 6] }
+                    ]
+                }
+            );
+            var LocationStocktable = $('#LocationStock').DataTable({
+                "columnDefs": [
+                    { className: "text-right", "targets": [1] }
+                ]
+            });
+
+            var PriceHistorytable = $('#PriceHistory').DataTable(
+                {
+                    "columnDefs": [
+                        { className: "text-right", "targets": [2, 3] }
+                    ]
+                });
+            var NoteListTable = $('#NoteListTable').DataTable(
+                {
+
+                });
+
+
+
+
+
+
+            $('table.bmdatatable tbody').on('click', 'tr td button.btn-danger', function () {
+
+                table.row($(this).parents('tr')).remove().draw();
+                //if ($(this).parent().parent().hasClass('highlight')) {
+                //    $(this).parent().parent().removeClass('highlight');
+                //}
+                //else {
+                //    table.$('tr.highlight').removeClass('highlight');
+                //    $(this).parent().parent().addClass('highlight');
+                //}
+            });
+
+
+        });
+    </script>
+}

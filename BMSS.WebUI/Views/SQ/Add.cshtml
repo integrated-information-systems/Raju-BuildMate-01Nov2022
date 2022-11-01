@@ -1,0 +1,2126 @@
+﻿@using BMSS.WebUI.Models.SQViewModels
+@model SQViewModel
+@{
+
+    var isCreating = Model.DocNum == "New";
+    ViewBag.Title = (isCreating) ? "Add New Sales Quotation" : "Edit Sales Quotation #" + Model.DocNum;
+}
+@section Content_Header {
+    <section class="content-header">
+        <h1>
+            @ViewBag.Title
+            <small>Sales Quotation</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i>Transactions</a></li>
+            <li class="active"><a href='@Url.Action("Index", "SQ")'>Sales Quotations</a></li>
+        </ol>
+    </section>
+}
+@section Styles {
+    @Styles.Render("~/DataTablesCss")
+    @Styles.Render("~/Select2Css")
+    @Styles.Render("~/DatePicker")
+     
+}
+<div class="row" id="MainContent">
+    <div class="col-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">Sales Quotation</h3>
+            </div>
+            @using (Html.BeginForm(null, null, null, FormMethod.Post, new { @id="SQForm", @class = "form-horizontal", data_bind = "submit: validateAndSubmit" }))
+            {
+                @Html.ValidationSummary()
+                @Html.AntiForgeryToken()
+                <div class="box-body">
+
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.CardCode)
+                                @Html.DropDownListFor(x => x.CardCode, Enumerable.Empty<SelectListItem>(), null, new { @class = "form-control select2", data_bind = "options: CustomerNameCodes, optionsText: 'Value', optionsValue: 'Value', value: SQ.cardCode ,optionsCaption: 'Select Customer Code'" })
+                            </div> 
+                            <div class="overlay">
+                                <i class="fa fa-refresh fa-spin text-gray"></i>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.DocNum)
+                                @Html.TextBoxFor(x => x.DocNum, new { @class = "form-control", disabled = "", data_bind = "value: SQ.docNum" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PrintedStatus)
+                                @Html.TextBoxFor(x=> x.PrintedStatus, new { @class = "form-control", disabled = "", data_bind = "value: SQ.printedStatusName" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.Currency)
+                                @Html.TextBoxFor(x => x.Currency, new { @class = "form-control", disabled = "", data_bind = "value: SQ.currency" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.CreatedBy)
+                                @Html.TextBoxFor(x => x.CreatedBy, new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.CardName)
+                                @Html.DropDownListFor(x => x.CardName, Enumerable.Empty<SelectListItem>(), null, new { @class = "form-control select2", data_bind = "options: CustomerNameCodes, optionsText: 'Text', optionsValue: 'Value', value: SQ.cardName,optionsCaption: 'Select Company Name'" })
+                            </div>
+                            <div class="overlay">
+                                <i class="fa fa-refresh fa-spin text-gray"></i>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.DocDate)
+                                @Html.TextBoxFor(x => x.DocDate, new { @class = "form-control datepicker", data_bind = "value: SQ.docDate" })
+                            </div>  
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.Status)
+                                @Html.TextBox("Status", Html.GetDocStatusName(Model.Status), new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            @*<div class="form-group">
+            @Html.LabelFor(x => x.ExRate)
+            @Html.TextBoxFor(x => x.ExRate, new { @class = "form-control", data_bind = "value: SQ.exRate" })
+        </div>*@
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PaymentTermName)
+                                @*@Html.DropDownListFor(x => x.PaymentTerm, Enumerable.Empty<SelectListItem>(), null, new { @class = "form-control select2", data_bind = "options: PaymentTerms, optionsText: 'Text', optionsValue: 'Value', value: SQ.paymentTerm ,optionsCaption: 'Select Payment Term'", disabled = "" })*@
+                                @Html.TextBoxFor(x => x.PaymentTermName, new { @class = "form-control", data_bind = "value: SQ.paymentTermName", disabled = "" })
+                            </div>                           
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.CreatedOn)
+                                @if (Model.CreatedOn.ToString("dd'/'MM'/'yyyy").Equals("01/01/0001"))
+                                {
+                                    @Html.TextBox("CreatedOnString", null, null, new { @class = "form-control", disabled = "" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(x => x.CreatedOn, "{0:dd'/'MM'/'yyyy HH:mm:ss tt}", new { @class = "form-control", disabled = "" })
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.OfficeTelNo)
+                                @Html.TextBoxFor(x => x.OfficeTelNo, new { @class = "form-control", data_bind = "value: SQ.officeTelNo" })
+                            </div>
+                        </div>
+                        @*<div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+            <div class="form-group">
+                @Html.LabelFor(x => x.DueDate)
+                @Html.TextBoxFor(x => x.DueDate, new { @class = "form-control datepicker", data_bind = "value: SQ.dueDate" })
+            </div>
+        </div>*@
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.DeliveryDate)
+                                @Html.TextBoxFor(x => x.DeliveryDate, new { @class = "form-control datepicker", data_bind = "value: SQ.deliveryDate" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.CopiedDO)
+                                @Html.TextBoxFor(x => x.CopiedDO, new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.SlpName)
+                                @*@Html.DropDownListFor(x => x.SlpCode, Enumerable.Empty<SelectListItem>(), null, new { @class = "form-control select2", data_bind = "options: SalePersons, optionsText: 'Text', optionsValue: 'Value', value: SQ.slpCode", disabled = "" })*@
+                                @Html.TextBoxFor(x => x.SlpName, new { @class = "form-control", data_bind = "value: SQ.slpName", disabled = "" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.UpdatedBy)
+                                @Html.TextBoxFor(x => x.UpdatedBy, new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @*@Html.LabelFor(x => x.ContactID)
+                @Html.DropDownListFor(x => x.ContactID, Enumerable.Empty<SelectListItem>(), null, new { @class = "form-control select2", data_bind = "options: CustomerContactPersons, optionsText: 'Text', optionsValue: 'Value', value: SQ.contactID,optionsCaption: 'Select Contact Person'" })*@
+                                @Html.LabelFor(x => x.Fax)
+                                @Html.TextBoxFor(x => x.Fax, new { @class = "form-control", data_bind = "value: SQ.fax" })
+                            </div>
+                        </div>
+                        
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.DeliveryTime)
+                                @Html.TextBoxFor(x => x.DeliveryTime, new { @class = "form-control", data_bind = "value: SQ.deliveryTime" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.CustomerRef)
+                                @Html.TextBoxFor(x => x.CustomerRef, new { @class = "form-control", data_bind = "value: SQ.customerRef" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl"></div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.UpdatedOn)
+                                @if (Model.UpdatedOn.ToString("dd'/'MM'/'yyyy").Equals("01/01/0001"))
+                                {
+                                    @Html.TextBox("UpdatedOnString", null, null, new { @class = "form-control", disabled = "" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(x => x.UpdatedOn, "{0:dd'/'MM'/'yyyy HH:mm:ss tt}", new { @class = "form-control", disabled = "" })
+                                }
+                            </div>
+                        </div>
+                    </div>                     
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="nav-tabs-custom">
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item active"><a href="#tab_1" data-toggle="tab" class="nav-link">Contents</a></li>
+                                    <li class="nav-item"><a href="#tab_2" data-toggle="tab" class="nav-link">Logistics</a></li>
+                                    <li class="nav-item"><a href="#tab_3" data-toggle="tab" class="nav-link">Notes</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="tab_1">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <button type="button" class="btn btn-primary float-right mr-1" data-bind="click: addSQLine">Add</button>
+                                            </div>
+                                        </div>
+
+                                        <table id="ItemListTable" class="table table-striped table-bordered responsive nowrap bmdatatable" data-fixed-header="true" data-auto-width="true" data-paging='false' data-searching="false" data-length-change="false" data-page-length="5" data-ordering="false" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Line No</th>
+                                                    <th>Stock Code</th>
+                                                    <th>Description</th>
+                                                    <th class="text-right">Qty</th>                                                  
+                                                    <th>Location</th>
+                                                    <th class="text-right">Unit Price</th>
+                                                    <th>GST</th>
+                                                    <th>Line Total</th>
+                                                    <th data-priority="1">Delete</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                                <div class="form-group">
+                                                    @Html.Label("Header Remarks")
+                                                    @Html.TextBoxFor(x => x.HeaderRemarks1, new { @class = "form-control", data_bind = "value: SQ.headerRemarks1" })
+                                                </div>
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(x => x.HeaderRemarks2, new { @class = "form-control", data_bind = "value: SQ.headerRemarks2" })
+                                                </div>
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(x => x.HeaderRemarks3, new { @class = "form-control", data_bind = "value: SQ.headerRemarks3" })
+                                                </div>
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(x => x.HeaderRemarks4, new { @class = "form-control", data_bind = "value: SQ.headerRemarks4" })
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                                <div class="form-group">
+                                                    @Html.Label("Footer Remarks")
+                                                    @Html.TextBoxFor(x => x.FooterRemarks1, new { @class = "form-control", data_bind = "value: SQ.footerRemarks1" })
+                                                </div>
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(x => x.FooterRemarks2, new { @class = "form-control", data_bind = "value: SQ.footerRemarks2" })
+                                                </div>
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(x => x.FooterRemarks3, new { @class = "form-control", data_bind = "value: SQ.footerRemarks3" })
+                                                </div>
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(x => x.FooterRemarks4, new { @class = "form-control", data_bind = "value: SQ.footerRemarks4" })
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                                <div class="form-group row">
+                                                    @Html.LabelFor(x => x.NetTotal, new { @class = "col-form-label col-4" })
+                                                    <div class="col-8">
+                                                        @Html.TextBoxFor(x => x.NetTotal, new { @class = "form-control", data_bind = "value: SQ.netTotal", disabled = "", style = "text-align: right; " })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    @Html.LabelFor(x => x.DiscByPercent, new { @class = "col-form-label col-4" })
+                                                    <div class="col-4">
+                                                        Percentage @Html.RadioButtonFor(x => x.DiscByPercent, "true", new { data_bind = "checked: SQ.discByPercent" })
+                                                    </div>
+                                                    <div class="col-4">
+                                                        Amount @Html.RadioButtonFor(x => x.DiscByPercent, "false", new { data_bind = "checked: SQ.discByPercent" })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    @Html.LabelFor(x => x.DiscPercent, new { @class = "col-form-label col-4" })
+                                                    <div class="col-8">
+                                                        @Html.TextBoxFor(x => x.DiscPercent, new { @class = "form-control", data_bind = "textInput: SQ.discPercent", style = "text-align: right; " })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    @Html.LabelFor(x => x.DiscAmount, new { @class = "col-form-label col-4" })
+                                                    <div class="col-8">
+                                                        @Html.TextBoxFor(x => x.DiscAmount, new { @class = "form-control", data_bind = "textInput: SQ.discAmount", style = "text-align: right; " })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    @Html.LabelFor(x => x.GstTotal, new { @class = "col-form-label col-4" })
+                                                    <div class="col-8">
+                                                        @Html.TextBoxFor(x => x.GstTotal, new { @class = "form-control", data_bind = "value: SQ.gstTotal", style = "text-align: right; ", disabled = "" })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    @Html.LabelFor(x => x.GrandTotal, new { @class = "col-form-label col-4" })
+                                                    <div class="col-8">
+                                                        @Html.TextBoxFor(x => x.GrandTotal, new { @class = "form-control", data_bind = "value: SQ.grandTotal", style = "text-align: right; ", disabled = "" })
+                                                    </div>
+                                                </div>                                                
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="tab_2">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(x => x.ShipTo)
+                                                    @Html.DropDownListFor(x => x.ShipTo, Enumerable.Empty<SelectListItem>(), null, new { @class = "form-control select2", data_bind = "options: CustomerShipToAddresses, optionsText: 'Text', optionsValue: 'Value', value: SQ.shipTo,optionsCaption: 'Select Ship To'" })
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(x => x.ShipToAddress1)
+                                                    @Html.TextBoxFor(x => x.ShipToAddress1, new { @class = "form-control", data_bind = "value: SQ.shipToAddress1" })
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(x => x.BillTo)
+                                                    @Html.DropDownListFor(x => x.BillTo, Enumerable.Empty<SelectListItem>(), null, new { @class = "form-control select2", data_bind = "options: CustomerBillToAddresses, optionsText: 'Text', optionsValue: 'Value', value: SQ.billTo,optionsCaption: 'Select Bill To'" })
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(x => x.BillToAddress1)
+                                                    @Html.TextBoxFor(x => x.BillToAddress1, new { @class = "form-control", data_bind = "value: SQ.billToAddress1" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(x => x.ShipToAddress2)
+                                                    @Html.TextBoxFor(x => x.ShipToAddress2, new { @class = "form-control", data_bind = "value: SQ.shipToAddress2" })
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(x => x.BillToAddress2)
+                                                    @Html.TextBoxFor(x => x.BillToAddress2, new { @class = "form-control", data_bind = "value: SQ.billToAddress2" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(x => x.ShipToAddress3)
+                                                    @Html.TextBoxFor(x => x.ShipToAddress3, new { @class = "form-control", data_bind = "value: SQ.shipToAddress3" })
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(x => x.BillToAddress3)
+                                                    @Html.TextBoxFor(x => x.BillToAddress3, new { @class = "form-control", data_bind = "value: SQ.billToAddress3" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(x => x.ShipToAddress4)
+                                                    @Html.TextBoxFor(x => x.ShipToAddress4, new { @class = "form-control", data_bind = "value: SQ.shipToAddress4" })
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(x => x.BillToAddress4)
+                                                    @Html.TextBoxFor(x => x.BillToAddress4, new { @class = "form-control", data_bind = "value: SQ.billToAddress4" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(x => x.ShipToAddress5)
+                                                    @Html.TextBoxFor(x => x.ShipToAddress5, new { @class = "form-control", data_bind = "value: SQ.shipToAddress5" })
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(x => x.BillToAddress5)
+                                                    @Html.TextBoxFor(x => x.BillToAddress5, new { @class = "form-control", data_bind = "value: SQ.billToAddress5" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="tab_3">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <button type="button" class="btn btn-primary float-right mr-1" data-bind="click: addSQNote">Add</button>
+                                            </div>
+                                        </div>
+                                        <table id="NoteListTable" class="table table-striped table-bordered responsive nowrap bmdatatable dblEdit" data-fixed-header="true" data-auto-width="false" data-paging='false' data-searching="false"  data-ordering="false" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 10%;">Line No</th>
+                                                    <th style="width: 80%;">Note</th>
+                                                    <th style="width: 10%;">Delete</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <Button type="submit" Class="btn btn-primary">Save</Button>
+                    <a class="btn btn-primary" href="@Url.Action("Index")" role="button">Close w/o Saving</a>
+                    @*<a class="btn btn-primary" href="@Url.Action("Index")" role="button">Duplicate</a>*@
+                    <Button type="submit" Class="btn btn-primary" data-bind="click: validateAndDuplicate">Duplicate</Button>
+
+                    @*<a class="btn btn-primary" target="_blank" href="@Url.Action("SQViewer.aspx","WForms/", new { id = Model.DocEntry })" role="button">Print</a>*@              
+                    <a class="btn btn-primary" href="#" data-bind="click: printPreview" target="_blank" role="button">Print</a>
+                    @*<a class="btn btn-primary" href="@Url.Action("Index")" role="button" data-bind="click: copyToDo" >Copy to DO/Inv</a>*@
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section BootModals {
+    @Html.Partial("_SQLineDetailModal", new SQLineViewModel() { });
+    @Html.Partial("_SQNoteDetailModal", new SQNoteViewModel() { });
+}
+
+@section Scripts {
+    @Scripts.Render("~/DataTables")
+    @Scripts.Render("~/bundles/Jquery-Validation-and-Ajax")
+    @Scripts.Render("~/Select2")
+    @Scripts.Render("~/DatePickerJS")
+    @Scripts.Render("~/Knockout")
+
+    <script>               
+        function isValidDate(date) {
+            return date && Object.prototype.toString.call(date) === "[object Date]" && !isNaN(date);
+        }
+        function SQViewModel(sQ) {
+            var self = this;
+            self.isCreating = sQ.docNum == "New";
+            self.previewUrl = ko.observable('@Url.Action("SQViewer.aspx", "WForms/", new { id = Model.DocEntry })');
+            // Loaded from ajax - Observable Arrays
+            self.CustomerNameCodes = ko.observableArray();
+            self.CustomerContactPersons = ko.observableArray();
+            self.ChildItemDetails = ko.observableArray();
+
+            self.isEditingLine = false; // To prevent unit price change while clicking Edit line Button for the first time
+
+            self.ItemCodesAndNames = ko.observableArray();
+            self.LocationCodeAndNames = ko.observableArray();
+            self.TaxCodes = ko.observableArray();
+
+            self.CustomerShipToAddresses = ko.observableArray();
+            self.CustomerBillToAddresses = ko.observableArray();
+            
+            var LoadingFinished = true;
+            if (!self.isCreating) {
+                LoadingFinished = false;
+            }
+
+            self.CopyDescToOwDesc = function () {
+                self.SQLine.overwriteDescription($('#AddUpdateItemModal').find("#Description:first").find("option:selected").text());
+            }
+            
+
+            self.LoadCustomerBasedDropdowns = function (cardcode) {
+                    $.when(
+                    // Initial Ajax Requests, while page loading
+                    //Load Customer's ContactPersons
+                    $.ajax({
+                        url: "@Url.Action("GetContactPersons", "ContactPersons", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ CardCode: cardcode }),
+                        success: function (data) {
+                            self.CustomerContactPersons(data);    
+                            
+                        },
+                        error: function () { }
+                    }),
+                    //Load Shipping Addresses
+                    $.ajax({
+                        url: "@Url.Action("GetCustomerShippingAddresses", "CustomerAddress", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ CardCode: cardcode }),
+                        success: function (data) {
+
+                            self.CustomerShipToAddresses(data);
+                            
+                        },
+                        error: function () { }
+                    }),
+                    //Load Billing Addresses
+                    $.ajax({
+                        url: "@Url.Action("GetCustomerBillingAddresses", "CustomerAddress", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ CardCode: cardcode }),
+                        success: function (data) {
+
+                            self.CustomerBillToAddresses(data);
+                        },
+                        error: function () { }
+                    })
+                    ).done(function () {
+                         
+                            if (LoadingFinished === false) {
+                                //self.SQ.contactID(sQ.contactID);
+                                //$('#ContactID').val(sQ.contactID).trigger('change');
+                                //self.SQ.contactTelNo(sQ.contactTelNo);
+                                self.SQ.billTo(sQ.billTo);
+                                $('#BillTo').val(sQ.billTo).trigger('change');
+                                self.SQ.shipTo(sQ.shipTo);
+                                $('#ShipTo').val(sQ.shipTo).trigger('change');
+
+                                             $.ajax({
+                                                url: "@Url.Action("GetCustomerDetails", "Customer", null)",
+                                                type: 'post',
+                                                contentType: 'application/x-www-form-urlencoded',
+                                                    data: ko.toJS({ CardCode: cardcode }),
+                                success: function (data) {                                                                                                         
+                                                    $('#GstName').val(data.DefaultTaxGroup).trigger('change');                                                                                       
+                                                },
+                                                error: function () { }
+                                            });
+
+
+                                LoadingFinished = true;
+                            }                        
+                        else {
+                            $.ajax({
+                                                url: "@Url.Action("GetCustomerDetails", "Customer", null)",
+                                                type: 'post',
+                                                contentType: 'application/x-www-form-urlencoded',
+                                                    data: ko.toJS({ CardCode: cardcode }),
+                                success: function (data) {
+                                                    var PaymentTermsDays = parseInt(data.PaymentTermDays);
+                                                    self.SQ.fax(data.Fax);
+                                                    self.SQ.officeTelNo(data.OfficeTelNo);
+                                                     
+                                                    self.SQ.currency(data.Currency);
+                                                  
+                                                    self.SQ.paymentTermName(data.PymntGroup);
+                                                    self.SQ.slpName(data.SlpName);
+                         
+
+                                                    let BillToDefVal = data.BillToDef;
+                                                    $('#BillTo').val("").trigger('change');
+                                                    $('#BillTo').val(BillToDefVal).trigger('change');
+                       
+                                                    let ShipToDefVal = data.ShipToDef;
+                                                    $('#ShipTo').val("").trigger('change');
+                                                    $('#ShipTo').val(ShipToDefVal).trigger('change');
+
+                                                    
+                                                    $('#GstName').val(data.DefaultTaxGroup).trigger('change');
+                                                    var DDate = self.SQ.docDate();
+                                                    var DateParts = DDate.split("/");
+                                                    var dt = new Date(parseInt(DateParts[2], 10),
+                                                        parseInt(DateParts[1], 10) - 1,
+                                                        parseInt(DateParts[0], 10) + PaymentTermsDays);
+                                                    var dd = dt.getDate();
+                                                    var mm = dt.getMonth() + 1;
+
+                                                    var yyyy = dt.getFullYear();
+                                                    if (dd < 10) {
+                                                        dd = '0' + dd;
+                                                    }
+                                                    if (mm < 10) {
+                                                        mm = '0' + mm;
+                                                    }                                                    
+                                                        var FormattedDueDate = dd + '/' + mm + '/' + yyyy; 
+                                                    //self.SQ.dueDate(FormattedDueDate);
+                                    
+                                                },
+                                                error: function () { }
+                                            });
+                        }
+                    
+
+                });
+            };
+
+ 
+          
+            // Model Binding
+            self.SQ = {                
+                docNum: ko.observable(sQ.docNum),
+                cardCode: ko.observable(sQ.cardCode),
+                cardName: ko.observable(sQ.cardName),
+                currency: ko.observable(sQ.currency),
+                officeTelNo: ko.observable(sQ.officeTelNo),               
+                fax: ko.observable(sQ.fax),
+                printedStatus: ko.observable(sQ.printedStatus),               
+                docDate: ko.observable(sQ.docDate),
+                //dueDate: ko.observable(sQ.dueDate),
+                deliveryDate: ko.observable(sQ.deliveryDate),
+                customerRef: ko.observable(sQ.customerRef),
+                deliveryTime: ko.observable(sQ.deliveryTime),
+                paymentTermName: ko.observable(sQ.paymentTermName),
+                slpName: ko.observable(sQ.slpName),               
+                headerRemarks1: ko.observable(sQ.headerRemarks1),
+                headerRemarks2: ko.observable(sQ.headerRemarks2),
+                headerRemarks3: ko.observable(sQ.headerRemarks3),
+                headerRemarks4: ko.observable(sQ.headerRemarks4),
+                footerRemarks1: ko.observable(sQ.footerRemarks1),
+                footerRemarks2: ko.observable(sQ.footerRemarks2),
+                footerRemarks3: ko.observable(sQ.footerRemarks3),
+                footerRemarks4: ko.observable(sQ.footerRemarks4),
+                billTo: ko.observable(sQ.billTo),
+                billToAddress1: ko.observable(sQ.billToAddress1),
+                billToAddress2: ko.observable(sQ.billToAddress2),
+                billToAddress3: ko.observable(sQ.billToAddress3),
+                billToAddress4: ko.observable(sQ.billToAddress4),
+                billToAddress5: ko.observable(sQ.billToAddress5),
+                shipTo: ko.observable(sQ.shipTo),
+                shipToAddress1: ko.observable(sQ.shipToAddress1),
+                shipToAddress2: ko.observable(sQ.shipToAddress2),
+                shipToAddress3: ko.observable(sQ.shipToAddress3),
+                shipToAddress4: ko.observable(sQ.shipToAddress4),
+                shipToAddress5: ko.observable(sQ.shipToAddress5),
+                discByPercent: ko.observable(sQ.discByPercent),
+                discPercent: ko.observable(sQ.discPercent),
+                discAmount: ko.observable(sQ.discAmount),                
+                grandTotal: ko.observable(parseFloat(sQ.grandTotal).toFixed(2)),
+                lines: ko.observableArray(sQ.lines),
+                noteLines: ko.observableArray(sQ.noteLines)
+            }
+            if (sQ.printedStatus === 0) {
+                self.SQ.printedStatusName = ko.observable('Not Printed');
+            }
+            else {
+                self.SQ.printedStatusName = ko.observable('Printed');
+            }
+            self.SQ.printedStatus.subscribe(function (newValue) {               
+                if (newValue === 0)
+                    self.SQ.printedStatusName('Not Printed');
+                else
+                    self.SQ.printedStatusName('Printed');
+            })
+            self.printPreview = function () {
+                self.SQ.printedStatus(1);
+                window.open(self.previewUrl(), '_blank');
+            }
+            
+            //Total Calculation
+            self.SQ.netTotal = ko.computed(function () {
+                var calculated = 0;
+                if (self.SQ.lines() !== null) {
+                    for (var i = 0; i < self.SQ.lines().length; i++) {
+                        calculated = calculated + parseFloat(self.SQ.lines()[i].lineTotal);
+                    }
+                }
+                if (isNaN(calculated)) {
+                    return 0;
+                }
+                else {                    
+                    return roundToTwo(calculated);
+                }
+            }, self) //Computed observable
+            self.SQ.gstTotal = ko.computed(function () {
+                var calculated = 0;
+                var discAmt = 0;
+                var disperc = 0;
+                disperc = self.SQ.discPercent();
+                if (isNaN(disperc)) {
+                    disperc = 0
+                }
+                if (self.SQ.lines() !== null) {
+
+                    let lines = ko.toJS(self.SQ.lines());                                                             
+                    let groupedLines = groupBy(lines, 'gstName');
+
+                    Object.keys(groupedLines).forEach(key => {
+                        let lineGroupTotal = 0;
+                        for (var i = 0; i < groupedLines[key].length; i++) {
+                            if (disperc > 0) {
+                                discAmt = parseFloat(groupedLines[key][i].lineTotal) * parseFloat(disperc) / 100;
+                            }
+                            lineGroupTotal = parseFloat(roundToTwo(lineGroupTotal + parseFloat(roundToTwo((parseFloat(groupedLines[key][i].lineTotal) - discAmt)))));                             
+                        }
+                        calculated = calculated + (parseFloat(lineGroupTotal) * (parseFloat(groupedLines[key][0].gst) / 100));
+                    });                   
+
+                }
+                if (isNaN(calculated)) {
+                    return 0;
+                }
+                else {                    
+                    return roundToTwo(calculated);
+                }
+            }, self) //Computed observable
+            
+            self.SQ.netTotal.subscribe(function (newValue) {
+                self.CalcDiscounts();
+            }, self)
+            self.SQ.discPercent.subscribe(function (newValue) {
+                self.CalcDiscounts();
+            }, self)
+            self.SQ.discAmount.subscribe(function (newValue) {
+                self.CalcDiscounts();
+            }, self)
+            self.SQ.gstTotal.subscribe(function (newValue) {
+                self.CalcTotals();
+            }, self)
+             
+            self.CalcTotals = function () {
+                var GrandTotal = 0;
+                if ( !isNaN(self.SQ.netTotal()) && !isNaN(self.SQ.discAmount()) && !isNaN(self.SQ.gstTotal())) {
+                    GrandTotal = parseFloat(self.SQ.netTotal()) - parseFloat(self.SQ.discAmount()) + parseFloat(self.SQ.gstTotal());
+
+                }
+                if (isNaN(GrandTotal)) {
+                    self.SQ.grandTotal(0);
+                }
+                else {                   
+                    GrandTotal = roundToTwo(GrandTotal);
+                    self.SQ.grandTotal(GrandTotal);
+                }
+                
+            }
+            self.CalcDiscounts = function () {
+
+                if (self.SQ.discByPercent() === "true") {
+
+                    var calculated = 0;
+                    if (!isNaN(self.SQ.netTotal()) && !isNaN(self.SQ.discPercent())) {
+                        calculated = self.SQ.netTotal() * (self.SQ.discPercent() / 100);
+                    }
+                    if (isNaN(calculated)) {
+                        self.SQ.discAmount(0);
+                    }
+                    else {                        
+                        calculated = roundToTwo(calculated);
+                        self.SQ.discAmount(calculated);
+                    }
+                }
+                else {
+
+                    var calculated = 0;
+                    if (!isNaN(self.SQ.netTotal()) && !isNaN(self.SQ.discAmount())) {
+
+                        calculated = (self.SQ.discAmount() * 100) / self.SQ.netTotal();
+                    }
+                    if (isNaN(calculated)) {
+                        self.SQ.discPercent(0);
+                    }
+                    else {
+                        calculated = roundToTwo(calculated);
+                        self.SQ.discPercent(calculated);
+                    }
+                }
+
+                self.CalcTotals();
+
+
+            }
+
+
+            if (!self.isCreating) {                
+                    self.LoadCustomerBasedDropdowns(self.SQ.cardCode);
+            }
+
+            var originalState = sQ;
+
+           
+
+
+            //Single SQLine Object Setup
+            self.SQLine = {
+                lineNum : ko.observable(),
+                itemCode : ko.observable(),
+                description : ko.observable(),
+                overwriteDescription: ko.observable(),
+                description2: ko.observable(),
+                description3: ko.observable(),
+                description4: ko.observable(),
+                description5: ko.observable(),
+                description6: ko.observable(),
+                serialNumber: ko.observable(),
+                qty : ko.observable(),                
+                location: ko.observable(),
+                locationText: '',
+                unitPrice: ko.observable(),
+                unitCost: ko.observable(),
+                gstName : ko.observable(),
+                gst: '',
+            }
+            //Single SQNote Object Setup
+            self.SQNote = {
+                lineNum: ko.observable(),
+                note: ko.observable(),
+            }
+            self.SQLine.lineTotal = ko.computed(function () {
+                var calculated = parseFloat(self.SQLine.qty()) * parseFloat(self.SQLine.unitPrice());
+                if (isNaN(calculated)) {
+                    return 0;
+                }
+                else {
+                    return roundToTwo(calculated);
+                }
+            }, self) //Computed observable
+
+
+            
+
+            // Add/Update/Delete SQ Lines
+            self.validateAndAddline = function (form) {
+                if (!$(form).valid()) {
+                    $('#AddUpdateItemModal').scrollTop(0);
+                }
+                else {
+                    var lineNum = 0;
+                    if (self.SQ.lines() !== null) {
+                        lineNum = self.SQ.lines().length;
+                    }
+
+                    // Remove All li before submission, which he had in the previous validation
+                    $(form).find(".validation-summary-errors ul li").remove();
+                    $(form).find(".validation-summary-valid ul li").remove();
+                    var InputDescription = $(form).find("#Description:first").find("option:selected").text();
+                    var LocationText = $(form).find("#Location:first").find("option:selected").text();
+                    var GstValue = 0;
+                    for (var i = 0; i < self.TaxCodes.length; i++) {
+                        if (self.TaxCodes[i].Text === self.SQLine.gstName()) {
+                            GstValue = self.TaxCodes[i].Value;
+                        }
+                    }
+
+                    if (self.SQLine.lineNum() === "") {
+                         
+                        self.SQ.lines.push({
+                            lineNum: lineNum,
+                            itemCode: self.SQLine.itemCode(),
+                            description: InputDescription,
+                            overwriteDescription: self.SQLine.overwriteDescription(),
+                            description2: self.SQLine.description2(),
+                            description3: self.SQLine.description3(),
+                            description4: self.SQLine.description4(),
+                            description5: self.SQLine.description5(),
+                            description6: self.SQLine.description6(),
+                            serialNumber: self.SQLine.serialNumber(),
+                            qty: parseFloat(self.SQLine.qty()).toFixed(3),                           
+                            location: self.SQLine.location(),
+                            locationText: LocationText,
+                            unitPrice: parseFloat(self.SQLine.unitPrice()).toFixed(4),
+                            unitCost: parseFloat(self.SQLine.unitCost()).toFixed(4),
+                            gstName: self.SQLine.gstName(),
+                            gst: GstValue,
+                            lineTotal: parseFloat(self.SQLine.lineTotal()).toFixed(2),
+                        });
+                    }
+                    else {
+                        var LineIndex = parseInt(self.SQLine.lineNum());
+                         
+                        self.SQ.lines.replace(self.SQ.lines()[LineIndex], {
+                            lineNum: self.SQLine.lineNum(),
+                            itemCode: self.SQLine.itemCode(),
+                            description: InputDescription,
+                            overwriteDescription: self.SQLine.overwriteDescription(),
+                            description2: self.SQLine.description2(),
+                            description3: self.SQLine.description3(),
+                            description4: self.SQLine.description4(),
+                            description5: self.SQLine.description5(),
+                            description6: self.SQLine.description6(),
+                            serialNumber: self.SQLine.serialNumber(),
+                            qty: parseFloat(self.SQLine.qty()).toFixed(3),                           
+                            location: self.SQLine.location(),
+                            locationText: LocationText,                         
+                            unitPrice: parseFloat(self.SQLine.unitPrice()).toFixed(4),
+                            unitCost: parseFloat(self.SQLine.unitCost()).toFixed(4),
+                            gstName: self.SQLine.gstName(),
+                            gst: GstValue,
+                            lineTotal: parseFloat(self.SQLine.lineTotal()).toFixed(2),
+                        });
+                    }
+                }
+            }
+            self.editSQLine = function (rowid, data, event) {
+
+               
+                var clickedRowId = parseInt(rowid);
+                if (clickedRowId < self.SQ.lines().length) {
+                    self.SQLine.lineNum(clickedRowId);
+
+                    self.isEditingLine = true; //Qty Change for the first should not load the price , So Resetting the flag
+                    var itemcode = self.SQ.lines()[clickedRowId].itemCode;
+                    $('#ItemCode').val(itemcode).trigger('change');
+
+                       
+
+                    self.SQLine.itemCode(itemcode);
+                    self.SQLine.description(itemcode);
+                    self.SQLine.overwriteDescription(self.SQ.lines()[clickedRowId].overwriteDescription);
+                    self.SQLine.description2(self.SQ.lines()[clickedRowId].description2);
+                    self.SQLine.description3(self.SQ.lines()[clickedRowId].description3);
+                    self.SQLine.description4(self.SQ.lines()[clickedRowId].description4);
+                    self.SQLine.description5(self.SQ.lines()[clickedRowId].description5);
+                    self.SQLine.description6(self.SQ.lines()[clickedRowId].description6);
+                    self.SQLine.serialNumber(self.SQ.lines()[clickedRowId].serialNumber);
+                    self.isEditingLine = true; //Qty Change for the first should not load the price , So Resetting the flag
+                    self.SQLine.qty(parseFloat(self.SQ.lines()[clickedRowId].qty).toFixed(3));
+          
+                    var location = self.SQ.lines()[clickedRowId].location;
+                    self.SQLine.location(location);
+                    $('#Location').val(location).trigger('change');   
+                    self.SQLine.unitCost(parseFloat(self.SQ.lines()[clickedRowId].unitCost).toFixed(4));
+                    self.SQLine.unitPrice(parseFloat(self.SQ.lines()[clickedRowId].unitPrice).toFixed(4));
+                    var gstName = self.SQ.lines()[clickedRowId].gstName;
+                    self.SQLine.gstName(gstName);
+                    $('#GstName').val(gstName).trigger('change');
+
+                     
+                    $('#AddUpdateItemModal').modal('show');
+                }
+            }
+            self.addSQLine = function () {
+                $('#AddUpdateItemModal').modal('show');
+                self.InitializeSQLine();
+            }
+            self.deleteSQLine = function (rowid, data, event) {
+
+            
+                var clickedRowId = parseInt(rowid);
+
+                if (clickedRowId < self.SQ.lines().length) {
+                    self.SQ.lines.remove(self.SQ.lines()[clickedRowId]);
+
+                }
+
+
+                var table = $('#ItemListTable').DataTable();
+
+                if (self.SQ.lines().length > 0) {
+                    table.clear();
+
+                    var i;
+                    for (i = 0; i < self.SQ.lines().length; i++) {
+                         
+                        var AddtionalRemarks = '';
+                        var defaultDescription = '-';
+                        if (self.SQ.lines()[i].overwriteDescription === null) {
+                            defaultDescription = self.SQ.lines()[i].description;
+                        }
+                        else if (self.SQ.lines()[i].overwriteDescription === "") {
+                            defaultDescription = self.SQ.lines()[i].description;
+                        }
+                        else {
+                            defaultDescription = self.SQ.lines()[i].overwriteDescription;
+                        }
+                        if (self.SQ.lines()[i].description2 !== null) {
+                            if (self.SQ.lines()[i].description2 !== "") {
+                                AddtionalRemarks = AddtionalRemarks + self.SQ.lines()[i].description2 + "<br/>"
+                            }
+                        }
+                        if (self.SQ.lines()[i].description3 !== null) {
+                            if (self.SQ.lines()[i].description3 !== "") {
+                                AddtionalRemarks = AddtionalRemarks + self.SQ.lines()[i].description3 + "<br/>"
+                            }
+                        }
+                        if (self.SQ.lines()[i].description4 !== null) {
+                            if (self.SQ.lines()[i].description4 !== "") {
+                                AddtionalRemarks = AddtionalRemarks + self.SQ.lines()[i].description4 + "<br/>"
+                            }
+                        }
+                        if (self.SQ.lines()[i].description5 !== null) {
+                            if (self.SQ.lines()[i].description5 !== "") {
+                                AddtionalRemarks = AddtionalRemarks + self.SQ.lines()[i].description5 + "<br/>"
+                            }
+                        }
+                        if (self.SQ.lines()[i].description6 !== null) {
+                            if (self.SQ.lines()[i].description6 !== "") {
+                                AddtionalRemarks = AddtionalRemarks + self.SQ.lines()[i].description6 + "<br/>"
+                            }
+                        }
+                        defaultDescription = defaultDescription + "<span data-toggle='popover' data-trigger='hover' data-placement='top' data-html='true' data-content='" + AddtionalRemarks + "' data-title='Additional Remarks'><i class='fa fa-fw fa-info-circle'></i></span>";
+
+
+
+                        var rowNode = table.row.add([
+                            i + 1,
+                            self.SQ.lines()[i].itemCode,
+                            defaultDescription,
+                            self.SQ.lines()[i].qty,                           
+                            self.SQ.lines()[i].locationText,
+                            self.SQ.lines()[i].unitPrice,
+                            self.SQ.lines()[i].gstName,
+                            self.SQ.lines()[i].lineTotal,
+                            "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteSQLine("
+                            + i + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                        ]).draw().node();
+                        $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editSQLine(" + i + ", data, event) } }");
+                        ko.applyBindings(self, rowNode);
+                    }
+                    table.columns.adjust().draw();                  
+                }
+                else {
+                    table.clear().draw();
+                }
+
+
+
+                ////Deletes Row from html table and by calling draw datatable will be redrawn
+                //var table = $('#ItemListTable').DataTable();
+                //table.row(clickedRowId).remove().draw();
+
+            }
+            self.InitializeSQLine = function () {
+                self.SQLine.lineNum('');
+                self.SQLine.itemCode('');
+                self.SQLine.description('');
+                self.SQLine.overwriteDescription('');
+                self.SQLine.description2('');
+                self.SQLine.description3('');
+                self.SQLine.description4('');
+                self.SQLine.description5('');
+                self.SQLine.description6('');
+                self.SQLine.serialNumber('');
+                self.SQLine.qty('');
+                
+                self.SQLine.location('');
+                $('#Location').val('').trigger('change');
+                self.SQLine.unitPrice('');
+                self.SQLine.unitPrice(0);
+                
+            }
+            //Data Table operations
+            self.SQ.lines.subscribe(function (changes) {
+
+
+                // Add Lines
+                if (changes[0].status === "deleted") {
+
+
+                }
+                else if (self.SQLine.lineNum() === "") {
+                    var table = $('#ItemListTable').DataTable();
+
+                    var AddtionalRemarks = '';
+                    var defaultDescription = '-';
+                    if (changes[0].value.overwriteDescription === null) {
+                        defaultDescription = changes[0].value.description;
+                    }
+                    else if (changes[0].value.overwriteDescription === "") {
+                        defaultDescription = changes[0].value.description;
+                    }
+                    else {
+                        defaultDescription = changes[0].value.overwriteDescription;
+                    }
+                    if (changes[0].value.description2 !== null) {
+                        if (changes[0].value.description2 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description2 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description3 !== null) {
+                        if (changes[0].value.description3 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description3 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description4 !== null) {
+                        if (changes[0].value.description4 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description4 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description5 !== null) {
+                        if (changes[0].value.description5 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description5 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description6 !== null) {
+                        if (changes[0].value.description6 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description6 + "<br/>"
+                        }
+                    }
+                    defaultDescription = defaultDescription + "<span data-toggle='popover' data-trigger='hover' data-placement='top' data-html='true' data-content='" + AddtionalRemarks + "' data-title='Additional Remarks'><i class='fa fa-fw fa-info-circle'></i></span>";
+
+
+
+                    
+                    var rowNode = table.row.add([
+                        changes[0].index + 1,
+                        changes[0].value.itemCode,
+                        defaultDescription,
+                        changes[0].value.qty,                       
+                        changes[0].value.locationText,
+                        changes[0].value.unitPrice,
+                        changes[0].value.gstName,
+                        changes[0].value.lineTotal,
+                        "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteSQLine("
+                        + changes[0].index + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                    ]).draw().node();
+                    $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editSQLine(" + changes[0].index + ", data, event) } }");
+                    table.columns.adjust().draw();
+                    ko.applyBindings(self, rowNode);                  
+                } //Update Lines
+                else {
+
+                    var table = $('#ItemListTable').DataTable();
+                    var LineIndex = parseInt(self.SQLine.lineNum());
+
+                    var AddtionalRemarks = '';
+                    var defaultDescription = '-';
+                    if (changes[0].value.overwriteDescription === null) {
+                        defaultDescription = changes[0].value.description;
+                    }
+                    else if (changes[0].value.overwriteDescription === "") {
+                        defaultDescription = changes[0].value.description;
+                    }
+                    else {
+                        defaultDescription = changes[0].value.overwriteDescription;
+                    }
+                    if (changes[0].value.description2 !== null) {
+                        if (changes[0].value.description2 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description2 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description3 !== null) {
+                        if (changes[0].value.description3 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description3 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description4 !== null) {
+                        if (changes[0].value.description4 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description4 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description5 !== null) {
+                        if (changes[0].value.description5 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description5 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description6 !== null) {
+                        if (changes[0].value.description6 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description6 + "<br/>"
+                        }
+                    }
+                    defaultDescription = defaultDescription + "<span data-toggle='popover' data-trigger='hover' data-placement='top' data-html='true' data-content='" + AddtionalRemarks + "' data-title='Additional Remarks'><i class='fa fa-fw fa-info-circle'></i></span>";
+
+
+                     
+                    //var rowNode = table.row(LineIndex).data([
+                    //    changes[0].index + 1,
+                    //    changes[0].value.itemCode,
+                    //    defaultDescription,
+                    //    changes[0].value.qty,                        
+                    //    changes[0].value.locationText,
+                    //    changes[0].value.unitPrice,
+                    //    changes[0].value.gstName,
+                    //    changes[0].value.lineTotal,
+                    //    "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteSQLine("
+                    //    + changes[0].index + ", data, event) } }'>test<i class='fa fa-fw fa-remove'></i></button>"
+                    //]).draw();
+                    //$(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editSQLine(" + changes[0].index + ", data, event) } }");
+                    //table.columns.adjust().draw();    
+
+                    var rowNode = table.row(LineIndex).data([
+                        changes[0].index + 1,
+                        changes[0].value.itemCode,
+                        defaultDescription,
+                        changes[0].value.qty,
+                        changes[0].value.locationText,
+                        changes[0].value.unitPrice,
+                        changes[0].value.gstName,
+                        changes[0].value.lineTotal,
+                        "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteSQLine("
+                        + changes[0].index + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                    ]).draw().node();
+                    
+                    table.columns.adjust().draw();   
+                    ko.cleanNode(rowNode);
+                    ko.applyBindings(self, rowNode);
+                }
+
+                $('#AddUpdateItemModal').modal('hide');
+
+            }, self, "arrayChange");
+
+            // Add/Update/Delete SQ Notes
+            self.InitializeSQNote = function () {
+                self.SQNote.lineNum('');
+                self.SQNote.note('');
+            }
+            self.validateAndAddNote = function (form) {
+                if (!$(form).valid()) {
+                   
+                    $('#AddUpdateNoteModal').scrollTop(0);
+                }
+                else {
+                   
+                    var lineNum = 0;
+                    if (self.SQ.noteLines() !== null) {
+                        lineNum = self.SQ.noteLines().length;
+                    }
+
+                    if (self.SQNote.lineNum() === "") {
+                        self.SQ.noteLines.push({
+                            lineNum: lineNum,
+                            note: self.SQNote.note(),
+                        });
+                    }
+                    else {
+                        
+                        var LineIndex = parseInt(self.SQNote.lineNum());
+                       
+                        self.SQ.noteLines.replace(self.SQ.noteLines()[LineIndex], {
+                            lineNum: self.SQNote.lineNum(),
+                            note: self.SQNote.note(),                            
+                        });
+                    }
+                }
+            }
+            self.SQ.noteLines.subscribe(function (changes) {
+               
+                if (changes[0].status === "deleted") {
+
+
+                }
+                else if (self.SQNote.lineNum() === "") {
+                    
+                    var table = $('#NoteListTable').DataTable();
+                    var rowNode = table.row.add([
+                        changes[0].index + 1,
+                        changes[0].value.note,
+                        "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteSQNote("
+                        + changes[0].index + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                    ]).draw().node();
+                    $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editSQNote(" + changes[0].index + ", data, event) } }");
+                    ko.applyBindings(self, rowNode);
+                    table.columns.adjust().draw();
+                } //Update Lines
+                else {
+                   
+                    var table = $('#NoteListTable').DataTable();
+                    var LineIndex = parseInt(self.SQNote.lineNum());
+                    var rowNode = table.row(LineIndex).data([
+                        changes[0].index + 1,
+                        changes[0].value.note,
+                        "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteSQNote("
+                        + changes[0].index + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                    ]).draw().node();
+
+                    table.columns.adjust().draw();
+                    ko.cleanNode(rowNode);
+                    ko.applyBindings(self, rowNode);
+
+                }
+
+
+                $('#AddUpdateNoteModal').modal('hide');
+
+            }, self, "arrayChange");
+            self.editSQNote = function (rowid, data, event) {
+
+                var clickedRowId = parseInt(rowid);
+                if (clickedRowId < self.SQ.noteLines().length) {
+                    self.SQNote.lineNum(clickedRowId);
+                    self.SQNote.note(self.SQ.noteLines()[clickedRowId].note);
+
+                    //self.SQLine.lineTotal(self.SQLine.lineTotal); //Computed automatically
+                    $('#AddUpdateNoteModal').modal('show');
+                }
+            }
+            self.addSQNote = function () {
+                $('#AddUpdateNoteModal').modal('show');
+                self.InitializeSQNote();
+            }
+            self.deleteSQNote= function (rowid, data, event) {
+                var clickedRowId = parseInt(rowid);
+
+                if (clickedRowId < self.SQ.noteLines().length) {
+                    self.SQ.noteLines.remove(self.SQ.noteLines()[clickedRowId]);
+
+                }
+
+
+                var table = $('#NoteListTable').DataTable();
+
+                if (self.SQ.noteLines().length > 0) {
+                    table.clear();
+
+                    var i;
+                    for (i = 0; i < self.SQ.noteLines().length; i++) {
+
+                        var rowNode = table.row.add([
+                            i + 1,
+                            self.SQ.noteLines()[i].note,                           
+                            "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteSQNote("
+                            + i + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                        ]).draw().node();
+                        $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editSQNote(" + i + ", data, event) } }");
+                        ko.applyBindings(self, rowNode);
+                    }
+                    table.columns.adjust().draw();
+                }
+                else {
+                    table.clear().draw();
+                }
+
+
+
+                
+
+            }
+            // Incase need use selection change function in dropdowns
+            //event: { change: function(data, event) { selectionChanged(data, event) }}
+            //self.selectionChanged = function(data, event) {
+            //    //if (event.shiftKey) {
+            //    //    //do something different when user has shift key down
+            //    //} else {
+            //    //    //do normal action
+            //    //}
+            //    var triggerName = event.target.id;
+            //    var val = $('#' + triggerName).val();
+            //    if (triggerName = "ItemCode") {
+            //        $('#Description').val(val).trigger('change');
+            //    }
+            //    else if (triggerName = "Description") {
+            //        $('#Description').val(val).trigger('change');
+            //    }
+            //}
+
+
+            // on Change of ItemCode - ItemName value will be selected
+            self.SQLine.itemCode.subscribe(function (newValue) {
+                //self.SQLine.description(newValue);
+                // Above statement is enough to trigger the change of selection in knockout
+                // because of select2 is used we have to use below statement to trigger the change of selection
+                $('#Description').val(newValue).trigger('change');
+                self.LoadItemDetails();
+            });
+
+            self.SQLine.qty.subscribe(function (newValue) {
+                if (self.isEditingLine == false) { //Qty Change for the first should not load the price 
+ 
+                    self.LoadItemSpecialPrice();
+                }
+            });
+            self.LoadItemSpecialPrice = function () {
+                let Qty = 0;
+                       
+                        if (typeof self.SQLine.qty() === 'undefined') {                             
+                            Qty = 0;
+                        }
+                        else if (self.SQLine.qty() == '') {
+                            Qty = 0;
+                        }
+                        else {                           
+                            Qty = self.SQLine.qty();
+                        }
+                       
+                        $.ajax({
+                               url: "@Url.Action("GetItemSpecialPrice", "Item", null)",
+                                type: 'post',
+                                contentType: 'application/x-www-form-urlencoded',
+                            data: ko.toJS({ ItemCode: self.SQLine.itemCode(), CardCode: self.SQ.cardCode(), Quantity: Qty }),
+
+                                success: function (data) {
+                                    //if (jQuery.type(self.SQLine.location()) == "undefined" || jQuery.type(self.SQLine.location()) == "") {
+                                        //let DefaultTaxVal = data.DefaultTax;
+                                        //$('#GstName').val(DefaultTaxVal).trigger('change');                                                               
+                                    self.SQLine.unitPrice(parseFloat(data).toFixed(4));
+                                    //}
+
+                                },
+                                error: function () { }
+                        });  
+                        $.ajax({
+                               url: "@Url.Action("GetLastGRPOPrice", "GRPO", null)",
+                                type: 'post',
+                                contentType: 'application/x-www-form-urlencoded',
+                            data: ko.toJS({ ItemCode: self.SQLine.itemCode(), CardCode: self.SQ.cardCode()}),
+
+                                success: function (data) {
+                                    //if (jQuery.type(self.SQLine.location()) == "undefined" || jQuery.type(self.SQLine.location()) == "") {
+                                        //let DefaultTaxVal = data.DefaultTax;
+                                        //$('#GstName').val(DefaultTaxVal).trigger('change');                                                               
+                                    self.SQLine.unitCost(parseFloat(data).toFixed(4));
+                                    //}
+
+                                },
+                                error: function () { }
+                        }); 
+                
+            }
+            self.LoadItemDetails = function () {
+                if (self.SQLine.itemCode() !== null) {
+                    var LocationStocktable = $('#LocationStock').DataTable();
+                    LocationStocktable.clear().draw();
+                    $.ajax({
+                        url: "@Url.Action("GetLocationStockQty", "Item", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ ItemCode: self.SQLine.itemCode() }),
+                        success: function (data) {
+
+                            var LocStockLines = data;
+                            if (LocStockLines !== null) {
+
+                                for (var i = 0; i < LocStockLines.length; i++) {
+                                    LocationStocktable.row.add([
+                                        LocStockLines[i].WarhouseName,                                        
+                                        parseFloat(LocStockLines[i].AvailableQty).toFixed(3),
+                                    ]).draw().node();
+                                }
+                                LocationStocktable.columns.adjust().draw();
+                            }
+
+                        },
+                        error: function () { }
+                    });
+
+                    var PriceHistorytable = $('#PriceHistory').DataTable();
+                    PriceHistorytable.clear().draw();
+                    $.ajax({
+                        url: "@Url.Action("GetDOLastPriceHistory", "DO", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ ItemCode: self.SQLine.itemCode(), CardCode: self.SQ.cardCode() }),
+                        success: function (data) {
+
+                            var PriceHistoryLines = data;
+                            if (PriceHistoryLines !== null) {
+
+                                for (var i = 0; i < PriceHistoryLines.length; i++) {
+                                    PriceHistorytable.row.add([
+                                        PriceHistoryLines[i].DocDate,
+                                        PriceHistoryLines[i].DocNum,                                      
+                                        parseFloat(PriceHistoryLines[i].Qty).toFixed(3),
+                                        parseFloat(PriceHistoryLines[i].UnitPrice).toFixed(4),
+                                    ]).draw().node();
+                                }
+                                PriceHistorytable.columns.adjust().draw();
+                            }
+
+                        },
+                        error: function () { }
+                    });
+
+                     var PriceBreaktable = $('#PriceBreak').DataTable();
+                    PriceBreaktable.clear().draw();
+                    if (self.SQLine.itemCode() !== "" && self.SQ.cardCode() !== "") {
+                        $.ajax({
+                            url: "@Url.Action("GetCustomerSpecialPriceWithPriceListName", "ItemSpecialPrice", null)",
+                            type: 'post',
+                            contentType: 'application/x-www-form-urlencoded',
+                            data: ko.toJS({ ItemCode: self.SQLine.itemCode(), CardCode: self.SQ.cardCode() }),
+                            success: function (data) {
+                                //console.log(data.Name)
+                                self.SQ.currentPriceBand(data.Name);
+                                var PriceBreakLines = data.Lines;
+                                if (PriceBreakLines !== null) {
+
+                                    for (var i = 0; i < PriceBreakLines.length ; i++) {
+                                        if (i === 0) {
+                                            PriceBreaktable.row.add([
+                                                data.Name,
+                                                parseFloat(PriceBreakLines[i].Amount).toFixed(3),
+                                                parseFloat(PriceBreakLines[i].Price).toFixed(4),
+                                            ]).draw().node();
+                                        }
+                                        else if (i === 1) {
+                                            PriceBreaktable.row.add([
+                                                parseFloat(data.NormalPrice).toFixed(4),
+                                                parseFloat(PriceBreakLines[i].Amount).toFixed(3),
+                                                parseFloat(PriceBreakLines[i].Price).toFixed(4),
+                                            ]).draw().node();
+                                        }
+                                        else {
+                                            PriceBreaktable.row.add([
+                                                '',
+                                                parseFloat(PriceBreakLines[i].Amount).toFixed(3),
+                                                parseFloat(PriceBreakLines[i].Price).toFixed(4),
+                                            ]).draw().node();
+                                        }
+                                    }
+                                    if (PriceBreakLines.length === 0) {
+                                        PriceBreaktable.row.add([
+                                            data.Name,
+                                            '',
+                                            '',
+                                        ]).draw().node();
+                                    }
+                                    if (PriceBreakLines.length === 0 || PriceBreakLines.length === 1) {
+                                        PriceBreaktable.row.add([
+                                            parseFloat(data.NormalPrice).toFixed(4),
+                                            '',
+                                            '',
+                                        ]).draw().node();
+                                    }
+                                }
+
+                            },
+                            error: function () { }
+                        });
+
+                    }
+                        
+
+
+
+                    $.ajax({
+                        url: "@Url.Action("GetItemDefaultWhs", "Item", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ ItemCode: self.SQLine.itemCode() }),
+                        success: function (data) {
+                            
+                            if (jQuery.type(self.SQLine.location()) == "undefined") {                                 
+                                let LocationCodeVal = data.DefaultWhs;
+                                $('#Location').val(LocationCodeVal).trigger('change');
+                            }
+                            else if (self.SQLine.location() == '') {
+                                let LocationCodeVal = data.DefaultWhs;
+                                $('#Location').val(LocationCodeVal).trigger('change');
+                            }     
+                        },
+                        error: function () { }
+                    });
+
+                      @*$.ajax({
+                            url: "@Url.Action("GetItemDetails", "Item", null)",
+                            type: 'post',
+                            contentType: 'application/x-www-form-urlencoded',
+                            data: ko.toJS({ ItemCode: self.SQLine.itemCode() }),
+                            success: function (data) {
+
+                                //let DefaultTaxVal = data.DefaultTax;
+                                //$('#GstName').val(DefaultTaxVal).trigger('change');
+
+                                                               
+                                $('#GstName').val("SO").trigger('change');
+
+                            },
+                            error: function () { }
+                    });*@
+                    if (self.isEditingLine == false) {
+                         
+                        self.LoadItemSpecialPrice();            
+                    }
+                    else {
+                        self.isEditingLine = false;
+                    }
+                    $.ajax({
+                            url: "@Url.Action("GetChildItems", "Item", null)",
+                            type: 'post',
+                            contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ ParentItemCode: self.SQLine.itemCode() }),
+                            success: function (data) {                                 
+                                    self.ChildItemDetails(data);
+                            },
+                            error: function () { }
+                        });
+                      
+
+                }
+            }
+
+            // on Change of ItemName - ItemCode value will be selected
+            self.SQLine.description.subscribe(function (newValue) {
+                //self.SQLine.itemCode(newValue);
+                // Above statement is enough to trigger the change of selection in knockout
+                // because of select2 is used we have to use below statement to trigger the change of selection
+                $('#ItemCode').val(newValue).trigger('change');
+            });
+
+            // Initialize Add/Update SQ Model to the Initial State of page loaded first
+            self.Initialize = function () { // Used to initialize Form
+
+                self.SQ.cardCode(originalState.cardCode);
+                $('#CardCode').val(originalState.cardCode).trigger('change');
+                self.SQ.cardName(originalState.cardName);
+                $('#CardName').val(originalState.cardName).trigger('change');
+                self.SQ.currency(originalState.currency);
+                self.SQ.officeTelNo(originalState.officeTelNo);
+                //self.SQ.contactID(originalState.contactID);
+                //$('#ContactID').val(originalState.contactID).trigger('change');
+
+                self.SQ.fax(originalState.fax);
+                self.SQ.docDate(originalState.docDate);
+                //self.SQ.dueDate(originalState.dueDate);
+                self.SQ.deliveryDate(originalState.deliveryDate);
+                self.SQ.customerRef(originalState.customerRef);
+                self.SQ.deliveryTime(originalState.deliveryTime);
+                self.SQ.paymentTermName(originalState.paymentTermName);
+                               
+                self.SQ.slpName(originalState.slpName); 
+
+                //self.SQ.exRate(originalState.exRate);
+                self.SQ.headerRemarks1(originalState.headerRemarks1);
+                self.SQ.headerRemarks2(originalState.headerRemarks2);
+                self.SQ.headerRemarks3(originalState.headerRemarks3);
+                self.SQ.headerRemarks4(originalState.headerRemarks4);
+                self.SQ.footerRemarks1(originalState.footerRemarks1);
+                self.SQ.footerRemarks2(originalState.footerRemarks2);
+                self.SQ.footerRemarks3(originalState.footerRemarks3);
+                self.SQ.footerRemarks4(originalState.footerRemarks4);
+                self.SQ.billTo(originalState.billTo);
+                $('#BillTo').val(originalState.billTo).trigger('change');
+                self.SQ.billToAddress1(originalState.billToAddress1);
+                self.SQ.billToAddress2(originalState.billToAddress2);
+                self.SQ.billToAddress3(originalState.billToAddress3);
+                self.SQ.billToAddress4(originalState.billToAddress4);
+                self.SQ.billToAddress5(originalState.billToAddress5);
+                self.SQ.shipTo(originalState.shipTo);
+                $('#ShipTo').val(originalState.shipTo).trigger('change');
+
+                self.SQ.shipToAddress1(originalState.shipToAddress1);
+                self.SQ.shipToAddress2(originalState.shipToAddress2);
+                self.SQ.shipToAddress3(originalState.shipToAddress3);
+                self.SQ.shipToAddress4(originalState.shipToAddress4);
+                self.SQ.shipToAddress5(originalState.shipToAddress5);
+                self.SQ.discByPercent(originalState.discByPercent);
+                self.SQ.discPercent(originalState.discPercent);
+                self.SQ.discAmount(originalState.discAmount);
+                self.SQ.grandTotal(originalState.grandTotal);
+                
+
+
+                if (originalState.lines !== null) {
+                    //Original state lines are not nul
+                    self.SQ.lines(originalState.lines);
+                }
+                else {
+                    //Original state lines are null
+
+                    self.SQ.lines.removeAll();
+                }
+
+
+            }
+            self.SQ.currentPriceBand = ko.observable(''); 
+            self.copyToDo = function () {
+                var form = $('form[id="SQForm"]');
+                if (!self.isCreating) {
+                    var CopyObj = {
+                        docNum: self.SQ.docNum(),
+                        
+                    }
+                    CopyObj.__RequestVerificationToken = $(form).find('input[name="__RequestVerificationToken"]').val();
+
+                    $.ajax({
+                        url: "@Url.Action("CopyToDO", "SQ", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS(CopyObj),
+                        success: function (data) {
+
+                        },
+                        error: function () {
+
+                        }
+                    });
+                    
+                }
+                else {
+                     
+                }
+
+            }
+          
+
+            self.validateAndDuplicate = function () {
+                var form = $('form[id="SQForm"]');
+                
+                if (!$(form).valid()) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+                else {
+
+                    // Remove All li before submission, which he had in the previous validation
+                    $(form).find(".validation-summary-errors ul li").remove();
+                    $(form).find(".validation-summary-valid ul li").remove();
+
+                    self.SQ.__RequestVerificationToken = form[0].value;
+                     
+                    
+                    $.ajax({
+                        url: "@Url.Action("Add", "SQ", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS(self.SQ),
+                        success: function (data)
+                        {
+                            self.successfulDuplicate(form, data);
+                        },
+                        error: function ()
+                        {
+                            self.errorSave(form);
+                        }
+                    });
+                }
+            }
+            // SQ Form Submission using Ajax
+            self.validateAndSubmit = function (form) {
+                
+                //By Default this function will return false, so form submission will not happen
+                if (!$(form).valid()) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    
+                }
+                else {
+
+                    
+
+                    // Remove All li before submission, which he had in the previous validation
+                    $(form).find(".validation-summary-errors ul li").remove();
+                    $(form).find(".validation-summary-valid ul li").remove();
+
+                    self.SQ.__RequestVerificationToken = form[0].value;
+                    $.ajax({
+                        url: "@Url.Action("Add", "SQ", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS(self.SQ),
+                        success: function (data)
+                        {
+                           
+                            self.successfulSave(form, data);
+                        },
+                        error: function ()
+                        {
+                            self.errorSave(form);
+                        }
+                    });
+
+                }
+            }
+            self.successfulDuplicate = function (form, data) {
+                if (Boolean(data.IsModelValid) === true) {
+
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    $('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Success!</h4> SQ Duplicated Successfully</div>')
+                        .prependTo($(form))
+                        .delay(5000)
+                        .slideUpAndRemove('slow');
+                } else {
+                    
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            }
+            self.removeDocID = function (URL) { 
+                var res = URL.split("/");
+                res.pop();
+                URL = res.join("/") + "/"
+                return URL;
+            }
+            self.successfulSave = function (form, data) {
+                if (Boolean(data.IsModelValid) === true) {
+
+                    if (self.isCreating) {
+                        //self.Initialize();
+                        //var table = $('#ItemListTable').DataTable();
+                        //table.clear().draw();
+                        self.SQ.docNum(data.DocNum);
+                        self.isCreating = false;
+
+                        URL = self.removeDocID(self.previewUrl());                        
+                        URL = URL + data.DocEntry;
+                        self.previewUrl(URL);
+
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        $('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Success!</h4> Sales Quotation ' + data.DocNum + ' Saved Successfully</div>')
+                            .prependTo($(form))
+                            .delay(5000)
+                            .slideUpAndRemove('slow');
+                    } else {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        $('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Success!</h4> Sales Quotation ' + self.SQ.docNum() + ' Updated Successfully</div>')
+                            .prependTo($(form))
+                            .delay(5000)
+                            .slideUpAndRemove('slow');
+                    }
+
+
+                }
+                else {
+                    
+                    var ErrArray = data.ModelErrList;
+
+                        $(form).find(".validation-summary-errors ul li").remove(); // Remove All li if before Submission had client side errors
+                        $(form).find(".validation-summary-valid ul li").remove();  // Remove one li with diplay:none style if before Submission didn't had any client side errors
+
+                        for (var i = 0; i < data.ModelErrList.length; i++) {
+                            $(form).find(".validation-summary-errors ul").append("<li>" + ErrArray[i] + "</li>");
+                            $(form).find(".validation-summary-valid ul").append("<li>" + ErrArray[i] + "</li>");
+                        }
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+
+            }
+            self.errorSave = function (form) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                $('<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Alert!</h4><p>Sorry, Some thing went wrong, Please contact website adminitrator</p></div>')
+                    .prependTo($(form))
+                    .delay(5000)
+                    .slideUpAndRemove('slow');
+            }
+
+            // on Change of CardCode - CardName value will be selected
+            self.SQ.cardCode.subscribe(function (newValue) {
+                
+                //self.SQ.cardName(newValue);
+                // Above statement is enough to trigger the change of selection in knockout
+                // because of select2 is used we have to use below statement to trigger the change of selection
+                $('#CardName').val(newValue).trigger('change');
+                //self.LoadCustomerDetails(newValue);
+                self.LoadCustomerBasedDropdowns(newValue);
+
+                 
+                
+            });
+           
+            // on Change of CardName - CardCode value will be selected
+            self.SQ.cardName.subscribe(function (newValue) {
+                //self.SQ.cardCode(newValue);
+                // Above statement is enough to trigger the change of selection in knockout
+                // because of select2 is used we have to use below statement to trigger the change of selection
+                $('#CardCode').val(newValue).trigger('change');
+
+            });
+            @*self.SQ.contactID.subscribe(function (newValue) {
+                if (LoadingFinished === true) {
+                    $.ajax({
+                        url: "@Url.Action("GetContactPersonsTelephoneNo", "ContactPersons", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ ContactID: newValue }),
+                        success: function (data) {
+
+                            self.SQ.contactTelNo(data.Tel1);
+
+                        },
+                        error: function () { }
+                    });
+                }
+            });*@
+            self.SQ.billTo.subscribe(function (newValue) {
+                if (LoadingFinished === true) {
+                    $.ajax({
+                        url: "@Url.Action("GetCustomerBillingAddressDetails", "CustomerAddress", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ CardCode: self.SQ.cardCode, AddressCode: newValue }),
+                        success: function (data) {
+
+                            self.SQ.billToAddress1(data.Street);
+                            self.SQ.billToAddress2(data.Block);
+                            self.SQ.billToAddress3(data.City);
+                            self.SQ.billToAddress4(data.County);
+                            self.SQ.billToAddress5(data.StreetNo);
+                        },
+                        error: function () { }
+                    });
+                }
+            });
+            self.SQ.shipTo.subscribe(function (newValue) {
+                if (LoadingFinished === true) {
+                    $.ajax({
+                        url: "@Url.Action("GetCustomerShippingAddressDetails", "CustomerAddress", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ CardCode: self.SQ.cardCode, AddressCode: newValue }),
+                        success: function (data) {
+
+                            self.SQ.shipToAddress1(data.Street);
+                            self.SQ.shipToAddress2(data.Block);
+                            self.SQ.shipToAddress3(data.City);
+                            self.SQ.shipToAddress4(data.County);
+                            self.SQ.shipToAddress5(data.StreetNo);
+                        },
+                        error: function () { }
+                    });
+                }
+            });
+
+        }
+
+     
+
+
+        // Once Document Ready
+        $(function () {
+           
+
+            
+            var CustomerNameCodes;
+            
+           
+            var ItemCodesAndNames;
+            var LocationCodeAndNames;
+            var TaxCodes;
+            $.when(
+                // Initial Ajax Requests, while page loading
+                //Load Customers
+                $.ajax({
+                    url: "@Url.Action("GetActiveCustomers", "Customer", null)",
+                    type: 'get',
+                    contentType: 'application/x-www-form-urlencoded',
+                    success: function (data) {
+
+                        CustomerNameCodes = data;
+
+                        $("#CardCode").parent().parent().find('.overlay').hide();
+                        $("#CardName").parent().parent().find('.overlay').hide();
+                    },
+                    error: function () { }
+                }),                                 
+                //Load Item Codes
+                $.ajax({
+                url: "@Url.Action("GetActiveItems", "Item", null)",
+                type: 'get',
+                contentType: 'application/x-www-form-urlencoded',
+                success: function (data) {
+
+                    ItemCodesAndNames = data;
+
+                    $("#ItemCode").parent().parent().find('.overlay').hide();
+                    $("#Description").parent().parent().find('.overlay').hide();
+                },
+                error: function () { }
+                }),
+                //Load Location Codes
+                $.ajax({
+                    url: "@Url.Action("GetWarehouses", "Location", null)",
+                    type: 'get',
+                    contentType: 'application/x-www-form-urlencoded',
+                    success: function (data) {
+
+                       LocationCodeAndNames = data;
+                        $("#Location").parent().parent().find('.overlay').hide();
+                    },
+                    error: function () { }
+                }),
+                $.ajax({
+                url: "@Url.Action("GetTaxCodes", "Tax", null)",
+                type: 'get',
+                contentType: 'application/x-www-form-urlencoded',
+                data: ko.toJS({ TaxType: "O" }),
+                success: function (data) {
+
+                    TaxCodes = data;
+                    $("#GstName").parent().parent().find('.overlay').hide();
+
+                },
+                error: function () { }
+                })
+
+            ).done(function () {
+                   //View Model Object Initialization
+                var SQVM = new SQViewModel(@Html.ViewModelToJson(Model));
+                SQVM.CustomerNameCodes = CustomerNameCodes;
+                 
+              
+                SQVM.ItemCodesAndNames = ItemCodesAndNames;
+                SQVM.LocationCodeAndNames = LocationCodeAndNames;
+                SQVM.TaxCodes = TaxCodes;
+
+                ko.applyBindings(SQVM);
+
+                    //Editing SQ
+                    var ExisingSQ = @Html.ViewModelToJson(Model);
+
+                    var SqLines = ExisingSQ.lines;
+                if (SqLines !== null) {
+                    var sqlinetable = $('#ItemListTable').DataTable();
+                        for (var i = 0; i < SqLines.length; i++) {
+                            var defaultDescription = '-';
+                            var AddtionalRemarks = '';
+                            if (SqLines[i].overwriteDescription !== null) {
+                                defaultDescription = SqLines[i].overwriteDescription;
+                            }
+                            else {
+                                defaultDescription = SqLines[i].description;
+                            }
+                            if (SqLines[i].description2 !== null) {
+                                AddtionalRemarks = AddtionalRemarks + SqLines[i].description2 + "<br/>"
+                            }
+                            if (SqLines[i].description3 !== null) {
+                                AddtionalRemarks = AddtionalRemarks + SqLines[i].description3 + "<br/>"
+                            }
+                            if (SqLines[i].description4 !== null) {
+                                AddtionalRemarks = AddtionalRemarks + SqLines[i].description4 + "<br/>"
+                            }
+                            if (SqLines[i].description5 !== null) {
+                                AddtionalRemarks = AddtionalRemarks + SqLines[i].description5 + "<br/>"
+                            }
+                            if (SqLines[i].description6 !== null) {
+                                AddtionalRemarks = AddtionalRemarks + SqLines[i].description6
+                            }
+                            defaultDescription = defaultDescription + "<span data-toggle='popover' data-trigger='hover' data-placement='top' data-html='true' data-content='" + AddtionalRemarks + "' data-title='Additional Remarks'><i class='fa fa-fw fa-info-circle'></i></span>";
+                            var rowNode = sqlinetable.row.add([
+                                i + 1,
+                                SqLines[i].itemCode,
+                                defaultDescription,
+                                parseFloat(SqLines[i].qty).toFixed(3),                               
+                                SqLines[i].locationText,
+                                parseFloat(SqLines[i].unitPrice).toFixed(4),
+                                SqLines[i].gstName,
+                                parseFloat(SqLines[i].lineTotal).toFixed(2),
+                                "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteSQLine("
+                                + i + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                            ]).draw().node();
+                            $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editSQLine(" + i + ", data, event) } }");
+                           
+                            ko.applyBindings(SQVM, rowNode);
+                        }
+                    sqlinetable.columns.adjust().draw();                    
+                    }
+                var SqNoteLines = ExisingSQ.noteLines;
+                
+                if (SqNoteLines !== null) {
+                    if (jQuery.type(SqNoteLines) !== "undefined") {
+                        var sqnotetable = $('#NoteListTable').DataTable();
+                        for (var i = 0; i < SqNoteLines.length; i++) {
+                           
+                            var rowNode = sqnotetable.row.add([
+                                i + 1,                             
+                                SqNoteLines[i].note,
+                                "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteSQNote("
+                                + i + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                            ]).draw().node();
+                            $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editSQNote(" + i + ", data, event) } }");
+
+                            ko.applyBindings(SQVM, rowNode);
+                        }
+                        sqnotetable.columns.adjust().draw();
+                    }
+                }
+
+            });
+
+           
+            
+            
+
+            $('.select2').select2();
+            $('.datepicker').datepicker({ format: 'dd/mm/yyyy', autoclose: true });
+            var table = $('#ItemListTable').DataTable(
+                {
+                    "columnDefs": [
+                        { className: "text-right", "targets": [3, 5, 7] }
+                    ]
+                }
+            );
+            var LocationStocktable = $('#LocationStock').DataTable({
+                "columnDefs": [
+                    { className: "text-right", "targets": [1] }
+                ]
+            });
+
+            var PriceHistorytable = $('#PriceHistory').DataTable(
+                {
+                    "columnDefs": [
+                        { className: "text-right", "targets": [2, 3] }
+                    ]
+                });
+            var NoteListTable = $('#NoteListTable').DataTable(
+                {
+                                
+                });
+                
+          
+            var PriceBreaktable = $('#PriceBreak').DataTable(
+                {
+                    "columnDefs": [
+                        { className: "text-right", "targets": [1, 2] }
+                    ],
+                    "paging": false,
+                    "ordering": false,
+                    "info": false
+                });
+ 
+            $('table.bmdatatable tbody').on('click', 'tr td button.btn-danger', function () {
+
+                table.row($(this).parents('tr')).remove().draw();
+                //if ($(this).parent().parent().hasClass('highlight')) {
+                //    $(this).parent().parent().removeClass('highlight');
+                //}
+                //else {
+                //    table.$('tr.highlight').removeClass('highlight');
+                //    $(this).parent().parent().addClass('highlight');
+                //}
+            });
+            // Datables Need to be re-drawn again if datatable intialised in hidden area(That is when we put datatables inside tabs)
+            // So here we are call draw to redraw table when each tabs become visible
+            $(document).on('shown.bs.modal', '#AddUpdateItemModal', function (event) {                 
+                var table = $('#PriceHistory').DataTable();
+                table.columns.adjust().draw();
+                var priceBreaktable = $('#PriceBreak').DataTable();
+                priceBreaktable.columns.adjust().draw();
+            });
+            $('body').popover({
+                selector: '[data-toggle="popover"]',
+                trigger: 'hover',
+                html: true,
+            });
+        });
+    </script>
+}

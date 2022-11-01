@@ -1,0 +1,168 @@
+﻿<error errorId="cb739dce-ccc9-4b59-928d-ff0f9cc44586" host="DESKTOP-I7NGPI4" type="System.Runtime.InteropServices.COMException" message="The document has not been opened." source="clientdoc.dll" detail="System.Web.HttpUnhandledException (0x80004005): Exception of type 'System.Web.HttpUnhandledException' was thrown. ---&gt; System.Runtime.InteropServices.COMException (0x8004180B): The document has not been opened.&#xD;&#xA;   at CrystalDecisions.ReportAppServer.ClientDoc.ReportClientDocumentClass.set_ReportAppServer(String pbsVal)&#xD;&#xA;   at CrystalDecisions.ReportAppServer.ReportClientDocumentWrapper.set_ReportAppServer(String value)&#xD;&#xA;   at CrystalDecisions.CrystalReports.Engine.ReportDocument.Initialize()&#xD;&#xA;   at CrystalDecisions.CrystalReports.Engine.ReportDocument..ctor()&#xD;&#xA;   at BMSS.WebUI.WForms.CSTaxInvoiceViewer.Page_Load(Object sender, EventArgs e) in D:\WebApplications\BuildMateSalesSystem-From07Nov2019\BMSS.WebUI\WForms\CSTaxInvoiceViewer.aspx.cs:line 63&#xD;&#xA;   at System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)&#xD;&#xA;   at System.Web.UI.Control.OnLoad(EventArgs e)&#xD;&#xA;   at System.Web.UI.Control.LoadRecursive()&#xD;&#xA;   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)&#xD;&#xA;   at System.Web.UI.Page.HandleError(Exception e)&#xD;&#xA;   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)&#xD;&#xA;   at System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)&#xD;&#xA;   at System.Web.UI.Page.ProcessRequest()&#xD;&#xA;   at System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)&#xD;&#xA;   at System.Web.UI.Page.ProcessRequest(HttpContext context)&#xD;&#xA;   at ASP.wforms_cstaxinvoiceviewer_aspx.ProcessRequest(HttpContext context)&#xD;&#xA;   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()&#xD;&#xA;   at System.Web.HttpApplication.ExecuteStepImpl(IExecutionStep step)&#xD;&#xA;   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean&amp; completedSynchronously)" user="Admin" time="2021-01-26T11:29:41.6073481Z" statusCode="500" webHostHtmlMessage="&lt;!DOCTYPE html&gt;&#xD;&#xA;&lt;html&gt;&#xD;&#xA;    &lt;head&gt;&#xD;&#xA;        &lt;title&gt;The document has not been opened.&lt;/title&gt;&#xD;&#xA;        &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width&quot; /&gt;&#xD;&#xA;        &lt;style&gt;&#xD;&#xA;         body {font-family:&quot;Verdana&quot;;font-weight:normal;font-size: .7em;color:black;} &#xD;&#xA;         p {font-family:&quot;Verdana&quot;;font-weight:normal;color:black;margin-top: -5px}&#xD;&#xA;         b {font-family:&quot;Verdana&quot;;font-weight:bold;color:black;margin-top: -5px}&#xD;&#xA;         H1 { font-family:&quot;Verdana&quot;;font-weight:normal;font-size:18pt;color:red }&#xD;&#xA;         H2 { font-family:&quot;Verdana&quot;;font-weight:normal;font-size:14pt;color:maroon }&#xD;&#xA;         pre {font-family:&quot;Consolas&quot;,&quot;Lucida Console&quot;,Monospace;font-size:11pt;margin:0;padding:0.5em;line-height:14pt}&#xD;&#xA;         .marker {font-weight: bold; color: black;text-decoration: none;}&#xD;&#xA;         .version {color: gray;}&#xD;&#xA;         .error {margin-bottom: 10px;}&#xD;&#xA;         .expandable { text-decoration:underline; font-weight:bold; color:navy; cursor:pointer; }&#xD;&#xA;         @media screen and (max-width: 639px) {&#xD;&#xA;          pre { width: 440px; overflow: auto; white-space: pre-wrap; word-wrap: break-word; }&#xD;&#xA;         }&#xD;&#xA;         @media screen and (max-width: 479px) {&#xD;&#xA;          pre { width: 280px; }&#xD;&#xA;         }&#xD;&#xA;        &lt;/style&gt;&#xD;&#xA;    &lt;/head&gt;&#xD;&#xA;&#xD;&#xA;    &lt;body bgcolor=&quot;white&quot;&gt;&#xD;&#xA;&#xD;&#xA;            &lt;span&gt;&lt;H1&gt;Server Error in '/' Application.&lt;hr width=100% size=1 color=silver&gt;&lt;/H1&gt;&#xD;&#xA;&#xD;&#xA;            &lt;h2&gt; &lt;i&gt;The document has not been opened.&lt;/i&gt; &lt;/h2&gt;&lt;/span&gt;&#xD;&#xA;&#xD;&#xA;            &lt;font face=&quot;Arial, Helvetica, Geneva, SunSans-Regular, sans-serif &quot;&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt; Description: &lt;/b&gt;An unhandled exception occurred during the execution of the current web request. Please review the stack trace for more information about the error and where it originated in the code.&#xD;&#xA;&#xD;&#xA;            &lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt; Exception Details: &lt;/b&gt;System.Runtime.InteropServices.COMException: The document has not been opened.&lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt;Source Error:&lt;/b&gt; &lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;table width=100% bgcolor=&quot;#ffffcc&quot;&gt;&#xD;&#xA;               &lt;tr&gt;&#xD;&#xA;                  &lt;td&gt;&#xD;&#xA;                      &lt;code&gt;&lt;pre&gt;&#xD;&#xA;&#xD;&#xA;Line 61:                         URL = baseUrl + &amp;quot;WForms/ViewerPrint.aspx?DE=&amp;quot; + DocNum + &amp;quot;&amp;amp;Ty=&amp;quot; + BMSS.WebUI.Models.General.PrintDocTypes.Cash_Sales_Tax_Invoice;&#xD;&#xA;Line 62: &#xD;&#xA;&lt;font color=red&gt;Line 63:                         ReportDocument cryRpt = new ReportDocument();&#xD;&#xA;&lt;/font&gt;Line 64:                         cryRpt.Load(Server.MapPath(&amp;quot;~\\App_Data\\Cash_Tax_Invoice.rpt&amp;quot;));&#xD;&#xA;Line 65:                         cryRpt.SetDatabaseLogon(&amp;quot;sa&amp;quot;, &amp;quot;B1Admin&amp;quot;);&lt;/pre&gt;                      &lt;/code&gt;&#xD;&#xA;&#xD;&#xA;                  &lt;/td&gt;&#xD;&#xA;               &lt;/tr&gt;&#xD;&#xA;            &lt;/table&gt;&#xD;&#xA;&#xD;&#xA;            &lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt; Source File: &lt;/b&gt; D:\WebApplications\BuildMateSalesSystem-From07Nov2019\BMSS.WebUI\WForms\CSTaxInvoiceViewer.aspx.cs&lt;b&gt; &amp;nbsp;&amp;nbsp; Line: &lt;/b&gt; 63&#xD;&#xA;            &lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt;Stack Trace:&lt;/b&gt; &lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;table width=100% bgcolor=&quot;#ffffcc&quot;&gt;&#xD;&#xA;               &lt;tr&gt;&#xD;&#xA;                  &lt;td&gt;&#xD;&#xA;                      &lt;code&gt;&lt;pre&gt;&#xD;&#xA;&#xD;&#xA;[COMException (0x8004180b): The document has not been opened.]&#xD;&#xA;   CrystalDecisions.ReportAppServer.ClientDoc.ReportClientDocumentClass.set_ReportAppServer(String pbsVal) +0&#xD;&#xA;   CrystalDecisions.ReportAppServer.ReportClientDocumentWrapper.set_ReportAppServer(String value) +71&#xD;&#xA;   CrystalDecisions.CrystalReports.Engine.ReportDocument.Initialize() +527&#xD;&#xA;   CrystalDecisions.CrystalReports.Engine.ReportDocument..ctor() +355&#xD;&#xA;   BMSS.WebUI.WForms.CSTaxInvoiceViewer.Page_Load(Object sender, EventArgs e) in D:\WebApplications\BuildMateSalesSystem-From07Nov2019\BMSS.WebUI\WForms\CSTaxInvoiceViewer.aspx.cs:63&#xD;&#xA;   System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e) +52&#xD;&#xA;   System.Web.UI.Control.OnLoad(EventArgs e) +97&#xD;&#xA;   System.Web.UI.Control.LoadRecursive() +61&#xD;&#xA;   System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint) +693&#xD;&#xA;&lt;/pre&gt;                      &lt;/code&gt;&#xD;&#xA;&#xD;&#xA;                  &lt;/td&gt;&#xD;&#xA;               &lt;/tr&gt;&#xD;&#xA;            &lt;/table&gt;&#xD;&#xA;&#xD;&#xA;            &lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;/font&gt;&#xD;&#xA;&#xD;&#xA;    &lt;/body&gt;&#xD;&#xA;&lt;/html&gt;&#xD;&#xA;">
+  <serverVariables>
+    <item name="ALL_HTTP">
+      <value string="HTTP_CONNECTION:keep-alive&#xD;&#xA;HTTP_ACCEPT:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8&#xD;&#xA;HTTP_ACCEPT_ENCODING:gzip, deflate&#xD;&#xA;HTTP_ACCEPT_LANGUAGE:en-US,en;q=0.5&#xD;&#xA;HTTP_COOKIE:__RequestVerificationToken=ywRftaOgqjNnIRktK-Cx5tCBSoLpVPVOdNOOSb1FV5_pRxh_MspvF3bMzSrkOGAlvUNhWESEdIt2k2G1B3y3k8BiIYfg-1MzHZgRshRO2Sc1; .AspNet.ApplicationCookie=jLiRM84-Z7O5O1bAQhlfNyqcNsXodpI0w36BCgnhsuz1IQylaQZMT6T2z49ZR5E5zB-PLA_orGsAeuWMzOFb9pjV2m2jXrjGuxQOf5Gg-fSJ8MfEvoF1sOdd2Id9JHuz5ucnlzHhG9R4AIJXD1HVHHjEXFJK_5jY6CNZnnHGZHikQaVWOb8p7fEr1xxGrcdzaQSXl5DVQBkaZL4aEYIiSdmfa53lyBQmw_58w1H2h9UYKCDXCJNyt-VNfxrxJgFKDiakxiK2Mw1B4C9xRtKqFM4Q6O0tDK4ucNSbDcaM_k4qZ5zE7Iu_Zp_7ObDyBWp8JKnnnOvuYqlT25d4cMto1eF28cY45Z8p0iPKDJvbd5y0AZcfPt_mDJdrrTjhXCp5lHpP52hR5trde-jUPNgmb8_smxZec7QWjiQGxY6gihfT2UgmX3Kl3WuzGvIULouy4onQypCAI5Yomqq7KuJlBwHugXpl_QUIr2iQd3k-BCEudDjTRWBv8oNlhS4YcO2N72mRaf2AvnU1vYMIfyMSnsNpDay7FqTq-w-H83Jw_886xOKm5YRPR-Su7hMZwfidmpXc7-PoCSZB7Y_X1reIiIbCSAYJIxsgzd5cDLmGGMVSv28SBS0vv-p6VpyP0S8u37mCNf8_UuA6imbzSVSDxxz2o7nEJ5iNbVfqYsONnKe2wphQ0V3hjCDJXDpm40Y3aGkfxIQ_CHSKHP08xZ85r00nVaAYKGDS8WBPKlA0bEpkX-e1Hig7r3yXZvkX-CuyD88_wO7VQXNcnyqR5I_RTyDrG8gDeNeHRsK0izDEhB_i2JV3J8MoxLUwIt4ceIipdGG4OurJ_MVq8X35y_Tns33oWtItMuYi0lXuVMVXMjPNuV5mjOQ-5nBi6GC-aiNwcO29UknNOP0d7H_7aU6qQhHXn-zdWDhGaf9emvVUU5o&#xD;&#xA;HTTP_HOST:localhost:60054&#xD;&#xA;HTTP_REFERER:http://localhost:60054/CashSales/IndexNew&#xD;&#xA;HTTP_USER_AGENT:Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0&#xD;&#xA;HTTP_UPGRADE_INSECURE_REQUESTS:1&#xD;&#xA;" />
+    </item>
+    <item name="ALL_RAW">
+      <value string="Connection: keep-alive&#xD;&#xA;Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8&#xD;&#xA;Accept-Encoding: gzip, deflate&#xD;&#xA;Accept-Language: en-US,en;q=0.5&#xD;&#xA;Cookie: __RequestVerificationToken=ywRftaOgqjNnIRktK-Cx5tCBSoLpVPVOdNOOSb1FV5_pRxh_MspvF3bMzSrkOGAlvUNhWESEdIt2k2G1B3y3k8BiIYfg-1MzHZgRshRO2Sc1; .AspNet.ApplicationCookie=jLiRM84-Z7O5O1bAQhlfNyqcNsXodpI0w36BCgnhsuz1IQylaQZMT6T2z49ZR5E5zB-PLA_orGsAeuWMzOFb9pjV2m2jXrjGuxQOf5Gg-fSJ8MfEvoF1sOdd2Id9JHuz5ucnlzHhG9R4AIJXD1HVHHjEXFJK_5jY6CNZnnHGZHikQaVWOb8p7fEr1xxGrcdzaQSXl5DVQBkaZL4aEYIiSdmfa53lyBQmw_58w1H2h9UYKCDXCJNyt-VNfxrxJgFKDiakxiK2Mw1B4C9xRtKqFM4Q6O0tDK4ucNSbDcaM_k4qZ5zE7Iu_Zp_7ObDyBWp8JKnnnOvuYqlT25d4cMto1eF28cY45Z8p0iPKDJvbd5y0AZcfPt_mDJdrrTjhXCp5lHpP52hR5trde-jUPNgmb8_smxZec7QWjiQGxY6gihfT2UgmX3Kl3WuzGvIULouy4onQypCAI5Yomqq7KuJlBwHugXpl_QUIr2iQd3k-BCEudDjTRWBv8oNlhS4YcO2N72mRaf2AvnU1vYMIfyMSnsNpDay7FqTq-w-H83Jw_886xOKm5YRPR-Su7hMZwfidmpXc7-PoCSZB7Y_X1reIiIbCSAYJIxsgzd5cDLmGGMVSv28SBS0vv-p6VpyP0S8u37mCNf8_UuA6imbzSVSDxxz2o7nEJ5iNbVfqYsONnKe2wphQ0V3hjCDJXDpm40Y3aGkfxIQ_CHSKHP08xZ85r00nVaAYKGDS8WBPKlA0bEpkX-e1Hig7r3yXZvkX-CuyD88_wO7VQXNcnyqR5I_RTyDrG8gDeNeHRsK0izDEhB_i2JV3J8MoxLUwIt4ceIipdGG4OurJ_MVq8X35y_Tns33oWtItMuYi0lXuVMVXMjPNuV5mjOQ-5nBi6GC-aiNwcO29UknNOP0d7H_7aU6qQhHXn-zdWDhGaf9emvVUU5o&#xD;&#xA;Host: localhost:60054&#xD;&#xA;Referer: http://localhost:60054/CashSales/IndexNew&#xD;&#xA;User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0&#xD;&#xA;Upgrade-Insecure-Requests: 1&#xD;&#xA;" />
+    </item>
+    <item name="APPL_MD_PATH">
+      <value string="/LM/W3SVC/3/ROOT" />
+    </item>
+    <item name="APPL_PHYSICAL_PATH">
+      <value string="D:\WebApplications\BuildMateSalesSystem-From07Nov2019\BMSS.WebUI\" />
+    </item>
+    <item name="AUTH_TYPE">
+      <value string="ApplicationCookie" />
+    </item>
+    <item name="AUTH_USER">
+      <value string="Admin" />
+    </item>
+    <item name="AUTH_PASSWORD">
+      <value string="" />
+    </item>
+    <item name="LOGON_USER">
+      <value string="Admin" />
+    </item>
+    <item name="REMOTE_USER">
+      <value string="Admin" />
+    </item>
+    <item name="CERT_COOKIE">
+      <value string="" />
+    </item>
+    <item name="CERT_FLAGS">
+      <value string="" />
+    </item>
+    <item name="CERT_ISSUER">
+      <value string="" />
+    </item>
+    <item name="CERT_KEYSIZE">
+      <value string="" />
+    </item>
+    <item name="CERT_SECRETKEYSIZE">
+      <value string="" />
+    </item>
+    <item name="CERT_SERIALNUMBER">
+      <value string="" />
+    </item>
+    <item name="CERT_SERVER_ISSUER">
+      <value string="" />
+    </item>
+    <item name="CERT_SERVER_SUBJECT">
+      <value string="" />
+    </item>
+    <item name="CERT_SUBJECT">
+      <value string="" />
+    </item>
+    <item name="CONTENT_LENGTH">
+      <value string="0" />
+    </item>
+    <item name="CONTENT_TYPE">
+      <value string="" />
+    </item>
+    <item name="GATEWAY_INTERFACE">
+      <value string="CGI/1.1" />
+    </item>
+    <item name="HTTPS">
+      <value string="off" />
+    </item>
+    <item name="HTTPS_KEYSIZE">
+      <value string="" />
+    </item>
+    <item name="HTTPS_SECRETKEYSIZE">
+      <value string="" />
+    </item>
+    <item name="HTTPS_SERVER_ISSUER">
+      <value string="" />
+    </item>
+    <item name="HTTPS_SERVER_SUBJECT">
+      <value string="" />
+    </item>
+    <item name="INSTANCE_ID">
+      <value string="3" />
+    </item>
+    <item name="INSTANCE_META_PATH">
+      <value string="/LM/W3SVC/3" />
+    </item>
+    <item name="LOCAL_ADDR">
+      <value string="::1" />
+    </item>
+    <item name="PATH_INFO">
+      <value string="/WForms/CSTaxInvoiceViewer.aspx/155" />
+    </item>
+    <item name="PATH_TRANSLATED">
+      <value string="D:\WebApplications\BuildMateSalesSystem-From07Nov2019\BMSS.WebUI\WForms\CSTaxInvoiceViewer.aspx" />
+    </item>
+    <item name="QUERY_STRING">
+      <value string="" />
+    </item>
+    <item name="REMOTE_ADDR">
+      <value string="::1" />
+    </item>
+    <item name="REMOTE_HOST">
+      <value string="::1" />
+    </item>
+    <item name="REMOTE_PORT">
+      <value string="53224" />
+    </item>
+    <item name="REQUEST_METHOD">
+      <value string="GET" />
+    </item>
+    <item name="SCRIPT_NAME">
+      <value string="/WForms/CSTaxInvoiceViewer.aspx" />
+    </item>
+    <item name="SERVER_NAME">
+      <value string="localhost" />
+    </item>
+    <item name="SERVER_PORT">
+      <value string="60054" />
+    </item>
+    <item name="SERVER_PORT_SECURE">
+      <value string="0" />
+    </item>
+    <item name="SERVER_PROTOCOL">
+      <value string="HTTP/1.1" />
+    </item>
+    <item name="SERVER_SOFTWARE">
+      <value string="Microsoft-IIS/10.0" />
+    </item>
+    <item name="URL">
+      <value string="/WForms/CSTaxInvoiceViewer.aspx" />
+    </item>
+    <item name="HTTP_CONNECTION">
+      <value string="keep-alive" />
+    </item>
+    <item name="HTTP_ACCEPT">
+      <value string="text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8" />
+    </item>
+    <item name="HTTP_ACCEPT_ENCODING">
+      <value string="gzip, deflate" />
+    </item>
+    <item name="HTTP_ACCEPT_LANGUAGE">
+      <value string="en-US,en;q=0.5" />
+    </item>
+    <item name="HTTP_COOKIE">
+      <value string="__RequestVerificationToken=ywRftaOgqjNnIRktK-Cx5tCBSoLpVPVOdNOOSb1FV5_pRxh_MspvF3bMzSrkOGAlvUNhWESEdIt2k2G1B3y3k8BiIYfg-1MzHZgRshRO2Sc1; .AspNet.ApplicationCookie=jLiRM84-Z7O5O1bAQhlfNyqcNsXodpI0w36BCgnhsuz1IQylaQZMT6T2z49ZR5E5zB-PLA_orGsAeuWMzOFb9pjV2m2jXrjGuxQOf5Gg-fSJ8MfEvoF1sOdd2Id9JHuz5ucnlzHhG9R4AIJXD1HVHHjEXFJK_5jY6CNZnnHGZHikQaVWOb8p7fEr1xxGrcdzaQSXl5DVQBkaZL4aEYIiSdmfa53lyBQmw_58w1H2h9UYKCDXCJNyt-VNfxrxJgFKDiakxiK2Mw1B4C9xRtKqFM4Q6O0tDK4ucNSbDcaM_k4qZ5zE7Iu_Zp_7ObDyBWp8JKnnnOvuYqlT25d4cMto1eF28cY45Z8p0iPKDJvbd5y0AZcfPt_mDJdrrTjhXCp5lHpP52hR5trde-jUPNgmb8_smxZec7QWjiQGxY6gihfT2UgmX3Kl3WuzGvIULouy4onQypCAI5Yomqq7KuJlBwHugXpl_QUIr2iQd3k-BCEudDjTRWBv8oNlhS4YcO2N72mRaf2AvnU1vYMIfyMSnsNpDay7FqTq-w-H83Jw_886xOKm5YRPR-Su7hMZwfidmpXc7-PoCSZB7Y_X1reIiIbCSAYJIxsgzd5cDLmGGMVSv28SBS0vv-p6VpyP0S8u37mCNf8_UuA6imbzSVSDxxz2o7nEJ5iNbVfqYsONnKe2wphQ0V3hjCDJXDpm40Y3aGkfxIQ_CHSKHP08xZ85r00nVaAYKGDS8WBPKlA0bEpkX-e1Hig7r3yXZvkX-CuyD88_wO7VQXNcnyqR5I_RTyDrG8gDeNeHRsK0izDEhB_i2JV3J8MoxLUwIt4ceIipdGG4OurJ_MVq8X35y_Tns33oWtItMuYi0lXuVMVXMjPNuV5mjOQ-5nBi6GC-aiNwcO29UknNOP0d7H_7aU6qQhHXn-zdWDhGaf9emvVUU5o" />
+    </item>
+    <item name="HTTP_HOST">
+      <value string="localhost:60054" />
+    </item>
+    <item name="HTTP_REFERER">
+      <value string="http://localhost:60054/CashSales/IndexNew" />
+    </item>
+    <item name="HTTP_USER_AGENT">
+      <value string="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0" />
+    </item>
+    <item name="HTTP_UPGRADE_INSECURE_REQUESTS">
+      <value string="1" />
+    </item>
+  </serverVariables>
+  <cookies>
+    <item name="__RequestVerificationToken">
+      <value string="ywRftaOgqjNnIRktK-Cx5tCBSoLpVPVOdNOOSb1FV5_pRxh_MspvF3bMzSrkOGAlvUNhWESEdIt2k2G1B3y3k8BiIYfg-1MzHZgRshRO2Sc1" />
+    </item>
+    <item name=".AspNet.ApplicationCookie">
+      <value string="jLiRM84-Z7O5O1bAQhlfNyqcNsXodpI0w36BCgnhsuz1IQylaQZMT6T2z49ZR5E5zB-PLA_orGsAeuWMzOFb9pjV2m2jXrjGuxQOf5Gg-fSJ8MfEvoF1sOdd2Id9JHuz5ucnlzHhG9R4AIJXD1HVHHjEXFJK_5jY6CNZnnHGZHikQaVWOb8p7fEr1xxGrcdzaQSXl5DVQBkaZL4aEYIiSdmfa53lyBQmw_58w1H2h9UYKCDXCJNyt-VNfxrxJgFKDiakxiK2Mw1B4C9xRtKqFM4Q6O0tDK4ucNSbDcaM_k4qZ5zE7Iu_Zp_7ObDyBWp8JKnnnOvuYqlT25d4cMto1eF28cY45Z8p0iPKDJvbd5y0AZcfPt_mDJdrrTjhXCp5lHpP52hR5trde-jUPNgmb8_smxZec7QWjiQGxY6gihfT2UgmX3Kl3WuzGvIULouy4onQypCAI5Yomqq7KuJlBwHugXpl_QUIr2iQd3k-BCEudDjTRWBv8oNlhS4YcO2N72mRaf2AvnU1vYMIfyMSnsNpDay7FqTq-w-H83Jw_886xOKm5YRPR-Su7hMZwfidmpXc7-PoCSZB7Y_X1reIiIbCSAYJIxsgzd5cDLmGGMVSv28SBS0vv-p6VpyP0S8u37mCNf8_UuA6imbzSVSDxxz2o7nEJ5iNbVfqYsONnKe2wphQ0V3hjCDJXDpm40Y3aGkfxIQ_CHSKHP08xZ85r00nVaAYKGDS8WBPKlA0bEpkX-e1Hig7r3yXZvkX-CuyD88_wO7VQXNcnyqR5I_RTyDrG8gDeNeHRsK0izDEhB_i2JV3J8MoxLUwIt4ceIipdGG4OurJ_MVq8X35y_Tns33oWtItMuYi0lXuVMVXMjPNuV5mjOQ-5nBi6GC-aiNwcO29UknNOP0d7H_7aU6qQhHXn-zdWDhGaf9emvVUU5o" />
+    </item>
+  </cookies>
+</error>

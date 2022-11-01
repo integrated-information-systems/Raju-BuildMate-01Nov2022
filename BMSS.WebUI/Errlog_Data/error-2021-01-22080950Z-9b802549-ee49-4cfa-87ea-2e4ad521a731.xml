@@ -1,0 +1,224 @@
+﻿<error errorId="9b802549-ee49-4cfa-87ea-2e4ad521a731" host="DESKTOP-I7NGPI4" type="System.ObjectDisposedException" message="The ObjectContext instance has been disposed and can no longer be used for operations that require a connection." source="EntityFramework" detail="System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---&gt; System.ObjectDisposedException: The ObjectContext instance has been disposed and can no longer be used for operations that require a connection.&#xD;&#xA;   at System.Data.Entity.Core.Objects.ObjectContext.get_Connection()&#xD;&#xA;   at System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)&#xD;&#xA;   at System.Data.Entity.Core.Objects.ObjectQuery`1.Execute(MergeOption mergeOption)&#xD;&#xA;   at System.Data.Entity.Core.Objects.DataClasses.EntityCollection`1.Load(List`1 collection, MergeOption mergeOption)&#xD;&#xA;   at System.Data.Entity.Core.Objects.DataClasses.EntityCollection`1.Load(MergeOption mergeOption)&#xD;&#xA;   at System.Data.Entity.Core.Objects.DataClasses.RelatedEnd.DeferredLoad()&#xD;&#xA;   at System.Data.Entity.Core.Objects.Internal.LazyLoadBehavior.LoadProperty[TItem](TItem propertyValue, String relationshipName, String targetRoleName, Boolean mustBeNull, Object wrapperObject)&#xD;&#xA;   at System.Data.Entity.Core.Objects.Internal.LazyLoadBehavior.&lt;&gt;c__DisplayClass0_0`2.&lt;GetInterceptorDelegate&gt;b__1(TProxy proxy, TItem item)&#xD;&#xA;   at System.Data.Entity.DynamicProxies.DODocH_215243F522CB1EE7D77B195443FC3E7546C36660E5046E24702249E17626C119.get_DODocLs()&#xD;&#xA;   --- End of inner exception stack trace ---&#xD;&#xA;   at System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)&#xD;&#xA;   at System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parameters, Object[] arguments)&#xD;&#xA;   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)&#xD;&#xA;   at System.Web.SecurityUtils.MethodInfoInvoke(MethodInfo method, Object target, Object[] args)&#xD;&#xA;   at System.Web.Script.Serialization.JavaScriptSerializer.SerializeCustomObject(Object o, StringBuilder sb, Int32 depth, Hashtable objectsInUse, SerializationFormat serializationFormat)&#xD;&#xA;   at System.Web.Script.Serialization.JavaScriptSerializer.SerializeValueInternal(Object o, StringBuilder sb, Int32 depth, Hashtable objectsInUse, SerializationFormat serializationFormat, MemberInfo currentMember)&#xD;&#xA;   at System.Web.Script.Serialization.JavaScriptSerializer.SerializeValue(Object o, StringBuilder sb, Int32 depth, Hashtable objectsInUse, SerializationFormat serializationFormat, MemberInfo currentMember)&#xD;&#xA;   at System.Web.Script.Serialization.JavaScriptSerializer.SerializeEnumerable(IEnumerable enumerable, StringBuilder sb, Int32 depth, Hashtable objectsInUse, SerializationFormat serializationFormat)&#xD;&#xA;   at System.Web.Script.Serialization.JavaScriptSerializer.SerializeValueInternal(Object o, StringBuilder sb, Int32 depth, Hashtable objectsInUse, SerializationFormat serializationFormat, MemberInfo currentMember)&#xD;&#xA;   at System.Web.Script.Serialization.JavaScriptSerializer.SerializeValue(Object o, StringBuilder sb, Int32 depth, Hashtable objectsInUse, SerializationFormat serializationFormat, MemberInfo currentMember)&#xD;&#xA;   at System.Web.Script.Serialization.JavaScriptSerializer.SerializeCustomObject(Object o, StringBuilder sb, Int32 depth, Hashtable objectsInUse, SerializationFormat serializationFormat)&#xD;&#xA;   at System.Web.Script.Serialization.JavaScriptSerializer.SerializeValueInternal(Object o, StringBuilder sb, Int32 depth, Hashtable objectsInUse, SerializationFormat serializationFormat, MemberInfo currentMember)&#xD;&#xA;   at System.Web.Script.Serialization.JavaScriptSerializer.SerializeValue(Object o, StringBuilder sb, Int32 depth, Hashtable objectsInUse, SerializationFormat serializationFormat, MemberInfo currentMember)&#xD;&#xA;   at System.Web.Script.Serialization.JavaScriptSerializer.Serialize(Object obj, StringBuilder output, SerializationFormat serializationFormat)&#xD;&#xA;   at System.Web.Script.Serialization.JavaScriptSerializer.Serialize(Object obj, SerializationFormat serializationFormat)&#xD;&#xA;   at System.Web.Mvc.JsonResult.ExecuteResult(ControllerContext context)&#xD;&#xA;   at System.Web.Mvc.ControllerActionInvoker.InvokeActionResult(ControllerContext controllerContext, ActionResult actionResult)&#xD;&#xA;   at System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)&#xD;&#xA;   at System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)&#xD;&#xA;   at System.Web.Mvc.ControllerActionInvoker.InvokeActionResultWithFilters(ControllerContext controllerContext, IList`1 filters, ActionResult actionResult)&#xD;&#xA;   at System.Web.Mvc.Async.AsyncControllerActionInvoker.&lt;&gt;c__DisplayClass3_6.&lt;BeginInvokeAction&gt;b__4()&#xD;&#xA;   at System.Web.Mvc.Async.AsyncControllerActionInvoker.&lt;&gt;c__DisplayClass3_1.&lt;BeginInvokeAction&gt;b__1(IAsyncResult asyncResult)&#xD;&#xA;   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResult`1.CallEndDelegate(IAsyncResult asyncResult)&#xD;&#xA;   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResultBase`1.End()&#xD;&#xA;   at System.Web.Mvc.Async.AsyncControllerActionInvoker.EndInvokeAction(IAsyncResult asyncResult)&#xD;&#xA;   at System.Web.Mvc.Controller.&lt;&gt;c.&lt;BeginExecuteCore&gt;b__152_1(IAsyncResult asyncResult, ExecuteCoreState innerState)&#xD;&#xA;   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncVoid`1.CallEndDelegate(IAsyncResult asyncResult)&#xD;&#xA;   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResultBase`1.End()&#xD;&#xA;   at System.Web.Mvc.Controller.EndExecuteCore(IAsyncResult asyncResult)&#xD;&#xA;   at System.Web.Mvc.Controller.&lt;&gt;c.&lt;BeginExecute&gt;b__151_2(IAsyncResult asyncResult, Controller controller)&#xD;&#xA;   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncVoid`1.CallEndDelegate(IAsyncResult asyncResult)&#xD;&#xA;   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResultBase`1.End()&#xD;&#xA;   at System.Web.Mvc.Controller.EndExecute(IAsyncResult asyncResult)&#xD;&#xA;   at System.Web.Mvc.Controller.System.Web.Mvc.Async.IAsyncController.EndExecute(IAsyncResult asyncResult)&#xD;&#xA;   at System.Web.Mvc.MvcHandler.&lt;&gt;c.&lt;BeginProcessRequest&gt;b__20_1(IAsyncResult asyncResult, ProcessRequestState innerState)&#xD;&#xA;   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncVoid`1.CallEndDelegate(IAsyncResult asyncResult)&#xD;&#xA;   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResultBase`1.End()&#xD;&#xA;   at System.Web.Mvc.MvcHandler.EndProcessRequest(IAsyncResult asyncResult)&#xD;&#xA;   at System.Web.Mvc.MvcHandler.System.Web.IHttpAsyncHandler.EndProcessRequest(IAsyncResult result)&#xD;&#xA;   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()&#xD;&#xA;   at System.Web.HttpApplication.ExecuteStepImpl(IExecutionStep step)&#xD;&#xA;   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean&amp; completedSynchronously)" user="Admin" time="2021-01-22T08:09:50.7140436Z">
+  <serverVariables>
+    <item name="ALL_HTTP">
+      <value string="HTTP_CACHE_CONTROL:no-cache&#xD;&#xA;HTTP_CONNECTION:keep-alive&#xD;&#xA;HTTP_PRAGMA:no-cache&#xD;&#xA;HTTP_CONTENT_LENGTH:333&#xD;&#xA;HTTP_CONTENT_TYPE:application/x-www-form-urlencoded; charset=UTF-8&#xD;&#xA;HTTP_ACCEPT:application/json, text/javascript, */*; q=0.01&#xD;&#xA;HTTP_ACCEPT_ENCODING:gzip, deflate&#xD;&#xA;HTTP_ACCEPT_LANGUAGE:en-US,en;q=0.5&#xD;&#xA;HTTP_COOKIE:__RequestVerificationToken=Uus7tWT1lwLYFzEKljuAu4P4kPptlvsvMxaDm8upsB0QvH_2kUtmuYE3gsA-9ZCx3ccIl79L18i1qkmJ2mKJPcFqZUNKw7N_k5A3Ybd6NZE1; .AspNet.ApplicationCookie=iGNkj7qsSPC4Zqu6Z64H3s0LVgAmUfMqdD0fY63sFoJewYV_qyMADBPQrLQQrU4KH_HLqDuHl5tALu6aDhGa_8NB7OzuxO_RnVgAiKsr4hvCNXcKc_jufsNTAvsCQUaaeXISVmd8walvf1SYTMCfbMO_78xHa--KkO8mAp76Z0eYYcBTm0LmSJvXJ8130crvo4rrfZKeMd4v_fZkfiHCIng0vF0mN-xJ_GyuvuClHbf7XD205d1BRF8Ij1UV5cmCflNWfGUTtBlBjIYKaUfbONwDphfUhpXVwVb8prDqOitarKFyb1Ja-_kiipbkxp0HB_BPgW7ShsFja9Z1pz3XCYkExkaD-sDUcQP5W-88F7M0BPGLCAPqzlcVyiQL3iQY4Yjsoj4BfpwD0lvg3MMGw4s3znSUWv8XIPEzv6wD2h5ICy9ogUPHOYe_k3oFs-4KG-1u1g7R2L0wdE4KMlsaTapsfAIl6wXWK3nE3jm3yTUil70PzTOrWfRjXwWqrwey_pWTQ1l3-FBb007Tf1oJh-A0cBWdIE5Fg2J2JO-BNovg4xAbzyBrkkrAStwf1Gz30PEaHS738eKEIyVHSCX_Z_S6IS7HF0o2pi-RaOIiEd4HZld-dmouUsZ5SWlAghwKwI0pjzjCoXAnXHYNlix7ki_gFAm_YM00aG8C3OxN72arSf7G8gzqUjkq60-8RPtQS-ULfKQ_RxHY1MBfuYEIGAAkHO7amx9VEkb5hf2142t3qBswXx5aV85SAVshGzZ6EcWwnl9FPCKe0lNb_P56Y_uRkDaKN3CLAQ_3UZQFvYGyzEUDbauFf1ZwKNiuU6WF26eKePAZf1d0JYQi1xm9QMtcDNw1fDSh6GT5iB74LLbNiN2iRQfN0zD1srxE2TXLN_tUvbhDVikOjrftcMjDlK8NvCriA1e59WvaigyXQaE&#xD;&#xA;HTTP_HOST:localhost:60054&#xD;&#xA;HTTP_REFERER:http://localhost:60054/DO/indexnew&#xD;&#xA;HTTP_USER_AGENT:Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0&#xD;&#xA;HTTP_X_REQUESTED_WITH:XMLHttpRequest&#xD;&#xA;HTTP_ORIGIN:http://localhost:60054&#xD;&#xA;" />
+    </item>
+    <item name="ALL_RAW">
+      <value string="Cache-Control: no-cache&#xD;&#xA;Connection: keep-alive&#xD;&#xA;Pragma: no-cache&#xD;&#xA;Content-Length: 333&#xD;&#xA;Content-Type: application/x-www-form-urlencoded; charset=UTF-8&#xD;&#xA;Accept: application/json, text/javascript, */*; q=0.01&#xD;&#xA;Accept-Encoding: gzip, deflate&#xD;&#xA;Accept-Language: en-US,en;q=0.5&#xD;&#xA;Cookie: __RequestVerificationToken=Uus7tWT1lwLYFzEKljuAu4P4kPptlvsvMxaDm8upsB0QvH_2kUtmuYE3gsA-9ZCx3ccIl79L18i1qkmJ2mKJPcFqZUNKw7N_k5A3Ybd6NZE1; .AspNet.ApplicationCookie=iGNkj7qsSPC4Zqu6Z64H3s0LVgAmUfMqdD0fY63sFoJewYV_qyMADBPQrLQQrU4KH_HLqDuHl5tALu6aDhGa_8NB7OzuxO_RnVgAiKsr4hvCNXcKc_jufsNTAvsCQUaaeXISVmd8walvf1SYTMCfbMO_78xHa--KkO8mAp76Z0eYYcBTm0LmSJvXJ8130crvo4rrfZKeMd4v_fZkfiHCIng0vF0mN-xJ_GyuvuClHbf7XD205d1BRF8Ij1UV5cmCflNWfGUTtBlBjIYKaUfbONwDphfUhpXVwVb8prDqOitarKFyb1Ja-_kiipbkxp0HB_BPgW7ShsFja9Z1pz3XCYkExkaD-sDUcQP5W-88F7M0BPGLCAPqzlcVyiQL3iQY4Yjsoj4BfpwD0lvg3MMGw4s3znSUWv8XIPEzv6wD2h5ICy9ogUPHOYe_k3oFs-4KG-1u1g7R2L0wdE4KMlsaTapsfAIl6wXWK3nE3jm3yTUil70PzTOrWfRjXwWqrwey_pWTQ1l3-FBb007Tf1oJh-A0cBWdIE5Fg2J2JO-BNovg4xAbzyBrkkrAStwf1Gz30PEaHS738eKEIyVHSCX_Z_S6IS7HF0o2pi-RaOIiEd4HZld-dmouUsZ5SWlAghwKwI0pjzjCoXAnXHYNlix7ki_gFAm_YM00aG8C3OxN72arSf7G8gzqUjkq60-8RPtQS-ULfKQ_RxHY1MBfuYEIGAAkHO7amx9VEkb5hf2142t3qBswXx5aV85SAVshGzZ6EcWwnl9FPCKe0lNb_P56Y_uRkDaKN3CLAQ_3UZQFvYGyzEUDbauFf1ZwKNiuU6WF26eKePAZf1d0JYQi1xm9QMtcDNw1fDSh6GT5iB74LLbNiN2iRQfN0zD1srxE2TXLN_tUvbhDVikOjrftcMjDlK8NvCriA1e59WvaigyXQaE&#xD;&#xA;Host: localhost:60054&#xD;&#xA;Referer: http://localhost:60054/DO/indexnew&#xD;&#xA;User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0&#xD;&#xA;X-Requested-With: XMLHttpRequest&#xD;&#xA;Origin: http://localhost:60054&#xD;&#xA;" />
+    </item>
+    <item name="APPL_MD_PATH">
+      <value string="/LM/W3SVC/3/ROOT" />
+    </item>
+    <item name="APPL_PHYSICAL_PATH">
+      <value string="D:\WebApplications\BuildMateSalesSystem-From07Nov2019\BMSS.WebUI\" />
+    </item>
+    <item name="AUTH_TYPE">
+      <value string="ApplicationCookie" />
+    </item>
+    <item name="AUTH_USER">
+      <value string="Admin" />
+    </item>
+    <item name="AUTH_PASSWORD">
+      <value string="" />
+    </item>
+    <item name="LOGON_USER">
+      <value string="Admin" />
+    </item>
+    <item name="REMOTE_USER">
+      <value string="Admin" />
+    </item>
+    <item name="CERT_COOKIE">
+      <value string="" />
+    </item>
+    <item name="CERT_FLAGS">
+      <value string="" />
+    </item>
+    <item name="CERT_ISSUER">
+      <value string="" />
+    </item>
+    <item name="CERT_KEYSIZE">
+      <value string="" />
+    </item>
+    <item name="CERT_SECRETKEYSIZE">
+      <value string="" />
+    </item>
+    <item name="CERT_SERIALNUMBER">
+      <value string="" />
+    </item>
+    <item name="CERT_SERVER_ISSUER">
+      <value string="" />
+    </item>
+    <item name="CERT_SERVER_SUBJECT">
+      <value string="" />
+    </item>
+    <item name="CERT_SUBJECT">
+      <value string="" />
+    </item>
+    <item name="CONTENT_LENGTH">
+      <value string="333" />
+    </item>
+    <item name="CONTENT_TYPE">
+      <value string="application/x-www-form-urlencoded; charset=UTF-8" />
+    </item>
+    <item name="GATEWAY_INTERFACE">
+      <value string="CGI/1.1" />
+    </item>
+    <item name="HTTPS">
+      <value string="off" />
+    </item>
+    <item name="HTTPS_KEYSIZE">
+      <value string="" />
+    </item>
+    <item name="HTTPS_SECRETKEYSIZE">
+      <value string="" />
+    </item>
+    <item name="HTTPS_SERVER_ISSUER">
+      <value string="" />
+    </item>
+    <item name="HTTPS_SERVER_SUBJECT">
+      <value string="" />
+    </item>
+    <item name="INSTANCE_ID">
+      <value string="3" />
+    </item>
+    <item name="INSTANCE_META_PATH">
+      <value string="/LM/W3SVC/3" />
+    </item>
+    <item name="LOCAL_ADDR">
+      <value string="::1" />
+    </item>
+    <item name="PATH_INFO">
+      <value string="/DO/IndexNewPagining" />
+    </item>
+    <item name="PATH_TRANSLATED">
+      <value string="D:\WebApplications\BuildMateSalesSystem-From07Nov2019\BMSS.WebUI\DO\IndexNewPagining" />
+    </item>
+    <item name="QUERY_STRING">
+      <value string="" />
+    </item>
+    <item name="REMOTE_ADDR">
+      <value string="::1" />
+    </item>
+    <item name="REMOTE_HOST">
+      <value string="::1" />
+    </item>
+    <item name="REMOTE_PORT">
+      <value string="59758" />
+    </item>
+    <item name="REQUEST_METHOD">
+      <value string="POST" />
+    </item>
+    <item name="SCRIPT_NAME">
+      <value string="/DO/IndexNewPagining" />
+    </item>
+    <item name="SERVER_NAME">
+      <value string="localhost" />
+    </item>
+    <item name="SERVER_PORT">
+      <value string="60054" />
+    </item>
+    <item name="SERVER_PORT_SECURE">
+      <value string="0" />
+    </item>
+    <item name="SERVER_PROTOCOL">
+      <value string="HTTP/1.1" />
+    </item>
+    <item name="SERVER_SOFTWARE">
+      <value string="Microsoft-IIS/10.0" />
+    </item>
+    <item name="URL">
+      <value string="/DO/IndexNewPagining" />
+    </item>
+    <item name="HTTP_CACHE_CONTROL">
+      <value string="no-cache" />
+    </item>
+    <item name="HTTP_CONNECTION">
+      <value string="keep-alive" />
+    </item>
+    <item name="HTTP_PRAGMA">
+      <value string="no-cache" />
+    </item>
+    <item name="HTTP_CONTENT_LENGTH">
+      <value string="333" />
+    </item>
+    <item name="HTTP_CONTENT_TYPE">
+      <value string="application/x-www-form-urlencoded; charset=UTF-8" />
+    </item>
+    <item name="HTTP_ACCEPT">
+      <value string="application/json, text/javascript, */*; q=0.01" />
+    </item>
+    <item name="HTTP_ACCEPT_ENCODING">
+      <value string="gzip, deflate" />
+    </item>
+    <item name="HTTP_ACCEPT_LANGUAGE">
+      <value string="en-US,en;q=0.5" />
+    </item>
+    <item name="HTTP_COOKIE">
+      <value string="__RequestVerificationToken=Uus7tWT1lwLYFzEKljuAu4P4kPptlvsvMxaDm8upsB0QvH_2kUtmuYE3gsA-9ZCx3ccIl79L18i1qkmJ2mKJPcFqZUNKw7N_k5A3Ybd6NZE1; .AspNet.ApplicationCookie=iGNkj7qsSPC4Zqu6Z64H3s0LVgAmUfMqdD0fY63sFoJewYV_qyMADBPQrLQQrU4KH_HLqDuHl5tALu6aDhGa_8NB7OzuxO_RnVgAiKsr4hvCNXcKc_jufsNTAvsCQUaaeXISVmd8walvf1SYTMCfbMO_78xHa--KkO8mAp76Z0eYYcBTm0LmSJvXJ8130crvo4rrfZKeMd4v_fZkfiHCIng0vF0mN-xJ_GyuvuClHbf7XD205d1BRF8Ij1UV5cmCflNWfGUTtBlBjIYKaUfbONwDphfUhpXVwVb8prDqOitarKFyb1Ja-_kiipbkxp0HB_BPgW7ShsFja9Z1pz3XCYkExkaD-sDUcQP5W-88F7M0BPGLCAPqzlcVyiQL3iQY4Yjsoj4BfpwD0lvg3MMGw4s3znSUWv8XIPEzv6wD2h5ICy9ogUPHOYe_k3oFs-4KG-1u1g7R2L0wdE4KMlsaTapsfAIl6wXWK3nE3jm3yTUil70PzTOrWfRjXwWqrwey_pWTQ1l3-FBb007Tf1oJh-A0cBWdIE5Fg2J2JO-BNovg4xAbzyBrkkrAStwf1Gz30PEaHS738eKEIyVHSCX_Z_S6IS7HF0o2pi-RaOIiEd4HZld-dmouUsZ5SWlAghwKwI0pjzjCoXAnXHYNlix7ki_gFAm_YM00aG8C3OxN72arSf7G8gzqUjkq60-8RPtQS-ULfKQ_RxHY1MBfuYEIGAAkHO7amx9VEkb5hf2142t3qBswXx5aV85SAVshGzZ6EcWwnl9FPCKe0lNb_P56Y_uRkDaKN3CLAQ_3UZQFvYGyzEUDbauFf1ZwKNiuU6WF26eKePAZf1d0JYQi1xm9QMtcDNw1fDSh6GT5iB74LLbNiN2iRQfN0zD1srxE2TXLN_tUvbhDVikOjrftcMjDlK8NvCriA1e59WvaigyXQaE" />
+    </item>
+    <item name="HTTP_HOST">
+      <value string="localhost:60054" />
+    </item>
+    <item name="HTTP_REFERER">
+      <value string="http://localhost:60054/DO/indexnew" />
+    </item>
+    <item name="HTTP_USER_AGENT">
+      <value string="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0" />
+    </item>
+    <item name="HTTP_X_REQUESTED_WITH">
+      <value string="XMLHttpRequest" />
+    </item>
+    <item name="HTTP_ORIGIN">
+      <value string="http://localhost:60054" />
+    </item>
+  </serverVariables>
+  <form>
+    <item name="draw">
+      <value string="1" />
+    </item>
+    <item name="columns[0][data]">
+      <value string="DocNum" />
+    </item>
+    <item name="columns[0][name]">
+      <value string="" />
+    </item>
+    <item name="columns[0][searchable]">
+      <value string="true" />
+    </item>
+    <item name="columns[0][orderable]">
+      <value string="true" />
+    </item>
+    <item name="columns[0][search][value]">
+      <value string="" />
+    </item>
+    <item name="columns[0][search][regex]">
+      <value string="false" />
+    </item>
+    <item name="order[0][column]">
+      <value string="0" />
+    </item>
+    <item name="order[0][dir]">
+      <value string="asc" />
+    </item>
+    <item name="start">
+      <value string="0" />
+    </item>
+    <item name="length">
+      <value string="100" />
+    </item>
+    <item name="search[value]">
+      <value string="" />
+    </item>
+    <item name="search[regex]">
+      <value string="false" />
+    </item>
+  </form>
+  <cookies>
+    <item name="__RequestVerificationToken">
+      <value string="Uus7tWT1lwLYFzEKljuAu4P4kPptlvsvMxaDm8upsB0QvH_2kUtmuYE3gsA-9ZCx3ccIl79L18i1qkmJ2mKJPcFqZUNKw7N_k5A3Ybd6NZE1" />
+    </item>
+    <item name=".AspNet.ApplicationCookie">
+      <value string="iGNkj7qsSPC4Zqu6Z64H3s0LVgAmUfMqdD0fY63sFoJewYV_qyMADBPQrLQQrU4KH_HLqDuHl5tALu6aDhGa_8NB7OzuxO_RnVgAiKsr4hvCNXcKc_jufsNTAvsCQUaaeXISVmd8walvf1SYTMCfbMO_78xHa--KkO8mAp76Z0eYYcBTm0LmSJvXJ8130crvo4rrfZKeMd4v_fZkfiHCIng0vF0mN-xJ_GyuvuClHbf7XD205d1BRF8Ij1UV5cmCflNWfGUTtBlBjIYKaUfbONwDphfUhpXVwVb8prDqOitarKFyb1Ja-_kiipbkxp0HB_BPgW7ShsFja9Z1pz3XCYkExkaD-sDUcQP5W-88F7M0BPGLCAPqzlcVyiQL3iQY4Yjsoj4BfpwD0lvg3MMGw4s3znSUWv8XIPEzv6wD2h5ICy9ogUPHOYe_k3oFs-4KG-1u1g7R2L0wdE4KMlsaTapsfAIl6wXWK3nE3jm3yTUil70PzTOrWfRjXwWqrwey_pWTQ1l3-FBb007Tf1oJh-A0cBWdIE5Fg2J2JO-BNovg4xAbzyBrkkrAStwf1Gz30PEaHS738eKEIyVHSCX_Z_S6IS7HF0o2pi-RaOIiEd4HZld-dmouUsZ5SWlAghwKwI0pjzjCoXAnXHYNlix7ki_gFAm_YM00aG8C3OxN72arSf7G8gzqUjkq60-8RPtQS-ULfKQ_RxHY1MBfuYEIGAAkHO7amx9VEkb5hf2142t3qBswXx5aV85SAVshGzZ6EcWwnl9FPCKe0lNb_P56Y_uRkDaKN3CLAQ_3UZQFvYGyzEUDbauFf1ZwKNiuU6WF26eKePAZf1d0JYQi1xm9QMtcDNw1fDSh6GT5iB74LLbNiN2iRQfN0zD1srxE2TXLN_tUvbhDVikOjrftcMjDlK8NvCriA1e59WvaigyXQaE" />
+    </item>
+  </cookies>
+</error>

@@ -1,0 +1,186 @@
+﻿<error errorId="b46eda44-1f01-4ab2-9da7-853bdf07878a" host="LAPTOP-JN2PNONG" type="System.Runtime.InteropServices.COMException" message="Failed to open the connection.&#xA;Delivery_Order 24400_22592_{BAD792BE-543C-4C3E-83A7-6BFB151BE27C}.rpt" detail="System.Web.HttpUnhandledException (0x80004005): Exception of type 'System.Web.HttpUnhandledException' was thrown. ---&gt; CrystalDecisions.CrystalReports.Engine.InternalException: Failed to open the connection.&#xA;Delivery_Order 24400_22592_{BAD792BE-543C-4C3E-83A7-6BFB151BE27C}.rpt ---&gt; System.Runtime.InteropServices.COMException: Failed to open the connection.&#xA;Delivery_Order 24400_22592_{BAD792BE-543C-4C3E-83A7-6BFB151BE27C}.rpt&#xD;&#xA;   at CrystalDecisions.ReportAppServer.Controllers.ReportSourceClass.Export(ExportOptions pExportOptions, RequestContext pRequestContext)&#xD;&#xA;   at CrystalDecisions.ReportSource.EromReportSourceBase.ExportToStream(ExportRequestContext reqContext)&#xD;&#xA;   --- End of inner exception stack trace ---&#xD;&#xA;   at CrystalDecisions.ReportAppServer.ConvertDotNetToErom.ThrowDotNetException(Exception e)&#xD;&#xA;   at CrystalDecisions.ReportSource.EromReportSourceBase.ExportToStream(ExportRequestContext reqContext)&#xD;&#xA;   at CrystalDecisions.CrystalReports.Engine.FormatEngine.ExportToStream(ExportRequestContext reqContext)&#xD;&#xA;   at CrystalDecisions.CrystalReports.Engine.FormatEngine.Export(ExportRequestContext reqContext)&#xD;&#xA;   at CrystalDecisions.CrystalReports.Engine.FormatEngine.Export()&#xD;&#xA;   at CrystalDecisions.CrystalReports.Engine.ReportDocument.Export()&#xD;&#xA;   at BMSS.WebUI.WForms.DOViwer.Page_Load(Object sender, EventArgs e) in C:\Users\William Lee\Desktop\Raju\Raju-BuildMate-010621\BMSS.WebUI\WForms\DOViewer.aspx.cs:line 97&#xD;&#xA;   at System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)&#xD;&#xA;   at System.Web.UI.Control.OnLoad(EventArgs e)&#xD;&#xA;   at System.Web.UI.Control.LoadRecursive()&#xD;&#xA;   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)&#xD;&#xA;   at System.Web.UI.Page.HandleError(Exception e)&#xD;&#xA;   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)&#xD;&#xA;   at System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)&#xD;&#xA;   at System.Web.UI.Page.ProcessRequest()&#xD;&#xA;   at System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)&#xD;&#xA;   at System.Web.UI.Page.ProcessRequest(HttpContext context)&#xD;&#xA;   at ASP.wforms_doviewer_aspx.ProcessRequest(HttpContext context)&#xD;&#xA;   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()&#xD;&#xA;   at System.Web.HttpApplication.ExecuteStepImpl(IExecutionStep step)&#xD;&#xA;   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean&amp; completedSynchronously)" user="Admin" time="2021-06-17T05:12:07.6294250Z" statusCode="500" webHostHtmlMessage="&lt;!DOCTYPE html&gt;&#xD;&#xA;&lt;html&gt;&#xD;&#xA;    &lt;head&gt;&#xD;&#xA;        &lt;title&gt;Failed to open the connection.&lt;br&gt;Delivery_Order 24400_22592_{BAD792BE-543C-4C3E-83A7-6BFB151BE27C}.rpt&lt;/title&gt;&#xD;&#xA;        &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width&quot; /&gt;&#xD;&#xA;        &lt;style&gt;&#xD;&#xA;         body {font-family:&quot;Verdana&quot;;font-weight:normal;font-size: .7em;color:black;} &#xD;&#xA;         p {font-family:&quot;Verdana&quot;;font-weight:normal;color:black;margin-top: -5px}&#xD;&#xA;         b {font-family:&quot;Verdana&quot;;font-weight:bold;color:black;margin-top: -5px}&#xD;&#xA;         H1 { font-family:&quot;Verdana&quot;;font-weight:normal;font-size:18pt;color:red }&#xD;&#xA;         H2 { font-family:&quot;Verdana&quot;;font-weight:normal;font-size:14pt;color:maroon }&#xD;&#xA;         pre {font-family:&quot;Consolas&quot;,&quot;Lucida Console&quot;,Monospace;font-size:11pt;margin:0;padding:0.5em;line-height:14pt}&#xD;&#xA;         .marker {font-weight: bold; color: black;text-decoration: none;}&#xD;&#xA;         .version {color: gray;}&#xD;&#xA;         .error {margin-bottom: 10px;}&#xD;&#xA;         .expandable { text-decoration:underline; font-weight:bold; color:navy; cursor:pointer; }&#xD;&#xA;         @media screen and (max-width: 639px) {&#xD;&#xA;          pre { width: 440px; overflow: auto; white-space: pre-wrap; word-wrap: break-word; }&#xD;&#xA;         }&#xD;&#xA;         @media screen and (max-width: 479px) {&#xD;&#xA;          pre { width: 280px; }&#xD;&#xA;         }&#xD;&#xA;        &lt;/style&gt;&#xD;&#xA;    &lt;/head&gt;&#xD;&#xA;&#xD;&#xA;    &lt;body bgcolor=&quot;white&quot;&gt;&#xD;&#xA;&#xD;&#xA;            &lt;span&gt;&lt;H1&gt;Server Error in '/' Application.&lt;hr width=100% size=1 color=silver&gt;&lt;/H1&gt;&#xD;&#xA;&#xD;&#xA;            &lt;h2&gt; &lt;i&gt;Failed to open the connection.&lt;br&gt;Delivery_Order 24400_22592_{BAD792BE-543C-4C3E-83A7-6BFB151BE27C}.rpt&lt;/i&gt; &lt;/h2&gt;&lt;/span&gt;&#xD;&#xA;&#xD;&#xA;            &lt;font face=&quot;Arial, Helvetica, Geneva, SunSans-Regular, sans-serif &quot;&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt; Description: &lt;/b&gt;An unhandled exception occurred during the execution of the current web request. Please review the stack trace for more information about the error and where it originated in the code.&#xD;&#xA;&#xD;&#xA;            &lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt; Exception Details: &lt;/b&gt;System.Runtime.InteropServices.COMException: Failed to open the connection.&lt;br&gt;Delivery_Order 24400_22592_{BAD792BE-543C-4C3E-83A7-6BFB151BE27C}.rpt&lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt;Source Error:&lt;/b&gt; &lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;table width=100% bgcolor=&quot;#ffffcc&quot;&gt;&#xD;&#xA;               &lt;tr&gt;&#xD;&#xA;                  &lt;td&gt;&#xD;&#xA;                      &lt;code&gt;&lt;pre&gt;&#xD;&#xA;&#xD;&#xA;Line 95:                             }&#xD;&#xA;Line 96: &#xD;&#xA;&lt;font color=red&gt;Line 97:                             expCryRpt.Export();&#xD;&#xA;&lt;/font&gt;Line 98: &#xD;&#xA;Line 99: &lt;/pre&gt;                      &lt;/code&gt;&#xD;&#xA;&#xD;&#xA;                  &lt;/td&gt;&#xD;&#xA;               &lt;/tr&gt;&#xD;&#xA;            &lt;/table&gt;&#xD;&#xA;&#xD;&#xA;            &lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt; Source File: &lt;/b&gt; C:\Users\William Lee\Desktop\Raju\Raju-BuildMate-010621\BMSS.WebUI\WForms\DOViewer.aspx.cs&lt;b&gt; &amp;nbsp;&amp;nbsp; Line: &lt;/b&gt; 97&#xD;&#xA;            &lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt;Stack Trace:&lt;/b&gt; &lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;table width=100% bgcolor=&quot;#ffffcc&quot;&gt;&#xD;&#xA;               &lt;tr&gt;&#xD;&#xA;                  &lt;td&gt;&#xD;&#xA;                      &lt;code&gt;&lt;pre&gt;&#xD;&#xA;&#xD;&#xA;[COMException (0x800002f4): Failed to open the connection.&#xA;Delivery_Order 24400_22592_{BAD792BE-543C-4C3E-83A7-6BFB151BE27C}.rpt]&#xD;&#xA;   CrystalDecisions.ReportAppServer.Controllers.ReportSourceClass.Export(ExportOptions pExportOptions, RequestContext pRequestContext) +0&#xD;&#xA;   CrystalDecisions.ReportSource.EromReportSourceBase.ExportToStream(ExportRequestContext reqContext) +1043&#xD;&#xA;&#xD;&#xA;[InternalException: Failed to open the connection.&#xA;Delivery_Order 24400_22592_{BAD792BE-543C-4C3E-83A7-6BFB151BE27C}.rpt]&#xD;&#xA;   CrystalDecisions.ReportAppServer.ConvertDotNetToErom.ThrowDotNetException(Exception e) +346&#xD;&#xA;   CrystalDecisions.ReportSource.EromReportSourceBase.ExportToStream(ExportRequestContext reqContext) +2059&#xD;&#xA;   CrystalDecisions.CrystalReports.Engine.FormatEngine.ExportToStream(ExportRequestContext reqContext) +1199&#xD;&#xA;   CrystalDecisions.CrystalReports.Engine.FormatEngine.Export(ExportRequestContext reqContext) +385&#xD;&#xA;   CrystalDecisions.CrystalReports.Engine.FormatEngine.Export() +109&#xD;&#xA;   CrystalDecisions.CrystalReports.Engine.ReportDocument.Export() +92&#xD;&#xA;   BMSS.WebUI.WForms.DOViwer.Page_Load(Object sender, EventArgs e) in C:\Users\William Lee\Desktop\Raju\Raju-BuildMate-010621\BMSS.WebUI\WForms\DOViewer.aspx.cs:97&#xD;&#xA;   System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e) +52&#xD;&#xA;   System.Web.UI.Control.OnLoad(EventArgs e) +97&#xD;&#xA;   System.Web.UI.Control.LoadRecursive() +61&#xD;&#xA;   System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint) +693&#xD;&#xA;&lt;/pre&gt;                      &lt;/code&gt;&#xD;&#xA;&#xD;&#xA;                  &lt;/td&gt;&#xD;&#xA;               &lt;/tr&gt;&#xD;&#xA;            &lt;/table&gt;&#xD;&#xA;&#xD;&#xA;            &lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;/font&gt;&#xD;&#xA;&#xD;&#xA;    &lt;/body&gt;&#xD;&#xA;&lt;/html&gt;&#xD;&#xA;">
+  <serverVariables>
+    <item name="ALL_HTTP">
+      <value string="HTTP_CONNECTION:keep-alive&#xD;&#xA;HTTP_ACCEPT:text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9&#xD;&#xA;HTTP_ACCEPT_ENCODING:gzip, deflate, br&#xD;&#xA;HTTP_ACCEPT_LANGUAGE:en-US,en;q=0.9&#xD;&#xA;HTTP_COOKIE:__RequestVerificationToken=iA1ChqFvv3vZaV3mROKNh6LBwPzF37Hr6f9IDUqd-zKHNHwVHVqZckHX-riiWGX-NWl5MlOssSCBE0qrErxjEXGomCW_rzLHMeyGrFj2Y6Y1; .AspNet.ApplicationCookie=MhP_Q3-jR3seKoreQ5LFrvXrl86apRErfJe8W6wRntudcGvHpD5KN9xczYY9zme5dPR5z4EXIjzkq_8D3jL_vsZ53SmI5CAb6axURLsW7m_68Vl-DrgxAwU-PbuZB4RX8hAjues9tXPu-IrJSQ-GIEPRyu0WoSjqT1RUuCc-Phb-fMGAykjKB68J1aSWEZh8iVZyMNWC4cQhq1LxjNWUwzxh1oWSuL8Kg3JL0wV19JTZgefq_q7NSZhL1-iNViAky4YosziULIkXRrIyN9tXMB6W0X5ksNjNPv-EqF4qCMIZZOuVhvPkmjNsfrmwpoRQtLvoIt1lzN-UR5wZaDWJYHj8jGngX99EB2MUQlOJyJnGCYHQgD-gSOMDQAjEo1ZsYQWNQe3kIIL-wYBTlu_ZMp3iAKcOckrwZBKotlDcwh0AHdWmGrfOZvBMbNdsk5L5cPbdYvi86YkNtTo7yksMTSJrQLtZsaM21Ouaf_CefLol8hYio-Otb4iSeLPSnIJ4OSjz9VHs-6HAD_zLc3Y-LaSB2hKMTQtSP5j1OXntNY6bobATJrLd2C3yfe1BjXbtf7OOMyv_WOhwsb0-NazZPdExR6dzEg8F2DYr775MFCEv4NHHmd1soDNywuXtaaQ37RJai9KvbTljaaEI-VS9GKJwJOeVfQCsvLDwgH6h48PRFOH2sIbwbIDgsvSrICb3qmfJFQXkO8kYxMuLoW-l1nITWs2dlOd5bvtjmxid40wrqRW-MNf0H5Ic83FIiqCPcY4PnIWcBslwFGqX8eO66P4Dh8AP3ORPKbNovCa5CxlB-wgMu-vmPASAv66Cg3PW9JFCx1lDMOx83BxFUvFU9VFvZRvoyXpkn28i6xHmQ3p7e5oYI-G4e8pFhyAUD0sqqp1JoFK5VCB7B3mOZU8bQPRe6eZakslJHDBKwkGxsvw&#xD;&#xA;HTTP_HOST:localhost:60054&#xD;&#xA;HTTP_REFERER:http://localhost:60054/DO/Edit?DocNum=SIN143828&#xD;&#xA;HTTP_USER_AGENT:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.101 Safari/537.36&#xD;&#xA;HTTP_SEC_CH_UA:&quot; Not;A Brand&quot;;v=&quot;99&quot;, &quot;Google Chrome&quot;;v=&quot;91&quot;, &quot;Chromium&quot;;v=&quot;91&quot;&#xD;&#xA;HTTP_SEC_CH_UA_MOBILE:?0&#xD;&#xA;HTTP_UPGRADE_INSECURE_REQUESTS:1&#xD;&#xA;HTTP_SEC_FETCH_SITE:same-origin&#xD;&#xA;HTTP_SEC_FETCH_MODE:navigate&#xD;&#xA;HTTP_SEC_FETCH_USER:?1&#xD;&#xA;HTTP_SEC_FETCH_DEST:document&#xD;&#xA;" />
+    </item>
+    <item name="ALL_RAW">
+      <value string="Connection: keep-alive&#xD;&#xA;Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9&#xD;&#xA;Accept-Encoding: gzip, deflate, br&#xD;&#xA;Accept-Language: en-US,en;q=0.9&#xD;&#xA;Cookie: __RequestVerificationToken=iA1ChqFvv3vZaV3mROKNh6LBwPzF37Hr6f9IDUqd-zKHNHwVHVqZckHX-riiWGX-NWl5MlOssSCBE0qrErxjEXGomCW_rzLHMeyGrFj2Y6Y1; .AspNet.ApplicationCookie=MhP_Q3-jR3seKoreQ5LFrvXrl86apRErfJe8W6wRntudcGvHpD5KN9xczYY9zme5dPR5z4EXIjzkq_8D3jL_vsZ53SmI5CAb6axURLsW7m_68Vl-DrgxAwU-PbuZB4RX8hAjues9tXPu-IrJSQ-GIEPRyu0WoSjqT1RUuCc-Phb-fMGAykjKB68J1aSWEZh8iVZyMNWC4cQhq1LxjNWUwzxh1oWSuL8Kg3JL0wV19JTZgefq_q7NSZhL1-iNViAky4YosziULIkXRrIyN9tXMB6W0X5ksNjNPv-EqF4qCMIZZOuVhvPkmjNsfrmwpoRQtLvoIt1lzN-UR5wZaDWJYHj8jGngX99EB2MUQlOJyJnGCYHQgD-gSOMDQAjEo1ZsYQWNQe3kIIL-wYBTlu_ZMp3iAKcOckrwZBKotlDcwh0AHdWmGrfOZvBMbNdsk5L5cPbdYvi86YkNtTo7yksMTSJrQLtZsaM21Ouaf_CefLol8hYio-Otb4iSeLPSnIJ4OSjz9VHs-6HAD_zLc3Y-LaSB2hKMTQtSP5j1OXntNY6bobATJrLd2C3yfe1BjXbtf7OOMyv_WOhwsb0-NazZPdExR6dzEg8F2DYr775MFCEv4NHHmd1soDNywuXtaaQ37RJai9KvbTljaaEI-VS9GKJwJOeVfQCsvLDwgH6h48PRFOH2sIbwbIDgsvSrICb3qmfJFQXkO8kYxMuLoW-l1nITWs2dlOd5bvtjmxid40wrqRW-MNf0H5Ic83FIiqCPcY4PnIWcBslwFGqX8eO66P4Dh8AP3ORPKbNovCa5CxlB-wgMu-vmPASAv66Cg3PW9JFCx1lDMOx83BxFUvFU9VFvZRvoyXpkn28i6xHmQ3p7e5oYI-G4e8pFhyAUD0sqqp1JoFK5VCB7B3mOZU8bQPRe6eZakslJHDBKwkGxsvw&#xD;&#xA;Host: localhost:60054&#xD;&#xA;Referer: http://localhost:60054/DO/Edit?DocNum=SIN143828&#xD;&#xA;User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.101 Safari/537.36&#xD;&#xA;sec-ch-ua: &quot; Not;A Brand&quot;;v=&quot;99&quot;, &quot;Google Chrome&quot;;v=&quot;91&quot;, &quot;Chromium&quot;;v=&quot;91&quot;&#xD;&#xA;sec-ch-ua-mobile: ?0&#xD;&#xA;Upgrade-Insecure-Requests: 1&#xD;&#xA;Sec-Fetch-Site: same-origin&#xD;&#xA;Sec-Fetch-Mode: navigate&#xD;&#xA;Sec-Fetch-User: ?1&#xD;&#xA;Sec-Fetch-Dest: document&#xD;&#xA;" />
+    </item>
+    <item name="APPL_MD_PATH">
+      <value string="/LM/W3SVC/2/ROOT" />
+    </item>
+    <item name="APPL_PHYSICAL_PATH">
+      <value string="C:\Users\William Lee\Desktop\Raju\Raju-BuildMate-010621\BMSS.WebUI\" />
+    </item>
+    <item name="AUTH_TYPE">
+      <value string="ApplicationCookie" />
+    </item>
+    <item name="AUTH_USER">
+      <value string="Admin" />
+    </item>
+    <item name="AUTH_PASSWORD">
+      <value string="" />
+    </item>
+    <item name="LOGON_USER">
+      <value string="Admin" />
+    </item>
+    <item name="REMOTE_USER">
+      <value string="Admin" />
+    </item>
+    <item name="CERT_COOKIE">
+      <value string="" />
+    </item>
+    <item name="CERT_FLAGS">
+      <value string="" />
+    </item>
+    <item name="CERT_ISSUER">
+      <value string="" />
+    </item>
+    <item name="CERT_KEYSIZE">
+      <value string="" />
+    </item>
+    <item name="CERT_SECRETKEYSIZE">
+      <value string="" />
+    </item>
+    <item name="CERT_SERIALNUMBER">
+      <value string="" />
+    </item>
+    <item name="CERT_SERVER_ISSUER">
+      <value string="" />
+    </item>
+    <item name="CERT_SERVER_SUBJECT">
+      <value string="" />
+    </item>
+    <item name="CERT_SUBJECT">
+      <value string="" />
+    </item>
+    <item name="CONTENT_LENGTH">
+      <value string="0" />
+    </item>
+    <item name="CONTENT_TYPE">
+      <value string="" />
+    </item>
+    <item name="GATEWAY_INTERFACE">
+      <value string="CGI/1.1" />
+    </item>
+    <item name="HTTPS">
+      <value string="off" />
+    </item>
+    <item name="HTTPS_KEYSIZE">
+      <value string="" />
+    </item>
+    <item name="HTTPS_SECRETKEYSIZE">
+      <value string="" />
+    </item>
+    <item name="HTTPS_SERVER_ISSUER">
+      <value string="" />
+    </item>
+    <item name="HTTPS_SERVER_SUBJECT">
+      <value string="" />
+    </item>
+    <item name="INSTANCE_ID">
+      <value string="2" />
+    </item>
+    <item name="INSTANCE_META_PATH">
+      <value string="/LM/W3SVC/2" />
+    </item>
+    <item name="LOCAL_ADDR">
+      <value string="::1" />
+    </item>
+    <item name="PATH_INFO">
+      <value string="/WForms/DOViewer.aspx/43828" />
+    </item>
+    <item name="PATH_TRANSLATED">
+      <value string="C:\Users\William Lee\Desktop\Raju\Raju-BuildMate-010621\BMSS.WebUI\WForms\DOViewer.aspx" />
+    </item>
+    <item name="QUERY_STRING">
+      <value string="" />
+    </item>
+    <item name="REMOTE_ADDR">
+      <value string="::1" />
+    </item>
+    <item name="REMOTE_HOST">
+      <value string="::1" />
+    </item>
+    <item name="REMOTE_PORT">
+      <value string="53664" />
+    </item>
+    <item name="REQUEST_METHOD">
+      <value string="GET" />
+    </item>
+    <item name="SCRIPT_NAME">
+      <value string="/WForms/DOViewer.aspx" />
+    </item>
+    <item name="SERVER_NAME">
+      <value string="localhost" />
+    </item>
+    <item name="SERVER_PORT">
+      <value string="60054" />
+    </item>
+    <item name="SERVER_PORT_SECURE">
+      <value string="0" />
+    </item>
+    <item name="SERVER_PROTOCOL">
+      <value string="HTTP/1.1" />
+    </item>
+    <item name="SERVER_SOFTWARE">
+      <value string="Microsoft-IIS/10.0" />
+    </item>
+    <item name="URL">
+      <value string="/WForms/DOViewer.aspx" />
+    </item>
+    <item name="HTTP_CONNECTION">
+      <value string="keep-alive" />
+    </item>
+    <item name="HTTP_ACCEPT">
+      <value string="text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9" />
+    </item>
+    <item name="HTTP_ACCEPT_ENCODING">
+      <value string="gzip, deflate, br" />
+    </item>
+    <item name="HTTP_ACCEPT_LANGUAGE">
+      <value string="en-US,en;q=0.9" />
+    </item>
+    <item name="HTTP_COOKIE">
+      <value string="__RequestVerificationToken=iA1ChqFvv3vZaV3mROKNh6LBwPzF37Hr6f9IDUqd-zKHNHwVHVqZckHX-riiWGX-NWl5MlOssSCBE0qrErxjEXGomCW_rzLHMeyGrFj2Y6Y1; .AspNet.ApplicationCookie=MhP_Q3-jR3seKoreQ5LFrvXrl86apRErfJe8W6wRntudcGvHpD5KN9xczYY9zme5dPR5z4EXIjzkq_8D3jL_vsZ53SmI5CAb6axURLsW7m_68Vl-DrgxAwU-PbuZB4RX8hAjues9tXPu-IrJSQ-GIEPRyu0WoSjqT1RUuCc-Phb-fMGAykjKB68J1aSWEZh8iVZyMNWC4cQhq1LxjNWUwzxh1oWSuL8Kg3JL0wV19JTZgefq_q7NSZhL1-iNViAky4YosziULIkXRrIyN9tXMB6W0X5ksNjNPv-EqF4qCMIZZOuVhvPkmjNsfrmwpoRQtLvoIt1lzN-UR5wZaDWJYHj8jGngX99EB2MUQlOJyJnGCYHQgD-gSOMDQAjEo1ZsYQWNQe3kIIL-wYBTlu_ZMp3iAKcOckrwZBKotlDcwh0AHdWmGrfOZvBMbNdsk5L5cPbdYvi86YkNtTo7yksMTSJrQLtZsaM21Ouaf_CefLol8hYio-Otb4iSeLPSnIJ4OSjz9VHs-6HAD_zLc3Y-LaSB2hKMTQtSP5j1OXntNY6bobATJrLd2C3yfe1BjXbtf7OOMyv_WOhwsb0-NazZPdExR6dzEg8F2DYr775MFCEv4NHHmd1soDNywuXtaaQ37RJai9KvbTljaaEI-VS9GKJwJOeVfQCsvLDwgH6h48PRFOH2sIbwbIDgsvSrICb3qmfJFQXkO8kYxMuLoW-l1nITWs2dlOd5bvtjmxid40wrqRW-MNf0H5Ic83FIiqCPcY4PnIWcBslwFGqX8eO66P4Dh8AP3ORPKbNovCa5CxlB-wgMu-vmPASAv66Cg3PW9JFCx1lDMOx83BxFUvFU9VFvZRvoyXpkn28i6xHmQ3p7e5oYI-G4e8pFhyAUD0sqqp1JoFK5VCB7B3mOZU8bQPRe6eZakslJHDBKwkGxsvw" />
+    </item>
+    <item name="HTTP_HOST">
+      <value string="localhost:60054" />
+    </item>
+    <item name="HTTP_REFERER">
+      <value string="http://localhost:60054/DO/Edit?DocNum=SIN143828" />
+    </item>
+    <item name="HTTP_USER_AGENT">
+      <value string="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.101 Safari/537.36" />
+    </item>
+    <item name="HTTP_SEC_CH_UA">
+      <value string="&quot; Not;A Brand&quot;;v=&quot;99&quot;, &quot;Google Chrome&quot;;v=&quot;91&quot;, &quot;Chromium&quot;;v=&quot;91&quot;" />
+    </item>
+    <item name="HTTP_SEC_CH_UA_MOBILE">
+      <value string="?0" />
+    </item>
+    <item name="HTTP_UPGRADE_INSECURE_REQUESTS">
+      <value string="1" />
+    </item>
+    <item name="HTTP_SEC_FETCH_SITE">
+      <value string="same-origin" />
+    </item>
+    <item name="HTTP_SEC_FETCH_MODE">
+      <value string="navigate" />
+    </item>
+    <item name="HTTP_SEC_FETCH_USER">
+      <value string="?1" />
+    </item>
+    <item name="HTTP_SEC_FETCH_DEST">
+      <value string="document" />
+    </item>
+  </serverVariables>
+  <cookies>
+    <item name="__RequestVerificationToken">
+      <value string="iA1ChqFvv3vZaV3mROKNh6LBwPzF37Hr6f9IDUqd-zKHNHwVHVqZckHX-riiWGX-NWl5MlOssSCBE0qrErxjEXGomCW_rzLHMeyGrFj2Y6Y1" />
+    </item>
+    <item name=".AspNet.ApplicationCookie">
+      <value string="MhP_Q3-jR3seKoreQ5LFrvXrl86apRErfJe8W6wRntudcGvHpD5KN9xczYY9zme5dPR5z4EXIjzkq_8D3jL_vsZ53SmI5CAb6axURLsW7m_68Vl-DrgxAwU-PbuZB4RX8hAjues9tXPu-IrJSQ-GIEPRyu0WoSjqT1RUuCc-Phb-fMGAykjKB68J1aSWEZh8iVZyMNWC4cQhq1LxjNWUwzxh1oWSuL8Kg3JL0wV19JTZgefq_q7NSZhL1-iNViAky4YosziULIkXRrIyN9tXMB6W0X5ksNjNPv-EqF4qCMIZZOuVhvPkmjNsfrmwpoRQtLvoIt1lzN-UR5wZaDWJYHj8jGngX99EB2MUQlOJyJnGCYHQgD-gSOMDQAjEo1ZsYQWNQe3kIIL-wYBTlu_ZMp3iAKcOckrwZBKotlDcwh0AHdWmGrfOZvBMbNdsk5L5cPbdYvi86YkNtTo7yksMTSJrQLtZsaM21Ouaf_CefLol8hYio-Otb4iSeLPSnIJ4OSjz9VHs-6HAD_zLc3Y-LaSB2hKMTQtSP5j1OXntNY6bobATJrLd2C3yfe1BjXbtf7OOMyv_WOhwsb0-NazZPdExR6dzEg8F2DYr775MFCEv4NHHmd1soDNywuXtaaQ37RJai9KvbTljaaEI-VS9GKJwJOeVfQCsvLDwgH6h48PRFOH2sIbwbIDgsvSrICb3qmfJFQXkO8kYxMuLoW-l1nITWs2dlOd5bvtjmxid40wrqRW-MNf0H5Ic83FIiqCPcY4PnIWcBslwFGqX8eO66P4Dh8AP3ORPKbNovCa5CxlB-wgMu-vmPASAv66Cg3PW9JFCx1lDMOx83BxFUvFU9VFvZRvoyXpkn28i6xHmQ3p7e5oYI-G4e8pFhyAUD0sqqp1JoFK5VCB7B3mOZU8bQPRe6eZakslJHDBKwkGxsvw" />
+    </item>
+  </cookies>
+</error>

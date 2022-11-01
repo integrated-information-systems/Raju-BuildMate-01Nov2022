@@ -1,0 +1,47 @@
+﻿@using BMSS.WebUI.Models.NotesViewModels
+@model  ItemNoteListViewModel
+@{
+
+    IEnumerable<ItemNoteViewModel> NotesList = Model.NotesList;
+    int numberOfRoles = NotesList.Count();
+
+
+
+    AjaxOptions ajaxEditOpts = new AjaxOptions
+    {
+        OnSuccess = "AjaxFormSuccessModal('" + Model.AjaxOptions.AddActionTargetId + "', '" + Model.AjaxOptions.AddFormId + "','" + Model.AjaxOptions.ModalID + "', data)",
+        Url = Url.Action(Model.AjaxOptions.FormEditAction),
+        HttpMethod = "POST"
+    };
+}
+<table class="table table-striped table-bordered responsive nowrap bmdatatable dblEdit" data-fixed-header="true" data-auto-width="false" data-paging='false' data-searching="false" data-length-change="false" data-page-length="5" data-ordering="false" style="width:100%">
+    <thead>
+        <tr>
+            <th style="width: 10%;">Date</th>
+            <th style="width: 80%;">Notes</th>
+            <th style="width: 10%;">User</th>
+            @*<th>Updated On</th>
+        <th>Updated By</th>*@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var i in NotesList)
+        {
+        <tr data-unid="@i.NoteID" data-Modal="@Model.AjaxOptions.ModalID" data-toggle="tooltip" title="double click to edit">
+            <td>@i.CreatedOn.ToString("dd'/'MM'/'yyyy")</td>
+            <td>
+                @i.Note
+                @using (Ajax.BeginForm(Model.AjaxOptions.FormEditAction, null, ajaxEditOpts, new { id = Model.AjaxOptions.EditFormId }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("NoteID", i.NoteID)
+                }
+            </td>
+            <td>@i.CreatedBy</td>
+            @*<td>@i.UpdatedOn</td>
+        <td>@i.UpdatedBy</td>*@
+        </tr>
+        }
+    </tbody>
+</table>
+

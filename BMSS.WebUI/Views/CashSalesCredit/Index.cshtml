@@ -1,0 +1,133 @@
+﻿@using BMSS.Domain
+@model IEnumerable<CashSalesCreditDocH>
+@using System.Globalization;
+@{
+    ViewBag.Title = "List of Cash Sales Credit";
+}
+@section Styles {
+    @Styles.Render("~/DataTablesCss")
+}
+@section Content_Header {
+    <section class="content-header">
+        <h1>
+            Cash Sale Credit Note Listing
+            <small>Cash Sales Credit Note</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href='@Url.Action("Index", "Home")'><i class="fa fa-dashboard"></i>Transactions</a></li>
+            <li class="active">Cash Sales Credit Note</li>
+        </ol>
+    </section>
+}
+<div class="row">
+    <div class="col-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">List of Cash Sales Credit Note</h3>
+                <div class="box-tools" style="top: 3px;"><a class="btn btn-primary" href="@Url.Action("Add", "CashSalesCredit")" role="button">Add</a></div>
+            </div>
+            <div class="box-body">
+                <table id="DeliveryOrderList" class="table table-bordered table-striped responsive nowrap bmdatatable dblEdit" data-fixed-header="true" data-auto-width="true" data-paging="true" data-searching="true" data-length-change="true" data-page-length="100" data-ordering="true" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Doc #</th>
+                            <th>Date</th>
+                            <th>Account #</th>
+
+                            <th class="text-right">Amount</th>
+
+                            <th>Print Status</th>
+                            <th>SAP Status</th>
+                            <th>SRI #</th>
+                            <td data-priority="1">Print</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int rowid = 0;
+                            
+                        }
+                        @foreach (var i in Model)
+                        {
+                            string sRemarks = "";
+                            if (i.SubmittedBy != null)
+                            {
+                                sRemarks = i.SubmittedBy != null ? $"{i.SyncRemarks}, Submitted by {i.SubmittedBy}, Submitted on {i.SubmittedOn?.ToString("dd'/'MM'/'yyyy hh:mm:ss")}" : i.SyncRemarks;
+                            }
+                           
+                            <tr data-toggle="tooltip" title="double click to edit">
+                                <td>
+                                    @i.DocNum
+                                    @using (Html.BeginForm("Edit", null, null, FormMethod.Get, new { id = "DetailForm" }))
+                                    {
+                                        @Html.Hidden("DocNum", @i.DocNum)
+                                    }
+                                </td>
+                                <td>@i.DocDate.ToString("dd'/'MM'/'yyyy")</td>
+                                <td>@i.CardCode</td>
+
+                                <td class="text-right">@i.GrandTotal.ToString("N2", new CultureInfo("en-US"))</td>
+
+                                <td>@Html.GetPrintedStatusName(i.PrintedStatus)</td>
+                                <td>
+                                    @Html.GetSyncStatusName(i.SyncStatus)
+                                    @if (i.SyncStatus > 1)
+                                    {
+                                        <span data-toggle='popover' data-trigger='hover' data-placement='right' data-html='true' data-content='@sRemarks' data-title='Sync Remarks'><i class='fa fa-fw fa-info-circle'></i></span>
+                                    }
+                                </td>
+                                <td>@i.SRINo</td>
+                                <td data-priority="1"><a class="btn btn-primary btn-xs printPreview" data-row-docnum="@i.DocEntry" data-row-index="@rowid" target="_blank" href="@Url.Action("CSCViewer.aspx","WForms/", new { id = i.DocEntry})" role="button">Print</a></td>
+
+                            </tr>
+                            rowid = rowid + 1;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/DataTables")
+    @Scripts.Render("~/Own")
+    <script>       
+            $(document).on('click', '.printPreview', function (e) {
+            e.preventDefault();
+            let rowNo = $(this).data('row-index');
+            let DocEntry = $(this).data('row-docnum');
+            let URL = $(this).attr("href");             
+            $.ajax({
+                url: "@Url.Action("CanPrint", "CashSalesCredit", null)",
+                type: 'post',
+                contentType: 'application/x-www-form-urlencoded',
+                data: { DocEntry: DocEntry },
+                success: function (data)
+                {
+                    if (data.canAccess) {
+                       
+                        let DeliveryOrderList = $('#DeliveryOrderList').DataTable();
+                               
+                        let temp = DeliveryOrderList.row(rowNo).data();
+                        temp[4] = "Printed";
+                        DeliveryOrderList.row(rowNo).data(temp).invalidate();
+                        window.open(URL, '_blank');
+                               
+                    }
+                    else {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        $('<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Alert!</h4><p>Access denied</p></div>')
+                            .prependTo($('.box-body'))
+                            .delay(5000)
+                            .slideUpAndRemove('slow');   
+                    }
+                            
+                },
+                error: function ()
+                {
+                             
+                }
+            });
+        });
+    </script>
+}

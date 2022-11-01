@@ -1,0 +1,203 @@
+﻿@using BMSS.WebUI.Models.CashSalesViewModels
+@model CashSalesLineViewModel
+<div class="modalform modal fade" id="AddUpdateItemModal" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 1050px!important;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Item</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm(null, null, null, FormMethod.Post, new { @class = "form-horizontal", data_bind = "submit: validateAndAddline" }))
+            {
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="box box-primary">
+                                @Html.ValidationSummary()
+                                <div class="box-body">
+                                    <div class="container col-12">
+                                        <div class="row">
+                                            <div class="col-7">
+                                                <div class="row">
+                                                    <div class="col-9">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.ItemCode)
+                                                            @Html.DropDownListFor(x => x.ItemCode, Enumerable.Empty<SelectListItem>(), new { @class = "form-control select2", style = "width:100%", data_bind = "options: ItemCodesAndNames, optionsText: 'Value', optionsValue: 'Value', value: CashSalesLine.itemCode ,optionsCaption: 'Select Stock Code'" })
+                                                        </div>
+                                                        <div class="overlay">
+                                                            <i class="fa fa-refresh fa-spin text-gray"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.Location)
+                                                            @Html.DropDownListFor(x => x.Location, Enumerable.Empty<SelectListItem>(), null, new { @class = "form-control select2", style = "width:100%", data_bind = "options: LocationCodeAndNames, optionsText: 'Text', optionsValue: 'Value', value: CashSalesLine.location ,optionsCaption: 'Select Location'" })
+                                                        </div>
+                                                        <div class="overlay">
+                                                            <i class="fa fa-refresh fa-spin text-gray"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-9">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.Description)
+                                                            @Html.DropDownListFor(x => x.Description, Enumerable.Empty<SelectListItem>(), new { @class = "form-control select2", style = "width:100%", data_bind = "options: ItemCodesAndNames, optionsText: 'Text', optionsValue: 'Value', value: CashSalesLine.description ,optionsCaption: 'Select Stock Description'" })
+                                                            <div class="text-center"><a href="#" class="btn" data-bind="click:CopyDescToOwDesc"><i class="fa fa-arrow-down"></i></a></div>
+                                                        </div>
+                                                        <div class="overlay">
+                                                            <i class="fa fa-refresh fa-spin text-gray"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.Qty)
+                                                            @Html.TextBoxFor(x => x.Qty, new { @class = "form-control", data_bind = "textInput: CashSalesLine.qty" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-9">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.OverwriteDescription, new { @class = "important-label" })
+                                                            @Html.TextBoxFor(x => x.OverwriteDescription, new { @class = "form-control", data_bind = "textInput: CashSalesLine.overwriteDescription" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.UnitPrice)
+                                                            @Html.TextBoxFor(x => x.UnitPrice, new { @class = "form-control", data_bind = "textInput: CashSalesLine.unitPrice" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-9">
+                                                        <div class="form-group">
+                                                            @Html.Label("Additional Remarks")
+                                                            @Html.TextBoxFor(x => x.Description2, new { @class = "form-control", data_bind = "textInput: CashSalesLine.description2" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.UnitCost)
+                                                            @Html.TextBoxFor(x => x.UnitCost, new { @class = "form-control", data_bind = "textInput: CashSalesLine.unitCost" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-9">
+
+                                                        <div class="form-group">
+                                                            @Html.TextBoxFor(x => x.Description3, new { @class = "form-control", data_bind = "textInput: CashSalesLine.description3" })
+                                                        </div>
+                                                        <div class="form-group">
+                                                            @Html.TextBoxFor(x => x.Description4, new { @class = "form-control", data_bind = "textInput: CashSalesLine.description4" })
+                                                        </div>
+                                                        <div class="form-group">
+                                                            @Html.TextBoxFor(x => x.Description5, new { @class = "form-control", data_bind = "textInput: CashSalesLine.description5" })
+                                                        </div>
+                                                        <div class="form-group">
+                                                            @Html.TextBoxFor(x => x.Description6, new { @class = "form-control", data_bind = "textInput: CashSalesLine.description6" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+
+                                                        <div class="form-group">
+                                                           
+                                                        </div>
+                                                        <div class="form-group">                                                           
+                                                            @Html.DropDownListFor(x => x.GstName, Enumerable.Empty<SelectListItem>(), new { @class = "form-control select2", style = "width:100%", data_bind = "options: TaxCodes, optionsText: 'Text', optionsValue: 'Text', value: CashSalesLine.gstName , optionsCaption: 'Select Tax'"})
+                                                        </div>
+                                                        <div class="overlay">
+                                                            <i class="fa fa-refresh fa-spin text-gray"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-5">
+                                                <table id="LocationStock" class="table table-striped table-bordered responsive nowrap bmdatatable" data-fixed-header="true" data-auto-width="true" data-paging='false' data-searching="false" data-length-change="false" data-page-length="5" data-ordering="false" style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Location</th>
+                                                            <th class="text-right">In Stock</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                                <table id="PriceHistory" class="table table-striped table-bordered responsive nowrap bmdatatable" data-scroll-y="100px" data-scroll-collapse="true" data-fixed-header="true" data-auto-width="true" data-paging='false' data-searching="false" data-length-change="false" data-page-length="5" data-ordering="false" style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Date</th>
+                                                            <th>Doc #</th>
+                                                            <th class="text-right">Qty</th>
+                                                            <th class="text-right">Unit Price</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+
+                                                <table id="PriceBreak" class="table table-striped table-bordered responsive nowrap bmdatatable" data-scroll-y="100px" data-scroll-collapse="true" data-fixed-header="true" data-auto-width="true" data-searching="false" data-length-change="false" data-ordering="false" style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Price Band @*<span data-bind="text:CashSales.currentPriceBand"></span>*@</th>
+                                                            <th class="text-right">Qty</th>
+                                                            <th class="text-right">Price</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+
+                                            </div>
+                                        </div>
+                                        <div class="container col-12" data-bind="foreach: ChildItemDetails">
+                                            <div class="row">
+                                                <div class="col-7">
+                                                    <div class="form-group">
+                                                        <label>Chile BOM Line <span data-bind="text: $index"></span></label>
+                                                        @Html.TextBox("Item1", null, new { @class = "form-control", data_bind = "value: ItemCode", disabled = "" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-5">
+                                                    <table id="LocationStock" class="table table-striped table-bordered responsive nowrap bmdatatable" data-fixed-header="true" data-auto-width="true" data-paging='false' data-searching="false" data-length-change="false" data-page-length="5" data-ordering="false" style="width:100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Location</th>
+                                                                <th class="text-right">In Stock</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <!-- ko foreach: $data.StockDetails -->
+                                                            <tr>
+                                                                <td><span data-bind="text: $data.WarhouseName"></span></td>
+                                                                <td class="text-right"><span data-bind="numericText: $data.AvailableQty, precision: 4"></span></td>
+                                                            </tr>
+                                                            <!-- /ko -->
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default mr-auto" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="AddUpdateRow">Save</button>
+
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+

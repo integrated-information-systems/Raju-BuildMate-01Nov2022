@@ -1,0 +1,33 @@
+﻿@{
+    var companyFullName = System.Configuration.ConfigurationManager.AppSettings["CompanyFullName"];
+    var companyShortName = System.Configuration.ConfigurationManager.AppSettings["CompanyShortName"];
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>@ViewBag.Title - @companyFullName Sales System</title>
+    @Styles.Render("~/Bootstrap-css")
+    @Styles.Render("~/OwnCss")
+    @RenderSection("Styles", false)
+</head>
+
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <div class="login-logo">
+            @*<a href="@Url.Action("Index", "Home")"><b>Build</b>mATE</a>*@
+            @*<a href="@Url.Action("Index", "Home")"><b>Seng Liat Precast</b></a>*@
+            <a href="@Url.Action("Index", "Home")"><b>@companyFullName</b></a>
+        </div>
+        <div class="login-box-body">
+            <p class="login-box-msg">Sign in to start your session</p>
+            @RenderBody()
+        </div>
+    </div>
+    @*@Scripts.Render("~/Jquery")
+        @Scripts.Render("~/Bootstrap")*@
+    @RenderSection("Scripts", false)
+</body>
+</html>

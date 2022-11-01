@@ -1,0 +1,184 @@
+﻿@using BMSS.Domain
+@using BMSS.WebUI.Models.DOViewModels
+@model IEnumerable<DODocH>
+@using System.Globalization;
+@{
+    ViewBag.Title = "List of Sales Quotations";
+    string PreferredLocation = ViewBag.PreferredLocation;
+}
+@section Styles {
+    @Styles.Render("~/DataTablesCss")
+    @Styles.Render("~/Select2Css")
+    @Styles.Render("~/DatePicker")
+}
+@section Content_Header {
+    <section class="content-header">
+        <h1>
+            Sales Quotation Listing
+            <small>Sales Quotations</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href='@Url.Action("Index", "Home")'><i class="fa fa-dashboard"></i>Transactions</a></li>
+            <li class="active">Sales Quotations</li>
+        </ol>
+    </section>
+}
+@using (Html.BeginForm("Edit", null, null, FormMethod.Get, new { id = "DetailForm" }))
+{
+    @Html.Hidden("DocNum", "")
+}
+<div class="row">
+    <div class="col-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">List of Sales Quotations</h3>
+                <div class="box-tools" style="top: 3px;"><a class="btn btn-primary" href="@Url.Action("Add", "SQ")" role="button">Add</a></div>
+            </div>
+            <div class="box-body">
+                <table id="ItemList" class="table table-bordered table-striped responsive nowrap dblEdit" data-fixed-header="true" data-auto-width="true" data-paging="true" data-searching="true" data-length-change="true" data-page-length="100" data-ordering="true" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Doc #</th>
+                            <th>Date</th>
+                            <th>Account #</th>                            
+                            <th class="text-right">Amount</th>                          
+                            <th>Print Status</th>
+                            <th>Del Date</th>
+                            <th>Del Time</th>
+                            <th>Customer Ref</th>
+                            <th data-priority="1">Copy to DO</th>
+                            <th>DO No</th>
+                            <th data-priority="1">Print</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+@section Scripts {
+    @Scripts.Render("~/DataTables")
+    @Scripts.Render("~/bundles/Jquery-Validation-and-Ajax")
+    @Scripts.Render("~/Select2")
+    @Scripts.Render("~/DatePickerJS")
+    @Scripts.Render("~/Knockout")
+    @Scripts.Render("~/Own")
+    <script>
+        $(document).ready(function () { 
+
+            $(document).on('click', '.printPreview', function (e) {
+            e.preventDefault();
+            let rowNo = $(this).data('row-index');
+            let DocNumber = $(this).data('row-docnum');
+            let DocEntry = $(this).data('row-docentry');
+            let URL = $(this).attr("href") + '/' + DocEntry;
+            window.open(URL, '_blank');
+        });
+            $(document).on('click', '.copyToDO', function (e) {
+            e.preventDefault();
+            let rowNo = $(this).data('row-index');
+            let DocNumber = $(this).data('row-docnum');
+            let DocEntry = $(this).data('row-docentry');
+            let URL = $(this).attr("href") + '/' + DocEntry;
+            $.ajax({
+                url: "@Url.Action("CopyToDO", "SQ", null)",
+                type: 'post',
+                contentType: 'application/x-www-form-urlencoded',
+                data: ko.toJS({ DocNum: DocNumber, rowNo: 1 }),
+                success: function (data)
+                {
+                    if (data.Status === 200 || Boolean(data.IsModelValid) === true) {
+
+                        setTimeout(function () {
+                            table.ajax.reload();
+                        }, 5000);
+
+                        $('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Success!</h4> Copied to Delivery Order Successfully</div>')
+                            .prependTo($(".box-body"))
+                            .delay(5000)
+                            .slideUpAndRemove('slow');
+
+                    }
+                    else {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        $('<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Alert!</h4><p> Cannot Copy: ' + data.ResultHtml +'</p></div>')
+                            .prependTo($('.box-body'))
+                            .delay(5000)
+                            .slideUpAndRemove('slow');
+                    }
+
+                },
+                error: function ()
+                {
+
+                }
+            });
+        });
+
+
+
+        
+
+
+
+            var table = $('#ItemList')
+                .DataTable({
+                    'processing': true,
+                    'serverSide': true,
+                    'serverMethod': 'post',
+                    'ajax': {
+                        'url': '@Url.Action("IndexNewPagining", "SQ", null)'
+                    },
+                    'columns': [
+                        { data: 'DocNum', orderable: true },
+                        { data: 'DocDate', orderable: true },
+                        { data: 'CardCode', orderable: true },
+                        {
+                            data: 'GrandTotal',
+                            render: $.fn.dataTable.render.number(',', '.', 2, ''),
+                            className: "text-right",
+                            orderable: true
+                        },
+                        { data: 'PrintStatus', orderable: true },                         
+                        { data: 'DeliveryDate', orderable: true },
+                        { data: 'DeliveryTime', orderable: true },
+                        { data: 'CustomerRef', orderable: true },           
+                        {
+                            data: null,
+                            render: function (data, type, row, meta) {
+                                return "<a class='btn btn-primary btn-xs copyToDO' target='_blank' data-row-docentry='" + data.DocEntry + "' data-row-docnum='" + row.DocNum + "' href='@Url.Action("SQViewer.aspx", "WForms/")' role='button'>Copy to DO</a>";
+                            },                                
+                            orderable: false                       
+                        },
+                        { data: 'DONum', orderable: true },                              
+                        {
+                            data: null,
+                            render: function (data, type, row, meta) {
+                                return "<a class='btn btn-primary btn-xs printPreview' target='_blank' data-row-docentry='" + data.DocEntry + "' data-row-docnum='" + row.DocNum + "' href='@Url.Action("SQViewer.aspx", "WForms/")' role='button'>Print</a>";
+                            },                                
+                            orderable: false                       
+                        },
+                    ],
+                    "order": [[0, "desc"]]
+
+                });
+                //.on('xhr', function () {
+                //    console.log('data loaded');
+                //    ko.cleanNode(document.getElementById("ItemList"));
+                //    ko.applyBindings(DOVM, document.getElementById("ItemList"));
+                //});
+
+            $('#ItemList tbody').on('dblclick', 'tr', function () {
+                var data = table.row(this).data();
+                $(this).addClass("highlight");
+                $("#DocNum").val(data.DocNum);
+                $("#DocNum").closest("form").submit();
+            });
+            $('.select2').select2();
+            $('.datepicker').datepicker({ format: 'dd/mm/yyyy', autoclose: true });
+        });
+
+
+    </script>
+}

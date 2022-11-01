@@ -1,0 +1,216 @@
+﻿@using BMSS.WebUI.Models.ItemViewModels
+@model IEnumerable<ItemStockDetailViewModel>
+@using System.Globalization;
+@{
+    ViewBag.Title = "List of Stocks";
+}
+@section Styles {
+    @Styles.Render("~/DataTablesCss")
+    @Styles.Render("https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css")
+}
+@section Content_Header {
+    <section class="content-header">
+        <h1>
+            Stocks
+            <small>SAP Stocks</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href='@Url.Action("Index", "Home")'><i class="fa fa-dashboard"></i>Administration</a></li>
+            <li class="active">Items</li>
+        </ol>
+    </section>
+}
+@using (Html.BeginForm("Detail", null, null, FormMethod.Get, new { id = "DetailForm" }))
+{
+    @Html.Hidden("ItemCode", "")
+}
+<div class="row">
+    <div class="col-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">List of Stocks</h3>
+            </div>
+            <div class="box-body">
+                <table id="ItemList" class="table table-bordered table-striped responsive nowrap bmdatatable dblEdit" data-fixed-header="true" data-auto-width="true" data-paging="true" data-searching="true" data-length-change="true" data-page-length="100" data-ordering="true" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Stock Code</th>
+                            <th>Stock Description</th>
+                            <th class="text-right">TRS In Stock</th>
+                            <th class="text-right">TRS On Order</th>
+                            <th class="text-right">ENS In Stock</th>
+                            <th class="text-right">ENS On Order</th>
+                            <th class="text-right">In Stock</th>
+                            <th class="text-right">On Order</th>
+                            <th class="text-center">INV Item</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/DataTables")
+    @Scripts.Render("https://code.jquery.com/jquery-3.5.1.js")
+    @Scripts.Render("https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js")
+  
+    @Scripts.Render("~/Knockout")
+    <script>
+
+        /* Formatting function for row details - modify as you need */
+        function format(MonthYr, Quantity) {
+            // `d` is the original data object for the row
+            
+            return (                
+                '<td>' +
+                    '<table><tr> <td> ' +
+                        MonthYr +
+                    ' </td> </tr>' +                
+                    '<tr> <td> ' +
+                        Quantity +
+                    ' </td> </tr> </table>' +
+                '</td>'               
+                
+            );
+        }
+
+        $(document).ready(function () {
+           var table = $('#ItemList').DataTable({
+                'processing': true,
+                'serverSide': true,
+                'serverMethod': 'post',
+                'ajax': {
+                    'url': '@Url.Action("IndexNewPagining", "Item", null)'
+                },
+                'columns': [
+                    {
+                        data: 'ItemCode', orderable: true
+                    },
+                    { data: 'ItemName', orderable: true },
+                    {
+                        data: 'TRSInStock',
+                        render: $.fn.dataTable.render.number(',', '.', 3, ''),
+                        className: "text-right",
+                        orderable: false
+                    },
+                    {
+                        data: 'TRSInOrder',
+                        render: $.fn.dataTable.render.number(',', '.', 3, ''),
+                        className: "text-right",
+                        orderable: false
+                    },
+                    {
+                        data: 'ENSInStock',
+                        render: $.fn.dataTable.render.number(',', '.', 3, ''),
+                        className: "text-right",
+                        orderable: false
+                    },
+                    {
+                        data: 'ENSInOrder',
+                        render: $.fn.dataTable.render.number(',', '.', 3, ''),
+                        className: "text-right",
+                        orderable: false
+                    },
+                    {
+                        data: 'InStock',
+                        render: $.fn.dataTable.render.number(',', '.', 3, ''),
+                        className: "text-right",
+                        orderable:false
+                    },
+                    {
+                        data: 'InOrder',
+                        render: $.fn.dataTable.render.number(',', '.', 3, ''),
+                        className: "text-right",
+                        orderable: false
+                    },
+                    {
+                        data: 'InvntItem', className: "text-center",
+                        orderable: false
+                    },
+                    {
+                        className: 'dt-control',
+                        orderable: false,
+                        data: null,
+                        defaultContent: '',
+                    },
+                ]
+            });
+
+            $('#ItemList tbody').on('dblclick', 'tr', function () {
+                var data = table.row(this).data();
+                //$(this).addClass("highlight");
+                $("#ItemCode").val(data.ItemCode);
+                var itemcode = data.ItemCode;
+                //$("#ItemCode").closest("form").submit();
+                window.open('@Url.Action("Detail", "Item")?ItemCode=' + itemcode);
+            });
+
+
+
+
+            // Add event listener for opening and closing details
+            $('#ItemList tbody').on('click', 'td.dt-control', function () {
+
+                var tr = $(this).closest('tr');
+                var row = table.row(tr);
+                var varItemCode = row.data().ItemCode;
+                alert(varItemCode);               
+
+                
+
+
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    row.child.hide();
+                    tr.removeClass('shown');
+                } else {
+                    // Open this row
+                    // Call the data
+                   
+
+                    $.ajax({
+                    url: "@Url.Action("GetItemMthlySales", "Item", null)",
+                    type: 'post',
+                    contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ ItemCode: varItemCode}),
+                    success: function (data) {
+                      
+                        if (data.length > 0) {
+                            var rowTableStr;
+                            rowTableStr = ' <table > ' +
+                                ' <tr> ';
+
+                            for (var i = 0; i < data.length; i++) {
+                                
+                                rowTableStr = rowTableStr + format(data[i].MonthYr, data[i].Quantity);
+                            }
+
+                            rowTableStr = rowTableStr + '</tr> ' + ' </table> ';
+
+                            alert(rowTableStr);
+                            // Open this row
+                            row.child(rowTableStr).show();
+                            tr.addClass('shown');
+
+                        }
+                      
+
+                    },
+                    error: function () { }
+                    });                                        
+                    
+                }
+              
+
+            });
+
+
+
+
+        });
+
+
+    </script>
+}

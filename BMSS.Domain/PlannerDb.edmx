@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PlannerDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DeliveryPlanner">
+          <Key>
+            <PropertyRef Name="Idkey" />
+          </Key>
+          <Property Name="Idkey" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SortSequence" Type="int" />
+          <Property Name="SNo" Type="int" Nullable="false" />
+          <Property Name="DocType" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreatedDateTime" Type="datetime" Nullable="false" />
+          <Property Name="ReferenceNo" Type="varchar" MaxLength="100" />
+          <Property Name="CreatorLocation" Type="int" />
+          <Property Name="AddedBy" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DeliveryLocation" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="DeliveryDate" Type="date" Nullable="false" />
+          <Property Name="DeliveryTime" Type="varchar" MaxLength="100" />
+          <Property Name="Reprint" Type="int" Nullable="false" />
+          <Property Name="Remarks" Type="varchar" MaxLength="500" />
+          <Property Name="LastPrintedBy" Type="varchar" MaxLength="100" />
+          <Property Name="LastDriver" Type="varchar" MaxLength="100" />
+          <Property Name="LastVehicleNo" Type="varchar" MaxLength="100" />
+          <Property Name="LastStatus" Type="varchar" MaxLength="50" />
+          <Property Name="LastTripNo" Type="varchar" MaxLength="50" />
+          <Property Name="LastFromLocation" Type="varchar" MaxLength="100" />
+          <Property Name="TripsOutOfTotal" Type="varchar" MaxLength="100" />
+          <Property Name="UpdatedBy" Type="varchar" MaxLength="50" />
+          <Property Name="UpdatedOn" Type="datetime" />
+          <Property Name="CreatedBy" Type="varchar" MaxLength="50" />
+          <Property Name="CreatedOn" Type="datetime" />
+        </EntityType>
+        <EntityContainer Name="PlannerDbModelStoreContainer">
+          <EntitySet Name="DeliveryPlanner" EntityType="Self.DeliveryPlanner" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PlannerDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="DeliveryPlanner">
+          <Key>
+            <PropertyRef Name="Idkey" />
+          </Key>
+          <Property Name="Idkey" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SortSequence" Type="Int32" />
+          <Property Name="SNo" Type="Int32" Nullable="false" />
+          <Property Name="DocType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ReferenceNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreatorLocation" Type="Int32" />
+          <Property Name="AddedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DeliveryLocation" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DeliveryDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DeliveryTime" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Reprint" Type="Int32" Nullable="false" />
+          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="LastPrintedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="LastDriver" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="LastVehicleNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="LastStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastTripNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastFromLocation" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="TripsOutOfTotal" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityContainer Name="PlannerDb" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DeliveryPlanners" EntityType="Self.DeliveryPlanner" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PlannerDbModelStoreContainer" CdmEntityContainer="PlannerDb">
+          <EntitySetMapping Name="DeliveryPlanners">
+            <EntityTypeMapping TypeName="PlannerDbModel.DeliveryPlanner">
+              <MappingFragment StoreEntitySet="DeliveryPlanner">
+                <ScalarProperty Name="Idkey" ColumnName="Idkey" />
+                <ScalarProperty Name="SortSequence" ColumnName="SortSequence" />
+                <ScalarProperty Name="SNo" ColumnName="SNo" />
+                <ScalarProperty Name="DocType" ColumnName="DocType" />
+                <ScalarProperty Name="CreatedDateTime" ColumnName="CreatedDateTime" />
+                <ScalarProperty Name="ReferenceNo" ColumnName="ReferenceNo" />
+                <ScalarProperty Name="CreatorLocation" ColumnName="CreatorLocation" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="DeliveryLocation" ColumnName="DeliveryLocation" />
+                <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+                <ScalarProperty Name="DeliveryTime" ColumnName="DeliveryTime" />
+                <ScalarProperty Name="Reprint" ColumnName="Reprint" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="LastPrintedBy" ColumnName="LastPrintedBy" />
+                <ScalarProperty Name="LastDriver" ColumnName="LastDriver" />
+                <ScalarProperty Name="LastVehicleNo" ColumnName="LastVehicleNo" />
+                <ScalarProperty Name="LastStatus" ColumnName="LastStatus" />
+                <ScalarProperty Name="LastTripNo" ColumnName="LastTripNo" />
+                <ScalarProperty Name="LastFromLocation" ColumnName="LastFromLocation" />
+                <ScalarProperty Name="TripsOutOfTotal" ColumnName="TripsOutOfTotal" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

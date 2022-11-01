@@ -1,0 +1,76 @@
+﻿@using BMSS.WebUI.Models.DocNumberingViewModels
+
+@model DocNumberingListViewModel
+@{
+
+    IEnumerable<DocNumberingViewModel> NumberingList = Model.NumberingList;
+
+    AjaxOptions ajaxDeleteOpts = new AjaxOptions
+    {
+        OnSuccess = "AjaxFormSuccessModal('" + Model.AjaxOptions.DeleteActionTargetId + "', '" + Model.AjaxOptions.DeleteFormId + "','" + Model.AjaxOptions.ModalID + "', data)",
+        Url = Url.Action(Model.AjaxOptions.FormDeleteAction),
+        HttpMethod = "POST"
+    };
+
+    AjaxOptions ajaxEditOpts = new AjaxOptions
+    {
+        OnSuccess = "AjaxFormSuccessModal('" + Model.AjaxOptions.AddActionTargetId + "', '" + Model.AjaxOptions.AddFormId + "','" + Model.AjaxOptions.ModalID + "', data)",
+        Url = Url.Action(Model.AjaxOptions.FormEditAction),
+        HttpMethod = "POST"
+    };
+}
+<table class="table table-striped table-bordered responsive nowrap bmdatatable dblEdit" data-fixed-header="true" data-auto-width="true" data-paging='false' data-searching="false" data-length-change="false" data-page-length="5" data-ordering="false" style="width:100%">
+    <thead>
+        <tr>
+            <th>Series Name</th>
+            <th>First No</th>
+            <th>Next No</th>
+            <th>Last No</th>
+            <th>Prefix</th>
+            <th>Is Default</th>
+            <th>Is Locked</th>
+            <th>Created On</th>
+            <th>Created By</th>
+            <th>Updated On</th>
+            <th>Updated By</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var i in NumberingList)
+        {
+        <tr data-unid="@i.NumberingID" data-Modal="@Model.AjaxOptions.ModalID" data-toggle="tooltip" title="double click to edit">
+            <td>
+                @i.SeriesName
+                @using (Ajax.BeginForm(Model.AjaxOptions.FormEditAction, null, ajaxEditOpts, new { id = Model.AjaxOptions.EditFormId }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("NumberingID", i.NumberingID)
+                }
+            </td>
+            <td>@i.FirstNo</td>
+            <td>@i.NextNo</td>
+            <td>@i.LastNo</td>
+            <td>@i.Prefix</td>
+            <td>@i.IsDefault</td>
+            <td>@i.IsLocked</td>
+            <td>@i.CreatedOn</td>
+            <td>@i.CreatedBy</td>
+            <td>@i.UpdatedOn</td>
+            <td>@i.UpdatedBy</td>
+            <td>
+                @using (Ajax.BeginForm(Model.AjaxOptions.FormDeleteAction, null, ajaxDeleteOpts, new { id = Model.AjaxOptions.DeleteFormId }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("NumberingID", i.NumberingID)
+                    <button type="submit" class="btn btn-danger btn-xs" name="DeleteRow" id="DeleteRow" data-unid="@i.NumberingID" onClick="return deleteConfirmation();">
+                        <i class="fa fa-fw fa-remove"></i>
+                    </button>
+                }
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+

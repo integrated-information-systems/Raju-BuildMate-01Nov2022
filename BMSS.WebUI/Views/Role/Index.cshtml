@@ -1,0 +1,39 @@
+﻿@using BMSS.WebUI.Models.RoleViewModels
+@using BMSS.WebUI.Models.UserIdentity
+@model CreateRoleModel
+@{
+    ViewBag.Title = "Role Administration";
+    RoleListModel Roles = ViewBag.RoleList;
+}
+@section Styles {
+    @Styles.Render("~/DataTablesCss")
+}
+@section Content_Header {
+    <section class="content-header">
+        <h1>
+            Roles
+            <small>System Roles</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href='@Url.Action("Index", "Home")'><i class="fa fa-dashboard"></i>Administration</a></li>
+            <li class="active">Roles</li>
+        </ol>
+    </section>
+}
+<div class="row">
+    <div class="col-6" id="@Roles.AjaxOptions.EditActionTargetId">
+        @Html.Partial("_AddRole", Model)
+    </div>
+    <div class="col-6" id="@Roles.AjaxOptions.AddActionTargetId">
+
+        @Html.Partial("_RoleList", Roles)
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/DataTables")
+    @Scripts.Render("~/bundles/Jquery-Validation-and-Ajax")
+    @Scripts.Render("~/Own")
+}
+@section BootModals {
+    @Html.Partial("_DeleteConfirmationModal")
+}

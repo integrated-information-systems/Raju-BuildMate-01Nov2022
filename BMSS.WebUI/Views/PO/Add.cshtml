@@ -1,0 +1,2239 @@
+﻿@using BMSS.WebUI.Models.POViewModels
+@model POViewModel
+@{
+
+    var isCreating = Model.DocNum == "New";
+    ViewBag.Title = (isCreating) ? "Add New Purchase Order" : "Edit Purchase Order #" + Model.DocNum;     
+}
+@section Content_Header {
+    <section class="content-header">
+        <h1>
+            @ViewBag.Title
+            <small>Purchase Order</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i>Transactions</a></li>
+            <li class="active"><a href='@Url.Action("Index", "PO")'>Purchase Orders</a></li>
+        </ol>
+    </section>
+}
+@section Styles {
+    @Styles.Render("~/DataTablesCss")
+    @Styles.Render("~/Select2Css")
+    @Styles.Render("~/DatePicker")
+
+}
+<div class="row" id="MainContent">
+    <div class="col-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">Purchase Order</h3>
+            </div>
+            @using (Html.BeginForm(null, null, null, FormMethod.Post, new { @id = "POForm", @class = "form-horizontal", data_bind = "submit: validateAndSubmit" }))
+            {
+                @Html.ValidationSummary()
+                @Html.AntiForgeryToken()
+                <div class="box-body">
+
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.CardCode)
+                                @Html.DropDownListFor(x => x.CardCode, Enumerable.Empty<SelectListItem>(), null, new { @class = "form-control select2", data_bind = "options: CustomerNameCodes, optionsText: 'Value', optionsValue: 'Value', value: PO.cardCode ,optionsCaption: 'Select Supplier Code'" })
+                            </div>
+                            <div class="overlay">
+                                <i class="fa fa-refresh fa-spin text-gray"></i>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.DocNum)
+                                @Html.TextBoxFor(x => x.DocNum, new { @class = "form-control", disabled = "", data_bind = "value: PO.docNum" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PrintedStatus)
+                                @Html.TextBoxFor(x => x.PrintedStatus, new { @class = "form-control", disabled = "", data_bind = "value: PO.printedStatusName" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.Currency)
+                                @Html.TextBoxFor(x => x.Currency, new { @class = "form-control", disabled = "", data_bind = "value: PO.currency" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            @Html.LabelFor(x => x.CreatedBy)
+                            @Html.TextBoxFor(x => x.CreatedBy, new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.CardName)
+                                @Html.DropDownListFor(x => x.CardName, Enumerable.Empty<SelectListItem>(), null, new { @class = "form-control select2", data_bind = "options: CustomerNameCodes, optionsText: 'Text', optionsValue: 'Value', value: PO.cardName,optionsCaption: 'Select Company Name'" })
+                            </div>
+                            <div class="overlay">
+                                <i class="fa fa-refresh fa-spin text-gray"></i>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.DocDate)
+                                @Html.TextBoxFor(x => x.DocDate, new { @class = "form-control datepicker", data_bind = "value: PO.docDate" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.Status)
+                                @Html.TextBox("Status", Html.GetDocStatusName(Model.Status), new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                    @Html.LabelFor(x => x.ExRate)
+                                    @Html.TextBoxFor(x => x.ExRate, new { @class = "form-control", data_bind = "value: PO.exRate" })
+                                </div>                            
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.CreatedOn)
+                                @if (Model.CreatedOn.ToString("dd'/'MM'/'yyyy").Equals("01/01/0001"))
+                                {
+                                    @Html.TextBox("CreatedOnString", null, null, new { @class = "form-control", disabled = "" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(x => x.CreatedOn, "{0:dd'/'MM'/'yyyy HH:mm:ss tt}", new { @class = "form-control", disabled = "" })
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.OfficeTelNo)
+                                @Html.TextBoxFor(x => x.OfficeTelNo, new { @class = "form-control", data_bind = "value: PO.officeTelNo" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.DeliveryDate)
+                                @Html.TextBoxFor(x => x.DeliveryDate, new { @class = "form-control datepicker", data_bind = "value: PO.deliveryDate, attr : {'disabled' : isDisabledDelivereyDate}" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.CopiedGRPO)
+                                @Html.TextBoxFor(x => x.CopiedGRPO, new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @*@Html.LabelFor(x => x.PaymentTermName)*@
+                                @*@Html.DropDownListFor(x => x.PaymentTerm, Enumerable.Empty<SelectListItem>(), null, new { @class = "form-control select2", data_bind = "options: PaymentTerms, optionsText: 'Text', optionsValue: 'Value', value: PO.paymentTerm ,optionsCaption: 'Select Payment Term'", disabled = "" })*@
+                                @*@Html.TextBoxFor(x => x.PaymentTermName, new { @class = "form-control", data_bind = "value: PO.paymentTermName", disabled = "" })*@
+                                @Html.LabelFor(x => x.SlpName)
+                                @*@Html.DropDownListFor(x => x.SlpCode, Enumerable.Empty<SelectListItem>(), null, new { @class = "form-control select2", data_bind = "options: SalePersons, optionsText: 'Text', optionsValue: 'Value', value: PO.slpCode", disabled = "" })*@
+                                @Html.TextBoxFor(x => x.SlpName, new { @class = "form-control", data_bind = "value: PO.slpName", disabled = "" })
+                            </div>                            
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.UpdatedBy)
+                                @Html.TextBoxFor(x => x.UpdatedBy, new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @*@Html.LabelFor(x => x.ContactID)
+                                    @Html.DropDownListFor(x => x.ContactID, Enumerable.Empty<SelectListItem>(), null, new { @class = "form-control select2", data_bind = "options: CustomerContactPersons, optionsText: 'Text', optionsValue: 'Value', value: PO.contactID,optionsCaption: 'Select Contact Person'" })*@
+                                @Html.LabelFor(x => x.Fax)
+                                @Html.TextBoxFor(x => x.Fax, new { @class = "form-control", data_bind = "value: PO.fax" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.DeliveryTime)
+                                @Html.TextBoxFor(x => x.DeliveryTime, new { @class = "form-control", data_bind = "value: PO.deliveryTime, attr : {'disabled' : isDisabledDelivereyDate}" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.Ref)
+                                @Html.TextBoxFor(x => x.Ref, new { @class = "form-control", data_bind = "value: PO.ref" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">                                
+                                @Html.LabelFor(x => x.UpdatedOn)
+                                @if(Model.UpdatedOn.ToString("dd'/'MM'/'yyyy").Equals("01/01/0001"))
+                                {
+                                    @Html.TextBox("UpdatedOnString", null, null, new { @class = "form-control", disabled = "" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(x => x.UpdatedOn, "{0:dd'/'MM'/'yyyy HH:mm:ss tt}", new { @class = "form-control", disabled = "" })
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="nav-tabs-custom">
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item active"><a href="#tab_1" data-toggle="tab" class="nav-link active">Contents</a></li>
+                                    <li class="nav-item"><a href="#tab_2" data-toggle="tab" class="nav-link">Logistics</a></li>
+                                    <li class="nav-item"><a href="#tab_3" data-toggle="tab" class="nav-link">Notes</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="tab_1">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <button type="button" class="btn btn-primary float-right mr-1" data-bind="click: addPOLine">Add</button>
+                                            </div>
+                                        </div>
+
+                                        <table id="ItemListTable" class="table table-striped table-bordered responsive nowrap bmdatatable" data-fixed-header="true" data-auto-width="true" data-paging='false' data-searching="false" data-length-change="false" data-page-length="5" data-ordering="false" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="4"></th>
+                                                    <th colspan="2" class="text-center"><button type="button" class="btn btn-primary" data-toggle="tooltip" title="Copy to GRPO Qty" data-bind="click:CopyOpenQtyToGRPOQty">
+   
+    <i class="fa fa-arrow-right"></i>
+</button></th>
+                                                    <th colspan="5"></th>
+                                                </tr>
+                                                <tr>
+                                                    <th>Line No</th>
+                                                    <th>Stock Code</th>
+                                                    <th>Description</th>
+                                                    <th class="text-right">Qty</th>
+                                                    <th class="text-right">Open Qty &nbsp;@*<small class="label pull-right bg-green"><i class="fa fa-fw fa-arrow-right" ></i></small>*@</th>
+                                                    <th class="text-right">GRPO Qty</th>
+                                                    <th>Location</th>
+                                                    <th class="text-right">Unit Price</th>
+                                                    <th>GST</th>
+                                                    <th>Line Total</th>
+                                                    <th>Delete</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                                <div class="form-group">
+                                                    @Html.Label("Header Remarks")
+                                                    @Html.TextBoxFor(x => x.HeaderRemarks1, new { @class = "form-control", data_bind = "value: PO.headerRemarks1" })
+                                                </div>
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(x => x.HeaderRemarks2, new { @class = "form-control", data_bind = "value: PO.headerRemarks2" })
+                                                </div>
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(x => x.HeaderRemarks3, new { @class = "form-control", data_bind = "value: PO.headerRemarks3" })
+                                                </div>
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(x => x.HeaderRemarks4, new { @class = "form-control", data_bind = "value: PO.headerRemarks4" })
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                                <div class="form-group">
+                                                    @Html.Label("Footer Remarks")
+                                                    @Html.TextBoxFor(x => x.FooterRemarks1, new { @class = "form-control", data_bind = "value: PO.footerRemarks1" })
+                                                </div>
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(x => x.FooterRemarks2, new { @class = "form-control", data_bind = "value: PO.footerRemarks2" })
+                                                </div>
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(x => x.FooterRemarks3, new { @class = "form-control", data_bind = "value: PO.footerRemarks3" })
+                                                </div>
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(x => x.FooterRemarks4, new { @class = "form-control", data_bind = "value: PO.footerRemarks4" })
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                                <div class="form-group row">
+                                                    @Html.LabelFor(x => x.NetTotal, new { @class = "col-form-label col-4" })
+                                                    <div class="col-8">
+                                                        @Html.TextBoxFor(x => x.NetTotal, new { @class = "form-control", data_bind = "value: PO.netTotal", disabled = "", style = "text-align: right; " })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    @Html.LabelFor(x => x.DiscByPercent, new { @class = "col-form-label col-4" })
+                                                    <div class="col-4">
+                                                        Percentage @Html.RadioButtonFor(x => x.DiscByPercent, "true", new { data_bind = "checked: PO.discByPercent" })
+                                                    </div>
+                                                    <div class="col-4">
+                                                        Amount @Html.RadioButtonFor(x => x.DiscByPercent, "false", new { data_bind = "checked: PO.discByPercent" })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    @Html.LabelFor(x => x.DiscPercent, new { @class = "col-form-label col-4" })
+                                                    <div class="col-8">
+                                                        @Html.TextBoxFor(x => x.DiscPercent, new { @class = "form-control", data_bind = "textInput: PO.discPercent", style = "text-align: right; " })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    @Html.LabelFor(x => x.DiscAmount, new { @class = "col-form-label col-4" })
+                                                    <div class="col-8">
+                                                        @Html.TextBoxFor(x => x.DiscAmount, new { @class = "form-control", data_bind = "textInput: PO.discAmount", style = "text-align: right; " })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    @Html.LabelFor(x => x.GstTotal, new { @class = "col-form-label col-4" })
+                                                    <div class="col-8">
+                                                        @Html.TextBoxFor(x => x.GstTotal, new { @class = "form-control", data_bind = "value: PO.gstTotal", style = "text-align: right; ", disabled = "" })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    @Html.LabelFor(x => x.GrandTotal, new { @class = "col-form-label col-4" })
+                                                    <div class="col-8">
+                                                        @Html.TextBoxFor(x => x.GrandTotal, new { @class = "form-control", data_bind = "value: PO.grandTotal", style = "text-align: right; ", disabled = "" })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="tab_2">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.ShipTo)
+                                                            @Html.DropDownListFor(x => x.ShipTo, Enumerable.Empty<SelectListItem>(), null, new { @class = "form-control select2", style = "width:100%", data_bind = "options: CustomerShipToAddresses, optionsText: 'Text', optionsValue: 'Value', value: PO.shipTo,optionsCaption: 'Select Ship To'" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.ShipToAddress1)
+                                                            @Html.TextBoxFor(x => x.ShipToAddress1, new { @class = "form-control", data_bind = "value: PO.shipToAddress1" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.ShipToAddress2)
+                                                            @Html.TextBoxFor(x => x.ShipToAddress2, new { @class = "form-control", data_bind = "value: PO.shipToAddress2" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.ShipToAddress3)
+                                                            @Html.TextBoxFor(x => x.ShipToAddress3, new { @class = "form-control", data_bind = "value: PO.shipToAddress3" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.ShipToAddress4)
+                                                            @Html.TextBoxFor(x => x.ShipToAddress4, new { @class = "form-control", data_bind = "value: PO.shipToAddress4" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.ShipToAddress5)
+                                                            @Html.TextBoxFor(x => x.ShipToAddress5, new { @class = "form-control", data_bind = "value: PO.shipToAddress5" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @*<div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.BillTo)
+                                                            @Html.DropDownListFor(x => x.BillTo, Enumerable.Empty<SelectListItem>(), null, new { @class = "form-control select2", style = "width:100%", data_bind = "options: CustomerBillToAddresses, optionsText: 'Text', optionsValue: 'Value', value: PO.billTo,optionsCaption: 'Select Bill To'" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.BillToAddress1)
+                                                            @Html.TextBoxFor(x => x.BillToAddress1, new { @class = "form-control", data_bind = "value: PO.billToAddress1" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.BillToAddress2)
+                                                            @Html.TextBoxFor(x => x.BillToAddress2, new { @class = "form-control", data_bind = "value: PO.billToAddress2" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.BillToAddress3)
+                                                            @Html.TextBoxFor(x => x.BillToAddress3, new { @class = "form-control", data_bind = "value: PO.billToAddress3" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.BillToAddress4)
+                                                            @Html.TextBoxFor(x => x.BillToAddress4, new { @class = "form-control", data_bind = "value: PO.billToAddress4" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>*@
+                                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group text-right">
+                                                            @Html.LabelFor(x => x.SelfCollect)
+                                                            @Html.CheckBoxFor(x => x.SelfCollect, new { data_bind = "checked: PO.selfCollect" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.SelfCollectRemarks1)
+                                                            @Html.TextBoxFor(x => x.SelfCollectRemarks1, new { @class = "form-control", data_bind = "value: PO.selfCollectRemarks1" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.SelfCollectRemarks2)
+                                                            @Html.TextBoxFor(x => x.SelfCollectRemarks2, new { @class = "form-control", data_bind = "value: PO.selfCollectRemarks2" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.SelfCollectRemarks3)
+                                                            @Html.TextBoxFor(x => x.SelfCollectRemarks3, new { @class = "form-control", data_bind = "value: PO.selfCollectRemarks3" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.SelfCollectRemarks4)
+                                                            @Html.TextBoxFor(x => x.SelfCollectRemarks4, new { @class = "form-control", data_bind = "value: PO.selfCollectRemarks4" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.SelfCollectRemarks5)
+                                                            @Html.TextBoxFor(x => x.SelfCollectRemarks5, new { @class = "form-control", data_bind = "value: PO.selfCollectRemarks5" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="tab_3">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <button type="button" class="btn btn-primary float-right mr-1" data-bind="click: addPONote">Add</button>
+                                            </div>
+                                        </div>
+                                        <table id="NoteListTable" class="table table-striped table-bordered responsive nowrap bmdatatable dblEdit" data-fixed-header="true" data-auto-width="false" data-paging='false' data-searching="false" data-length-change="false" data-page-length="5" data-ordering="false" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 10%;">Line No</th>
+                                                    <th style="width: 80%;">Note</th>
+                                                    <th style="width: 10%;">Delete</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <Button type="submit" Class="btn btn-primary" data-bind="disable: disableLineEdit">Save</Button>
+                    <Button type="submit" Class="btn btn-primary" data-bind="click: validateAndUpdateNotes, attr : {'disabled' : PO.currentUserIsNotInRoleNotes}">Update Notes</Button>
+                    <Button type="submit" Class="btn btn-primary" data-bind="enable: disableLineEdit">Update GRPO Qty only</Button>
+                    <a class="btn btn-primary" href="@Url.Action("Index")" role="button">Close w/o Saving</a>
+                    @*<a class="btn btn-primary" target="_blank" href="@Url.Action("POViewer.aspx","WForms/", new { id = Model.DocEntry })" role="button">Print</a>*@
+                    <a class="btn btn-primary" target="_blank" href="#" data-bind="click: printPreview" role="button">Print</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section BootModals {
+    @Html.Partial("_POLineDetailModal", new POLineViewModel() { });
+    @Html.Partial("_PONoteDetailModal", new PONoteViewModel() { });
+}
+
+@section Scripts {
+    @Scripts.Render("~/DataTables")
+    @Scripts.Render("~/bundles/Jquery-Validation-and-Ajax")
+    @Scripts.Render("~/Select2")
+    @Scripts.Render("~/DatePickerJS")
+    @Scripts.Render("~/Knockout")
+
+    <script>
+
+        function isValidDate(date) {
+            return date && Object.prototype.toString.call(date) === "[object Date]" && !isNaN(date);
+        }
+        function POViewModel(pO) {
+            var self = this;
+            self.isCreating = pO.docNum == "New";
+            self.previewUrl = ko.observable('@Url.Action("POViewer.aspx", "WForms/", new { id = Model.DocEntry })');
+
+            self.disableLineEdit = ko.observable(pO.status == 2);
+            self.disableLineEditIndividual = ko.observable(false);
+            self.isDisabledDelivereyDate = ko.observable(false);
+
+
+            self.isEditingLine = false; // To prevent unit price change while clicking Edit line Button for the first time
+
+            // Loaded from ajax - Observable Arrays
+            self.CustomerNameCodes = ko.observableArray();
+            self.CustomerContactPersons = ko.observableArray();
+            self.ChildItemDetails = ko.observableArray();
+
+            self.ItemCodesAndNames = ko.observableArray();
+            self.LocationCodeAndNames = ko.observableArray();
+            self.TaxCodes = ko.observableArray();
+
+            self.CustomerShipToAddresses = ko.observableArray();
+            self.CustomerBillToAddresses = ko.observableArray();
+
+            var LoadingFinished = true;
+            if (!self.isCreating) {
+                LoadingFinished = false;
+            }
+
+            self.CopyDescToOwDesc = function () {
+                self.POLine.overwriteDescription($('#AddUpdateItemModal').find("#Description:first").find("option:selected").text());
+            }
+
+            self.LoadSupplierBasedDropdowns = function (cardcode) {
+                    $.when(
+                    // Initial Ajax Requests, while page loading
+                    //Load Customer's ContactPersons
+                    $.ajax({
+                        url: "@Url.Action("GetContactPersons", "ContactPersons", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ CardCode: cardcode }),
+                        success: function (data) {
+                            self.CustomerContactPersons(data);
+
+                        },
+                        error: function () { }
+                    }),
+                    //Load Shipping Addresses
+                    $.ajax({
+                        url: "@Url.Action("GetCustomerShippingAddresses", "CustomerAddress", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ CardCode: 'BM-SHIPTO' }),
+                        success: function (data) {
+                            
+                            self.CustomerShipToAddresses(data);
+                            //To Choose the first address as default
+                            //if (data.length > 0) {                               
+                            //    $('#ShipTo').val(data[0].Value).trigger('change');
+                            //}
+                        },
+                        error: function () { }
+                    }),
+                    //Load Billing Addresses
+                    $.ajax({
+                        url: "@Url.Action("GetCustomerBillingAddresses", "CustomerAddress", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ CardCode: cardcode }),
+                        success: function (data) {
+
+                            self.CustomerBillToAddresses(data);
+                        },
+                        error: function () { }
+                    })
+                    ).done(function () {
+
+                            if (LoadingFinished === false) {
+                                //self.PO.contactID(pO.contactID);
+                                //$('#ContactID').val(pO.contactID).trigger('change');
+                                //self.PO.contactTelNo(pO.contactTelNo);
+                                self.PO.billTo(pO.billTo);
+                                $('#BillTo').val(pO.billTo).trigger('change');
+                                self.PO.shipTo(pO.shipTo);
+                                $('#ShipTo').val(pO.shipTo).trigger('change');
+
+                                $.ajax({
+                                                url: "@Url.Action("GetSupplierDetails", "Supplier", null)",
+                                                type: 'post',
+                                                contentType: 'application/x-www-form-urlencoded',
+                                                    data: ko.toJS({ CardCode: cardcode }),
+                                success: function (data) {                                                                                                         
+                                                    $('#GstName').val(data.DefaultTaxGroup).trigger('change');                                                                                       
+                                                },
+                                                error: function () { }
+                                            });
+
+                                LoadingFinished = true;
+                            }
+                        else {
+                            $.ajax({
+                                                url: "@Url.Action("GetSupplierDetails", "Supplier", null)",
+                                                type: 'post',
+                                                contentType: 'application/x-www-form-urlencoded',
+                                                    data: ko.toJS({ CardCode: cardcode }),
+                                success: function (data) {
+                                                    var PaymentTermsDays = parseInt(data.PaymentTermDays);
+                                                    self.PO.fax(data.Fax);
+                                                    self.PO.officeTelNo(data.OfficeTelNo);
+
+                                                    self.PO.currency(data.Currency);
+
+                                                    self.PO.paymentTermName(data.PymntGroup);
+                                                    self.PO.slpName(data.SlpName);
+
+
+                                                    //let BillToDefVal = data.BillToDef;
+                                                    //$('#BillTo').val("").trigger('change');
+                                                    //$('#BillTo').val(BillToDefVal).trigger('change');
+
+                                                    //let ShipToDefVal = data.ShipToDef;
+                                                    //$('#ShipTo').val("").trigger('change');
+                                                    //$('#ShipTo').val(ShipToDefVal).trigger('change');
+
+
+                                                    $('#GstName').val(data.DefaultTaxGroup).trigger('change');
+                                                    var DDate = self.PO.docDate();
+                                                    var DateParts = DDate.split("/");
+                                                    var dt = new Date(parseInt(DateParts[2], 10),
+                                                        parseInt(DateParts[1], 10) - 1,
+                                                        parseInt(DateParts[0], 10) + PaymentTermsDays);
+                                                    var dd = dt.getDate();
+                                                    var mm = dt.getMonth() + 1;
+
+                                                    var yyyy = dt.getFullYear();
+                                                    if (dd < 10) {
+                                                        dd = '0' + dd;
+                                                    }
+                                                    if (mm < 10) {
+                                                        mm = '0' + mm;
+                                                    }
+                                                        var FormattedDueDate = dd + '/' + mm + '/' + yyyy;
+                                                    //self.PO.dueDate(FormattedDueDate);
+
+                                                },
+                                                error: function () { }
+                                            });
+                        }
+
+
+                });
+            };
+
+
+
+            // Model Binding
+            self.PO = {                     
+                docNum: ko.observable(pO.docNum),
+                cardCode: ko.observable(pO.cardCode),
+                cardName: ko.observable(pO.cardName),
+                currency: ko.observable(pO.currency),
+                officeTelNo: ko.observable(pO.officeTelNo),
+                fax: ko.observable(pO.fax),
+                printedStatus: ko.observable(pO.printedStatus),  
+                docDate: ko.observable(pO.docDate),
+                dueDate: ko.observable(pO.dueDate),
+                deliveryDate: ko.observable(pO.deliveryDate),
+                ref: ko.observable(pO.ref),
+                exRate: ko.observable(parseFloat(pO.exRate).toFixed(6)),
+                paymentTermName: ko.observable(pO.paymentTermName),
+                slpName: ko.observable(pO.slpName),
+                deliveryTime: ko.observable(pO.deliveryTime),
+                headerRemarks1: ko.observable(pO.headerRemarks1),
+                headerRemarks2: ko.observable(pO.headerRemarks2),
+                headerRemarks3: ko.observable(pO.headerRemarks3),
+                headerRemarks4: ko.observable(pO.headerRemarks4),
+                footerRemarks1: ko.observable(pO.footerRemarks1),
+                footerRemarks2: ko.observable(pO.footerRemarks2),
+                footerRemarks3: ko.observable(pO.footerRemarks3),
+                footerRemarks4: ko.observable(pO.footerRemarks4),
+                billTo: ko.observable(pO.billTo),
+                billToAddress1: ko.observable(pO.billToAddress1),
+                billToAddress2: ko.observable(pO.billToAddress2),
+                billToAddress3: ko.observable(pO.billToAddress3),
+                billToAddress4: ko.observable(pO.billToAddress4),
+                billToAddress5: ko.observable(pO.billToAddress5),
+                shipTo: ko.observable(pO.shipTo),
+                shipToAddress1: ko.observable(pO.shipToAddress1),
+                shipToAddress2: ko.observable(pO.shipToAddress2),
+                shipToAddress3: ko.observable(pO.shipToAddress3),
+                shipToAddress4: ko.observable(pO.shipToAddress4),
+                shipToAddress5: ko.observable(pO.shipToAddress5),
+                selfCollect: ko.observable(pO.selfCollect),
+                selfCollectRemarks1: ko.observable(pO.selfCollectRemarks1),
+                selfCollectRemarks2: ko.observable(pO.selfCollectRemarks2),
+                selfCollectRemarks3: ko.observable(pO.selfCollectRemarks3),
+                selfCollectRemarks4: ko.observable(pO.selfCollectRemarks4),
+                selfCollectRemarks5: ko.observable(pO.selfCollectRemarks5),
+                discByPercent: ko.observable(pO.discByPercent),
+                discPercent: ko.observable(pO.discPercent),
+                discAmount: ko.observable(pO.discAmount),                
+                grandTotal: ko.observable(parseFloat(pO.grandTotal).toFixed(2)),
+                currentUserIsNotInRoleNotes: ko.observable(pO.currentUserIsNotInRoleNotes),
+                lines: ko.observableArray(pO.lines),
+                noteLines: ko.observableArray(pO.noteLines)
+            }
+            if (pO.printedStatus === 0) {
+                self.PO.printedStatusName = ko.observable('Not Printed');
+            }
+            else {
+                self.PO.printedStatusName = ko.observable('Printed');
+            }
+            self.PO.printedStatus.subscribe(function (newValue) {
+                if (newValue === 0)
+                    self.PO.printedStatusName('Not Printed');
+                else
+                    self.PO.printedStatusName('Printed');
+            })
+            self.printPreview = function () {
+               
+                $.ajax({
+                url: "@Url.Action("CanPrint", "PO", null)",
+                type: 'post',
+                contentType: 'application/x-www-form-urlencoded',
+                data: ko.toJS({ DocEntry: @Model.DocEntry }),
+                success: function (data)
+                {
+                    if (data.canAccess) {                       
+                        self.PO.printedStatus(1);
+                        window.open(self.previewUrl(), '_blank'); 
+                    }
+                    else {                        
+                        let form = $('form[id="POForm"]');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        $('<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Alert!</h4><p>Access denied</p></div>')
+                            .prependTo($(form))
+                            .delay(5000)
+                            .slideUpAndRemove('slow');   
+                    }
+                            
+                },
+                error: function ()
+                {
+                             
+                }
+                });
+            }
+
+            //Total Calculation
+            self.PO.netTotal = ko.computed(function () {
+                var calculated = 0;
+                if (self.PO.lines() !== null) {
+                    for (var i = 0; i < self.PO.lines().length; i++) {
+                        calculated = calculated + parseFloat(self.PO.lines()[i].lineTotal);
+                    }
+                }
+                if (isNaN(calculated)) {
+                    return 0;
+                }
+                else {
+                    return roundToTwo(calculated);
+                }
+            }, self) //Computed observable
+            self.PO.gstTotal = ko.computed(function () {
+                var calculated = 0;
+                var discAmt = 0;
+                var disperc = 0;
+                disperc = self.PO.discPercent();
+                if (isNaN(disperc)) {
+                    disperc = 0
+                }
+                if (self.PO.lines() !== null) {
+                    let lines = ko.toJS(self.PO.lines());
+                    let groupedLines = groupBy(lines, 'gstName');
+
+                    Object.keys(groupedLines).forEach(key => {
+                        let lineGroupTotal = 0;
+                        for (var i = 0; i < groupedLines[key].length; i++) {
+                            if (disperc > 0) {
+                                discAmt = parseFloat(groupedLines[key][i].lineTotal) * parseFloat(disperc) / 100;
+                            }
+                            lineGroupTotal = parseFloat(roundToTwo(lineGroupTotal + parseFloat(roundToTwo((parseFloat(groupedLines[key][i].lineTotal) - discAmt)))));
+                        }
+                        calculated = calculated + (parseFloat(lineGroupTotal) * (parseFloat(groupedLines[key][0].gst) / 100));
+                    }); 
+                }
+                if (isNaN(calculated)) {
+                    return 0;
+                }
+                else {
+                    return roundToTwo(calculated);
+                }
+            }, self) //Computed observable
+            self.PO.netTotal.subscribe(function (newValue) {
+                self.CalcDiscounts();
+            }, self)
+            self.PO.discPercent.subscribe(function (newValue) {
+                self.CalcDiscounts();
+            }, self)
+            self.PO.discAmount.subscribe(function (newValue) {
+                self.CalcDiscounts();
+            }, self)
+            self.PO.gstTotal.subscribe(function (newValue) {
+                self.CalcTotals();
+            }, self)
+
+            self.CopyOpenQtyToGRPOQty = function () {                
+                let i;
+                for (i = 0; i < self.PO.lines().length; i++) {
+                    var table = $('#ItemListTable').DataTable();
+                    self.PO.lines()[i].gRPOQty = self.PO.lines()[i].openQty;                   
+                    var TempRow = table.row(i).data();
+                    TempRow[5] = parseFloat(self.PO.lines()[i].gRPOQty).toFixed(3);
+                    table.row(i).data(TempRow).invalidate();
+                }
+            }
+            self.CalcTotals = function () {
+                var GrandTotal = 0;
+                if ( !isNaN(self.PO.netTotal()) && !isNaN(self.PO.discAmount()) && !isNaN(self.PO.gstTotal())) {
+                    GrandTotal = parseFloat(self.PO.netTotal()) - parseFloat(self.PO.discAmount()) + parseFloat(self.PO.gstTotal());
+
+                }
+                if (isNaN(GrandTotal)) {
+                    self.PO.grandTotal(0);
+                }
+                else {
+                    GrandTotal = parseFloat(GrandTotal).toFixed(2);
+                    self.PO.grandTotal(GrandTotal);
+                }
+
+            }
+            self.CalcDiscounts = function () {
+
+                if (self.PO.discByPercent() === "true") {
+
+                    var calculated = 0;
+                    if (!isNaN(self.PO.netTotal()) && !isNaN(self.PO.discPercent())) {
+                        calculated = self.PO.netTotal() * (self.PO.discPercent() / 100);
+                    }
+                    if (isNaN(calculated)) {
+                        self.PO.discAmount(0);
+                    }
+                    else {
+                        calculated = roundToTwo(calculated);
+                        self.PO.discAmount(calculated);
+                    }
+                }
+                else {
+
+                    var calculated = 0;
+                    if (!isNaN(self.PO.netTotal()) && !isNaN(self.PO.discAmount())) {
+
+                        calculated = (self.PO.discAmount() * 100) / self.PO.netTotal();
+                    }
+                    if (isNaN(calculated)) {
+                        self.PO.discPercent(0);
+                    }
+                    else {
+                        calculated = roundToTwo(calculated);
+                        self.PO.discPercent(calculated);
+                    }
+                }
+
+                self.CalcTotals();
+
+
+            }
+
+
+            if (!self.isCreating) {
+                    self.LoadSupplierBasedDropdowns(self.PO.cardCode);
+            }
+
+            var originalState = pO;
+
+
+
+
+            //Single POLine Object Setup
+            self.POLine = {
+                lineNum : ko.observable(),
+                itemCode : ko.observable(),
+                description : ko.observable(),
+                overwriteDescription: ko.observable(),
+                description2: ko.observable(),
+                description3: ko.observable(),
+                description4: ko.observable(),
+                description5: ko.observable(),
+                description6: ko.observable(),
+                serialNumber: ko.observable(),
+                qty: ko.observable(),
+                openQty: ko.observable(),
+                gRPOQty: ko.observable(),
+                location: ko.observable(),
+                locationText: '',
+                unitPrice: ko.observable(),
+                gstName : ko.observable(),
+                gst: '',
+            }
+           
+            //Single PONote Object Setup
+            self.PONote = {
+                lineNum: ko.observable(),
+                note: ko.observable(),
+            }
+            self.POLine.lineTotal = ko.computed(function () {
+                       
+                var calculated = parseFloat(self.POLine.qty()) * parseFloat(self.POLine.unitPrice());
+                if (isNaN(calculated)) {
+                    return 0;
+                }
+                else {
+                    return roundToTwo(calculated);
+                }
+            }, self) //Computed observable
+
+
+
+
+            // Add/Update/Delete PO Lines
+            self.validateAndAddline = function (form) {
+                if (!$(form).valid()) {
+                    $('#AddUpdateItemModal').scrollTop(0);
+                }
+                else {
+                    var lineNum = 0;
+                    if (self.PO.lines() !== null) {
+                        lineNum = self.PO.lines().length;
+                    }
+
+                    // Remove All li before submission, which he had in the previous validation
+                    $(form).find(".validation-summary-errors ul li").remove();
+                    $(form).find(".validation-summary-valid ul li").remove();
+                    var InputDescription = $(form).find("#Description:first").find("option:selected").text();
+                    var LocationText = $(form).find("#Location:first").find("option:selected").text();
+                    var GstValue = 0;
+                    for (var i = 0; i < self.TaxCodes.length; i++) {
+                        if (self.TaxCodes[i].Text === self.POLine.gstName()) {
+                            GstValue = self.TaxCodes[i].Value;
+                           
+                        }
+                    }
+                    var openQtyValue = 0;                     
+                    if (self.disableLineEdit()) {                         
+                        openQtyValue = self.POLine.openQty();
+                    }
+                    else {
+                        openQtyValue = self.POLine.qty();                                          
+                    }
+                   
+                    if (self.POLine.lineNum() === "") {
+                        self.PO.lines.push({
+                            lineNum: lineNum,
+                            itemCode: self.POLine.itemCode(),
+                            description: InputDescription,
+                            overwriteDescription: self.POLine.overwriteDescription(),
+                            description2: self.POLine.description2(),
+                            description3: self.POLine.description3(),
+                            description4: self.POLine.description4(),
+                            description5: self.POLine.description5(),
+                            description6: self.POLine.description6(),
+                            serialNumber: self.POLine.serialNumber(),
+                            qty: parseFloat(self.POLine.qty()).toFixed(3),
+                            openQty: parseFloat(openQtyValue).toFixed(3),
+                            gRPOQty: parseFloat(self.POLine.gRPOQty()).toFixed(3),
+                            location: self.POLine.location(),
+                            locationText: LocationText,
+                            unitPrice: parseFloat(self.POLine.unitPrice()).toFixed(4),
+                            gstName: self.POLine.gstName(),
+                            gst: GstValue,
+                            lineTotal: parseFloat(self.POLine.lineTotal()).toFixed(2),
+                        });
+                    }
+                    else {
+                        var LineIndex = parseInt(self.POLine.lineNum());
+
+                        self.PO.lines.replace(self.PO.lines()[LineIndex], {
+                            lineNum: self.POLine.lineNum(),
+                            itemCode: self.POLine.itemCode(),
+                            description: InputDescription,
+                            overwriteDescription: self.POLine.overwriteDescription(),
+                            description2: self.POLine.description2(),
+                            description3: self.POLine.description3(),
+                            description4: self.POLine.description4(),
+                            description5: self.POLine.description5(),
+                            description6: self.POLine.description6(),
+                            serialNumber: self.POLine.serialNumber(),
+                            qty: parseFloat(self.POLine.qty()).toFixed(3),
+                            openQty: parseFloat(openQtyValue).toFixed(3),
+                            gRPOQty: parseFloat(self.POLine.gRPOQty()).toFixed(3),
+                            location: self.POLine.location(),
+                            locationText: LocationText,
+                            unitPrice: parseFloat(self.POLine.unitPrice()).toFixed(4),
+                            gstName: self.POLine.gstName(),
+                            gst: GstValue,
+                            lineTotal: parseFloat(self.POLine.lineTotal()).toFixed(2),
+                        });
+                    }
+                }
+            }
+            self.editPOLine = function (rowid, data, event) {
+
+                var clickedRowId = parseInt(rowid);
+                if (clickedRowId < self.PO.lines().length) {
+                    self.POLine.lineNum(clickedRowId);
+
+                    self.isEditingLine = true;
+
+                    var itemcode = self.PO.lines()[clickedRowId].itemCode;
+                    $('#ItemCode').val(itemcode).trigger('change');
+
+                    self.POLine.itemCode(itemcode);
+                    self.POLine.description(itemcode);
+                    self.POLine.overwriteDescription(self.PO.lines()[clickedRowId].overwriteDescription);
+                    self.POLine.description2(self.PO.lines()[clickedRowId].description2);
+                    self.POLine.description3(self.PO.lines()[clickedRowId].description3);
+                    self.POLine.description4(self.PO.lines()[clickedRowId].description4);
+                    self.POLine.description5(self.PO.lines()[clickedRowId].description5);
+                    self.POLine.description6(self.PO.lines()[clickedRowId].description6);
+                    self.POLine.serialNumber(self.PO.lines()[clickedRowId].serialNumber);
+                    self.POLine.qty(parseFloat(self.PO.lines()[clickedRowId].qty).toFixed(3));
+                    self.POLine.openQty(parseFloat(self.PO.lines()[clickedRowId].openQty).toFixed(3));
+                    self.POLine.gRPOQty(parseFloat(self.PO.lines()[clickedRowId].gRPOQty).toFixed(3));
+
+                    var location = self.PO.lines()[clickedRowId].location;
+                    self.POLine.location(location);
+                    $('#Location').val(location).trigger('change');
+
+                    self.POLine.unitPrice(parseFloat(self.PO.lines()[clickedRowId].unitPrice).toFixed(4));
+                    var gstName = self.PO.lines()[clickedRowId].gstName;
+                    self.POLine.gstName(gstName);
+                    $('#GstName').val(gstName).trigger('change');
+                    
+                    if (self.disableLineEdit()) {
+                         
+                        if (self.PO.lines()[clickedRowId].openQty === 0)
+                            self.disableLineEditIndividual(true);
+                        else
+                            self.disableLineEditIndividual(false);
+                    }
+                    else
+                        self.disableLineEditIndividual(false);
+
+                    $('#AddUpdateItemModal').modal('show');
+                }
+            }
+            self.addPOLine = function () {
+                $('#AddUpdateItemModal').modal('show');
+                self.InitializePOLine();
+            }
+            self.deletePOLine = function (rowid, data, event) {
+                var clickedRowId = parseInt(rowid);
+
+                if (clickedRowId < self.PO.lines().length) {
+                    self.PO.lines.remove(self.PO.lines()[clickedRowId]);
+
+                }
+
+
+                var table = $('#ItemListTable').DataTable();
+
+                if (self.PO.lines().length > 0) {
+                    table.clear();
+
+                    var i;
+                    for (i = 0; i < self.PO.lines().length; i++) {
+                        var AddtionalRemarks = '';
+                        var defaultDescription = '-';
+                        if (self.PO.lines()[i].overwriteDescription === null) {
+                            defaultDescription = self.PO.lines()[i].description;
+                        }
+                        else if (self.PO.lines()[i].overwriteDescription === "") {
+                            defaultDescription = self.PO.lines()[i].description;
+                        }
+                        else {
+                            defaultDescription = self.PO.lines()[i].overwriteDescription;
+                        }
+                        if (self.PO.lines()[i].description2 !== null) {
+                            if (self.PO.lines()[i].description2 !== "") {
+                                AddtionalRemarks = AddtionalRemarks + self.PO.lines()[i].description2 + "<br/>"
+                            }
+                        }
+                        if (self.PO.lines()[i].description3 !== null) {
+                            if (self.PO.lines()[i].description3 !== "") {
+                                AddtionalRemarks = AddtionalRemarks + self.PO.lines()[i].description3 + "<br/>"
+                            }
+                        }
+                        if (self.PO.lines()[i].description4 !== null) {
+                            if (self.PO.lines()[i].description4 !== "") {
+                                AddtionalRemarks = AddtionalRemarks + self.PO.lines()[i].description4 + "<br/>"
+                            }
+                        }
+                        if (self.PO.lines()[i].description5 !== null) {
+                            if (self.PO.lines()[i].description5 !== "") {
+                                AddtionalRemarks = AddtionalRemarks + self.PO.lines()[i].description5 + "<br/>"
+                            }
+                        }
+                        if (self.PO.lines()[i].description6 !== null) {
+                            if (self.PO.lines()[i].description6 !== "") {
+                                AddtionalRemarks = AddtionalRemarks + self.PO.lines()[i].description6 + "<br/>"
+                            }
+                        }
+                        defaultDescription = defaultDescription + "<span data-toggle='popover' data-trigger='hover' data-placement='top' data-html='true' data-content='" + AddtionalRemarks + "' data-title='Additional Remarks'><i class='fa fa-fw fa-info-circle'></i></span>";
+
+
+
+                        var rowNode = table.row.add([
+                            i + 1,
+                            self.PO.lines()[i].itemCode,
+                            defaultDescription,
+                            self.PO.lines()[i].qty,
+                            self.PO.lines()[i].openQty,
+                            self.PO.lines()[i].gRPOQty,
+                            self.PO.lines()[i].locationText,
+                            self.PO.lines()[i].unitPrice,
+                            self.PO.lines()[i].gstName,
+                            self.PO.lines()[i].lineTotal,
+                            "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deletePOLine("
+                            + i + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                        ]).draw().node();
+                        $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editPOLine(" + i + ", data, event) } }");
+                        ko.applyBindings(self, rowNode);
+                    }
+                    table.columns.adjust().draw();
+                }
+                else {
+                    table.clear().draw();
+                }
+
+
+
+                ////Deletes Row from html table and by calling draw datatable will be redrawn
+                //var table = $('#ItemListTable').DataTable();
+                //table.row(clickedRowId).remove().draw();
+
+            }
+            self.InitializePOLine = function () {
+                self.POLine.lineNum('');
+                self.POLine.itemCode('');
+                self.POLine.description('');
+                self.POLine.overwriteDescription('');
+                self.POLine.description2('');
+                self.POLine.description3('');
+                self.POLine.description4('');
+                self.POLine.description5('');
+                self.POLine.description6('');
+                self.POLine.serialNumber('');
+                self.POLine.qty('');
+                self.POLine.openQty('0.000');
+                self.POLine.gRPOQty('0.000');
+                self.POLine.location('');
+                $('#Location').val('').trigger('change');
+                self.POLine.unitPrice('');
+
+            }
+            //Data Table operations
+            self.PO.lines.subscribe(function (changes) {
+
+
+                // Add Lines
+                if (changes[0].status === "deleted") {
+
+
+                }
+                else if (self.POLine.lineNum() === "") {
+                    var table = $('#ItemListTable').DataTable();
+
+                    var AddtionalRemarks = '';
+                    var defaultDescription = '-';
+                    if (changes[0].value.overwriteDescription === null) {
+                        defaultDescription = changes[0].value.description;
+                    }
+                    else if (changes[0].value.overwriteDescription === "") {
+                        defaultDescription = changes[0].value.description;
+                    }
+                    else {
+                        defaultDescription = changes[0].value.overwriteDescription;
+                    }
+                    if (changes[0].value.description2 !== null) {
+                        if (changes[0].value.description2 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description2 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description3 !== null) {
+                        if (changes[0].value.description3 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description3 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description4 !== null) {
+                        if (changes[0].value.description4 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description4 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description5 !== null) {
+                        if (changes[0].value.description5 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description5 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description6 !== null) {
+                        if (changes[0].value.description6 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description6 + "<br/>"
+                        }
+                    }
+                    defaultDescription = defaultDescription + "<span data-toggle='popover' data-trigger='hover' data-placement='top' data-html='true' data-content='" + AddtionalRemarks + "' data-title='Additional Remarks'><i class='fa fa-fw fa-info-circle'></i></span>";
+
+
+                    var rowNode = table.row.add([
+                        changes[0].index + 1,
+                        changes[0].value.itemCode,
+                        defaultDescription,
+                        changes[0].value.qty,
+                        changes[0].value.openQty,
+                        changes[0].value.gRPOQty,
+                        changes[0].value.locationText,
+                        changes[0].value.unitPrice,
+                        changes[0].value.gstName,
+                        changes[0].value.lineTotal,
+                        "<button type='button' class='btn btn-danger btn-xs' data-bind ='disable: disableLineEdit, event: { click: function(rowid, data, event) { deletePOLine("
+                        + changes[0].index + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                    ]).draw().node();
+                    $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editPOLine(" + changes[0].index + ", data, event) } }");
+                    table.columns.adjust().draw();
+                    ko.applyBindings(self, rowNode);
+                } //Update Lines
+                else {
+
+                    var table = $('#ItemListTable').DataTable();
+                    var LineIndex = parseInt(self.POLine.lineNum());
+
+
+                    var AddtionalRemarks = '';
+                    var defaultDescription = '-';
+                    if (changes[0].value.overwriteDescription === null) {
+                        defaultDescription = changes[0].value.description;
+                    }
+                    else if (changes[0].value.overwriteDescription === "") {
+                        defaultDescription = changes[0].value.description;
+                    }
+                    else {
+                        defaultDescription = changes[0].value.overwriteDescription;
+                    }
+                    if (changes[0].value.description2 !== null) {
+                        if (changes[0].value.description2 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description2 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description3 !== null) {
+                        if (changes[0].value.description3 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description3 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description4 !== null) {
+                        if (changes[0].value.description4 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description4 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description5 !== null) {
+                        if (changes[0].value.description5 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description5 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description6 !== null) {
+                        if (changes[0].value.description6 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description6 + "<br/>"
+                        }
+                    }
+                    defaultDescription = defaultDescription + "<span data-toggle='popover' data-trigger='hover' data-placement='top' data-html='true' data-content='" + AddtionalRemarks + "' data-title='Additional Remarks'><i class='fa fa-fw fa-info-circle'></i></span>";
+
+
+                    var rowNode = table.row(LineIndex).data([
+                        changes[0].index + 1,
+                        changes[0].value.itemCode,
+                        defaultDescription,
+                        changes[0].value.qty,
+                        changes[0].value.openQty,
+                        changes[0].value.gRPOQty,
+                        changes[0].value.locationText,
+                        changes[0].value.unitPrice,
+                        changes[0].value.gstName,
+                        changes[0].value.lineTotal,
+                        "<button type='button' class='btn btn-danger btn-xs' data-bind ='disable: disableLineEdit, event: { click: function(rowid, data, event) { deletePOLine("
+                        + changes[0].index + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                    ]).draw().node();
+
+                    table.columns.adjust().draw();
+                    ko.cleanNode(rowNode);
+                    ko.applyBindings(self, rowNode);
+                    //ko.applyBindings(POVM, rowNode);
+                }
+
+                $('#AddUpdateItemModal').modal('hide');
+
+            }, self, "arrayChange");
+
+            // Add/Update/Delete PO Notes
+            self.InitializePONote = function () {
+                self.PONote.lineNum('');
+                self.PONote.note('');
+            }
+            self.validateAndAddNote = function (form) {
+                if (!$(form).valid()) {
+
+                    $('#AddUpdateNoteModal').scrollTop(0);
+                }
+                else {
+
+                    var lineNum = 0;
+                    if (self.PO.noteLines() !== null) {
+                        lineNum = self.PO.noteLines().length;
+                    }
+
+                    if (self.PONote.lineNum() === "") {
+                        self.PO.noteLines.push({
+                            lineNum: lineNum,
+                            note: self.PONote.note(),
+                        });
+                    }
+                    else {
+
+                        var LineIndex = parseInt(self.PONote.lineNum());
+
+                        self.PO.noteLines.replace(self.PO.noteLines()[LineIndex], {
+                            lineNum: self.PONote.lineNum(),
+                            note: self.PONote.note(),
+                        });
+                    }
+                }
+            }
+            self.PO.noteLines.subscribe(function (changes) {
+
+                if (changes[0].status === "deleted") {
+
+
+                }
+                else if (self.PONote.lineNum() === "") {
+
+                    var table = $('#NoteListTable').DataTable();
+                    var rowNode = table.row.add([
+                        changes[0].index + 1,
+                        changes[0].value.note,
+                        "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deletePONote("
+                        + changes[0].index + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                    ]).draw().node();
+                    $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editPONote(" + changes[0].index + ", data, event) } }");
+                    ko.applyBindings(self, rowNode);
+                    table.columns.adjust().draw();
+                } //Update Lines
+                else {
+
+                    var table = $('#NoteListTable').DataTable();
+                    var LineIndex = parseInt(self.PONote.lineNum());
+                    var rowNode = table.row(LineIndex).data([
+                        changes[0].index + 1,
+                        changes[0].value.note,
+                        "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deletePONote("
+                        + changes[0].index + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                    ]).draw().node();
+
+                    table.columns.adjust().draw();
+                    ko.cleanNode(rowNode);
+                    ko.applyBindings(self, rowNode);
+
+                }
+
+
+                $('#AddUpdateNoteModal').modal('hide');
+
+            }, self, "arrayChange");
+            self.editPONote = function (rowid, data, event) {
+
+                var clickedRowId = parseInt(rowid);
+                if (clickedRowId < self.PO.noteLines().length) {
+                    self.PONote.lineNum(clickedRowId);
+                    self.PONote.note(self.PO.noteLines()[clickedRowId].note);
+
+                    //self.POLine.lineTotal(self.POLine.lineTotal); //Computed automatically
+                    $('#AddUpdateNoteModal').modal('show');
+                }
+            }
+            self.addPONote = function () {
+                $('#AddUpdateNoteModal').modal('show');
+                self.InitializePONote();
+            }
+            self.deletePONote= function (rowid, data, event) {
+                var clickedRowId = parseInt(rowid);
+
+                if (clickedRowId < self.PO.noteLines().length) {
+                    self.PO.noteLines.remove(self.PO.noteLines()[clickedRowId]);
+
+                }
+
+
+                var table = $('#NoteListTable').DataTable();
+
+                if (self.PO.noteLines().length > 0) {
+                    table.clear();
+
+                    var i;
+                    for (i = 0; i < self.PO.noteLines().length; i++) {
+
+                        var rowNode = table.row.add([
+                            i + 1,
+                            self.PO.noteLines()[i].note,
+                            "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deletePONote("
+                            + i + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                        ]).draw().node();
+                        $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editPONote(" + i + ", data, event) } }");
+                        ko.applyBindings(self, rowNode);
+                    }
+                    table.columns.adjust().draw();
+                }
+                else {
+                    table.clear().draw();
+                }
+
+
+
+
+
+            }
+            // Incase need use selection change function in dropdowns
+            //event: { change: function(data, event) { selectionChanged(data, event) }}
+            //self.selectionChanged = function(data, event) {
+            //    //if (event.shiftKey) {
+            //    //    //do something different when user has shift key down
+            //    //} else {
+            //    //    //do normal action
+            //    //}
+            //    var triggerName = event.target.id;
+            //    var val = $('#' + triggerName).val();
+            //    if (triggerName = "ItemCode") {
+            //        $('#Description').val(val).trigger('change');
+            //    }
+            //    else if (triggerName = "Description") {
+            //        $('#Description').val(val).trigger('change');
+            //    }
+            //}
+
+
+            // on Change of ItemCode - ItemName value will be selected
+            self.POLine.itemCode.subscribe(function (newValue) {
+                //self.POLine.description(newValue);
+                // Above statement is enough to trigger the change of selection in knockout
+                // because of select2 is used we have to use below statement to trigger the change of selection
+                $('#Description').val(newValue).trigger('change');
+                self.LoadItemDetails();
+            });
+
+            self.LoadItemDetails = function () {
+                if (self.POLine.itemCode() !== null) {
+                    var LocationStocktable = $('#LocationStock').DataTable();
+                    LocationStocktable.clear().draw();
+                    $.ajax({
+                        url: "@Url.Action("GetLocationStockQty", "Item", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ ItemCode: self.POLine.itemCode() }),
+                        success: function (data) {
+
+                            var LocStockLines = data;
+                            if (LocStockLines !== null) {
+
+                                for (var i = 0; i < LocStockLines.length; i++) {
+                                    LocationStocktable.row.add([
+                                        LocStockLines[i].WarhouseName,
+                                        parseFloat(LocStockLines[i].AvailableQty).toFixed(3),
+                                    ]).draw().node();
+                                }
+                                LocationStocktable.columns.adjust().draw();
+                            }
+
+                        },
+                        error: function () { }
+                    });
+
+                    var PriceHistorytable = $('#PriceHistory').DataTable();
+                    PriceHistorytable.clear().draw();
+                    $.ajax({
+                        url: "@Url.Action("GetPOLastPriceHistory", "PO", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ ItemCode: self.POLine.itemCode(), CardCode: self.PO.cardCode() }),
+                        success: function (data) {
+
+                            var PriceHistoryLines = data;
+                            if (PriceHistoryLines !== null) {
+
+                                for (var i = 0; i < PriceHistoryLines.length; i++) {
+                                    PriceHistorytable.row.add([
+                                        PriceHistoryLines[i].DocDate,
+                                        PriceHistoryLines[i].DocNum,
+                                        parseFloat(PriceHistoryLines[i].Qty).toFixed(3),
+                                        parseFloat(PriceHistoryLines[i].UnitPrice).toFixed(4),
+                                    ]).draw().node();
+                                }
+                                if (self.isEditingLine == false) {
+                                    PriceHistorytable.columns.adjust().draw();
+
+                                    if (PriceHistoryLines.length > 0) {
+                                        self.POLine.unitPrice(parseFloat(PriceHistoryLines[PriceHistoryLines.length - 1].UnitPrice).toFixed(4));
+                                    }
+                                    else {
+                                        self.POLine.unitPrice(parseFloat(0).toFixed(4));
+                                    }
+                                }
+                                else {
+                                    self.isEditingLine = false;
+                                }
+                            }
+                            else {
+                                if (self.isEditingLine == false) {
+                                    self.POLine.unitPrice(parseFloat(0).toFixed(4));
+                                }
+                                else {
+                                    self.isEditingLine = false;
+                                }
+                            }
+
+                        },
+                        error: function () { }
+                    });
+
+                    $.ajax({
+                        url: "@Url.Action("GetItemDefaultWhs", "Item", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ ItemCode: self.POLine.itemCode() }),
+                        success: function (data) {
+
+                            if (jQuery.type(self.POLine.location()) == "undefined") {
+                                let LocationCodeVal = data.DefaultWhs;
+                                $('#Location').val(LocationCodeVal).trigger('change');
+                            }
+                            else if (self.POLine.location()=='') {
+                                let LocationCodeVal = data.DefaultWhs;
+                                $('#Location').val(LocationCodeVal).trigger('change');                                
+                            }                           
+                        },
+                        error: function () { }
+                    });
+
+                      @*$.ajax({
+                            url: "@Url.Action("GetItemDetails", "Item", null)",
+                            type: 'post',
+                            contentType: 'application/x-www-form-urlencoded',
+                            data: ko.toJS({ ItemCode: self.POLine.itemCode() }),
+                            success: function (data) {
+
+                                //let DefaultTaxVal = data.DefaultTax;
+                                //$('#GstName').val(DefaultTaxVal).trigger('change');
+
+
+                                $('#GstName').val("SO").trigger('change');
+
+                            },
+                            error: function () { }
+                      });*@
+
+                    @*$.ajax({
+                            url: "@Url.Action("GetItemUnitPrice", "Item", null)",
+                            type: 'post',
+                            contentType: 'application/x-www-form-urlencoded',
+                            data: ko.toJS({ ItemCode: self.POLine.itemCode(), CardCode: self.PO.cardCode() }),
+                            success: function (data) {
+
+                                //let DefaultTaxVal = data.DefaultTax;
+                                //$('#GstName').val(DefaultTaxVal).trigger('change');                                                               
+                                self.POLine.unitPrice(parseFloat(data.UnitPrice).toFixed(4));
+
+                            },
+                            error: function () { }
+                      });*@
+
+                     $.ajax({
+                            url: "@Url.Action("GetChildItems", "Item", null)",
+                            type: 'post',
+                            contentType: 'application/x-www-form-urlencoded',
+                         data: ko.toJS({ ParentItemCode: self.POLine.itemCode() }),
+                            success: function (data) {                                 
+                                    self.ChildItemDetails(data);
+                            },
+                            error: function () { }
+                        });
+
+                }
+            }
+
+            // on Change of ItemName - ItemCode value will be selected
+            self.POLine.description.subscribe(function (newValue) {
+                //self.POLine.itemCode(newValue);
+                // Above statement is enough to trigger the change of selection in knockout
+                // because of select2 is used we have to use below statement to trigger the change of selection
+                $('#ItemCode').val(newValue).trigger('change');
+            });
+
+            // Initialize Add/Update PO Model to the Initial State of page loaded first
+            self.Initialize = function () { // Used to initialize Form
+
+                self.PO.cardCode(originalState.cardCode);
+                $('#CardCode').val(originalState.cardCode).trigger('change');
+                self.PO.cardName(originalState.cardName);
+                $('#CardName').val(originalState.cardName).trigger('change');
+                self.PO.currency(originalState.currency);
+                self.PO.officeTelNo(originalState.officeTelNo);
+                //self.PO.contactID(originalState.contactID);
+                //$('#ContactID').val(originalState.contactID).trigger('change');
+
+                self.PO.fax(originalState.fax);
+                self.PO.docDate(originalState.docDate);
+                self.PO.dueDate(originalState.dueDate);
+                self.PO.deliveryDate(originalState.deliveryDate);
+                self.PO.ref(originalState.ref);
+
+                self.PO.paymentTermName(originalState.paymentTermName);
+
+                self.PO.slpName(originalState.slpName);
+                self.PO.deliveryTime(originalState.deliveryTime);
+
+                self.PO.exRate(parseFloat(originalState.exRate).toFixed(6));
+                self.PO.headerRemarks1(originalState.headerRemarks1);
+                self.PO.headerRemarks2(originalState.headerRemarks2);
+                self.PO.headerRemarks3(originalState.headerRemarks3);
+                self.PO.headerRemarks4(originalState.headerRemarks4);
+                self.PO.footerRemarks1(originalState.footerRemarks1);
+                self.PO.footerRemarks2(originalState.footerRemarks2);
+                self.PO.footerRemarks3(originalState.footerRemarks3);
+                self.PO.footerRemarks4(originalState.footerRemarks4);
+                self.PO.billTo(originalState.billTo);
+                $('#BillTo').val(originalState.billTo).trigger('change');
+                self.PO.billToAddress1(originalState.billToAddress1);
+                self.PO.billToAddress2(originalState.billToAddress2);
+                self.PO.billToAddress3(originalState.billToAddress3);
+                self.PO.billToAddress4(originalState.billToAddress4);
+                self.PO.billToAddress5(originalState.billToAddress5);
+                self.PO.shipTo(originalState.shipTo);
+                $('#ShipTo').val(originalState.shipTo).trigger('change');
+
+                self.PO.shipToAddress1(originalState.shipToAddress1);
+                self.PO.shipToAddress2(originalState.shipToAddress2);
+                self.PO.shipToAddress3(originalState.shipToAddress3);
+                self.PO.shipToAddress4(originalState.shipToAddress4);
+                self.PO.shipToAddress5(originalState.shipToAddress5);
+
+                self.PO.selfCollect(originalState.selfCollect);
+                self.PO.selfCollectRemarks1(originalState.selfCollectRemarks1);
+                self.PO.selfCollectRemarks2(originalState.selfCollectRemarks2);
+                self.PO.selfCollectRemarks3(originalState.selfCollectRemarks3);
+                self.PO.selfCollectRemarks4(originalState.selfCollectRemarks4);
+                self.PO.selfCollectRemarks5(originalState.selfCollectRemarks5);
+
+                self.PO.discByPercent(originalState.discByPercent);
+                self.PO.discPercent(originalState.discPercent);
+                self.PO.discAmount(originalState.discAmount);
+                self.PO.grandTotal(originalState.grandTotal);
+                self.PO.currentUserIsNotInRoleNotes(originalState.currentUserIsNotInRoleNotes);
+
+
+                if (originalState.lines !== null) {
+                    //Original state lines are not nul
+                    self.PO.lines(originalState.lines);
+                }
+                else {
+                    //Original state lines are null
+
+                    self.PO.lines.removeAll();
+                }
+
+
+            }
+            
+            self.validateAndUpdateNotes = function () {
+                var form = $('form[id="POForm"]');
+
+                if (!$(form).valid()) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+                else {
+
+                    // Remove All li before submission, which he had in the previous validation
+                    $(form).find(".validation-summary-errors ul li").remove();
+                    $(form).find(".validation-summary-valid ul li").remove();
+
+                    self.PO.__RequestVerificationToken = $(form).find('input[name="__RequestVerificationToken"]').val();                   
+
+                    $.ajax({
+                        url: "@Url.Action("UpdateNotes", "PO", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS(self.PO),
+                        success: function (data)
+                        {
+                            self.successfulSave(form, data);
+                        },
+                        error: function ()
+                        {
+                            self.errorSave(form);
+                        }
+                    });
+                }
+            }
+
+            self.validateAndDuplicate = function () {
+                var form = $('form[id="POForm"]');
+
+                if (!$(form).valid()) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+                else {
+
+                    // Remove All li before submission, which he had in the previous validation
+                    $(form).find(".validation-summary-errors ul li").remove();
+                    $(form).find(".validation-summary-valid ul li").remove();
+
+                    self.PO.__RequestVerificationToken = $(form).find('input[name="__RequestVerificationToken"]').val();
+                    self.PO.docNum = "New";
+
+                    $.ajax({
+                        url: "@Url.Action("Add", "PO", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS(self.PO),
+                        success: function (data)
+                        {
+                            self.successfulDuplicate(form, data);
+                        },
+                        error: function ()
+                        {
+                            self.errorSave(form);
+                        }
+                    });
+                }
+            }
+            // PO Form Submission using Ajax
+            self.validateAndSubmit = function (form) {
+
+                //By Default this function will return false, so form submission will not happen
+                if (!$(form).valid()) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                }
+                else {
+
+
+
+                    // Remove All li before submission, which he had in the previous validation
+                    $(form).find(".validation-summary-errors ul li").remove();
+                    $(form).find(".validation-summary-valid ul li").remove();
+
+                    self.PO.__RequestVerificationToken = form[0].value;
+                    $.ajax({
+                        url: "@Url.Action("Add", "PO", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS(self.PO),
+                        success: function (data)
+                        {
+
+                            self.successfulSave(form, data);
+                        },
+                        error: function ()
+                        {
+                            self.errorSave(form);
+                        }
+                    });
+
+                }
+            }
+            self.successfulDuplicate = function (form, data) {
+                if (Boolean(data.IsModelValid) === true) {
+
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    $('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Success!</h4> Purchase Order ' + data.DocNum + ' Duplicated Successfully</div>')
+                        .prependTo($(form))
+                        .delay(5000)
+                        .slideUpAndRemove('slow');
+                } else {
+
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            }
+            self.removeDocID = function (URL) {
+                var res = URL.split("/");
+                res.pop();
+                URL = res.join("/") + "/"
+                return URL;
+            }
+            self.successfulSave = function (form, data) {
+                if (Boolean(data.IsModelValid) === true) {
+
+                    if (self.isCreating) {
+                        //self.Initialize();
+                        //var table = $('#ItemListTable').DataTable();
+                        //table.clear().draw();
+
+                        self.PO.docNum(data.DocNum);
+                        self.isCreating = false;
+
+                        URL = self.removeDocID(self.previewUrl());
+                        URL = URL + data.DocEntry;
+                        self.previewUrl(URL);
+
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        $('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Success!</h4> Purchase Order ' + data.DocNum + ' Saved Successfully</div>')
+                            .prependTo($(form))
+                            .delay(5000)
+                            .slideUpAndRemove('slow');
+                    } else {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        $('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Success!</h4> Purchase Order ' + self.PO.docNum() + ' Updated Successfully</div>')
+                            .prependTo($(form))
+                            .delay(5000)
+                            .slideUpAndRemove('slow');
+                    }
+
+
+                }
+                else {
+
+                    var ErrArray = data.ModelErrList;
+
+                        $(form).find(".validation-summary-errors ul li").remove(); // Remove All li if before Submission had client side errors
+                        $(form).find(".validation-summary-valid ul li").remove();  // Remove one li with diplay:none style if before Submission didn't had any client side errors
+
+                        for (var i = 0; i < data.ModelErrList.length; i++) {
+                            $(form).find(".validation-summary-errors ul").append("<li>" + ErrArray[i] + "</li>");
+                            $(form).find(".validation-summary-valid ul").append("<li>" + ErrArray[i] + "</li>");
+                        }
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+
+            }
+            self.errorSave = function (form) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                $('<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Alert!</h4><p>Sorry, Some thing went wrong, Please contact website adminitrator</p></div>')
+                    .prependTo($(form))
+                    .delay(5000)
+                    .slideUpAndRemove('slow');
+            }
+
+            // on Change of CardCode - CardName value will be selected
+            self.PO.cardCode.subscribe(function (newValue) {
+
+                //self.PO.cardName(newValue);
+                // Above statement is enough to trigger the change of selection in knockout
+                // because of select2 is used we have to use below statement to trigger the change of selection
+                $('#CardName').val(newValue).trigger('change');
+                //self.LoadCustomerDetails(newValue);
+                self.LoadSupplierBasedDropdowns(newValue);
+
+
+
+            });
+            self.PO.currency.subscribe(function (newValue) {
+
+                $.ajax({
+                        url: "@Url.Action("GetExchangeRate", "ExRate", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                    data: ko.toJS({ Currency: self.PO.currency(), DocDate: self.PO.docDate() }),
+                        success: function (data)
+                        {
+                            if (data == '') {
+                                self.PO.exRate(parseFloat(0).toFixed(6));
+                            }
+                            else {
+                                self.PO.exRate(parseFloat(data).toFixed(6));
+                            }
+                            
+                            
+                        },
+                        error: function ()
+                        {
+                           
+                        }
+                    });
+
+            });
+            self.PO.docDate.subscribe(function (newValue) {
+
+                $.ajax({
+                        url: "@Url.Action("GetExchangeRate", "ExRate", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                    data: ko.toJS({ Currency: self.PO.currency(), DocDate: self.PO.docDate() }),
+                        success: function (data)
+                        {
+                            if (data == '') {
+                                self.PO.exRate(parseFloat(0).toFixed(6));
+                            }
+                            else {
+                                self.PO.exRate(parseFloat(data).toFixed(6));
+                            }
+                           
+                        },
+                        error: function ()
+                        {
+                           
+                        }
+                    });
+
+            });
+
+            // on Change of CardName - CardCode value will be selected
+            self.PO.cardName.subscribe(function (newValue) {
+                //self.PO.cardCode(newValue);
+                // Above statement is enough to trigger the change of selection in knockout
+                // because of select2 is used we have to use below statement to trigger the change of selection
+                $('#CardCode').val(newValue).trigger('change');
+
+            });
+            self.PO.selfCollect.subscribe(function (newValue) {
+
+                if (newValue === false) {
+                    self.PO.selfCollectRemarks1('');
+                    self.PO.selfCollectRemarks2('');
+                    self.PO.selfCollectRemarks3('');
+                    self.PO.selfCollectRemarks4('');
+                    self.PO.selfCollectRemarks5('');
+                    self.isDisabledDelivereyDate(false);
+                }
+                else {
+                    self.PO.shipTo(null);
+                    $('#ShipTo').val(null).trigger('change');
+                    self.PO.shipToAddress1('');
+                    self.PO.shipToAddress2('');
+                    self.PO.shipToAddress3('');
+                    self.PO.shipToAddress4('');
+                    self.PO.shipToAddress5('');
+                    self.isDisabledDelivereyDate(true);
+                }
+
+            });
+            @*self.PO.contactID.subscribe(function (newValue) {
+                if (LoadingFinished === true) {
+                    $.ajax({
+                        url: "@Url.Action("GetContactPersonsTelephoneNo", "ContactPersons", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ ContactID: newValue }),
+                        success: function (data) {
+
+                            self.PO.contactTelNo(data.Tel1);
+
+                        },
+                        error: function () { }
+                    });
+                }
+            });*@
+            self.PO.billTo.subscribe(function (newValue) {
+                if (LoadingFinished === true) {
+                    $.ajax({
+                        url: "@Url.Action("GetCustomerBillingAddressDetails", "CustomerAddress", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ CardCode: self.PO.cardCode, AddressCode: newValue }),
+                        success: function (data) {
+
+                            self.PO.billToAddress1(data.Street);
+                            self.PO.billToAddress2(data.Block);
+                            self.PO.billToAddress3(data.City);
+                            self.PO.billToAddress4(data.County);
+                            self.PO.billToAddress5(data.StreetNo);
+
+                        },
+                        error: function () { }
+                    });
+                }
+            });
+            self.PO.shipTo.subscribe(function (newValue) {
+                if (LoadingFinished === true) {
+                    $.ajax({
+                        url: "@Url.Action("GetCustomerShippingAddressDetails", "CustomerAddress", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ CardCode: 'BM-SHIPTO', AddressCode: newValue }),
+                        success: function (data) {
+
+                            self.PO.shipToAddress1(data.Street);
+                            self.PO.shipToAddress2(data.Block);
+                            self.PO.shipToAddress3(data.City);
+                            self.PO.shipToAddress4(data.County);
+                            self.PO.shipToAddress5(data.StreetNo);
+                        },
+                        error: function () { }
+                    });
+                }
+            });
+
+        }
+
+
+
+
+        // Once Document Ready
+        $(function () {
+
+            var CustomerNameCodes;
+
+
+            var ItemCodesAndNames;
+            var LocationCodeAndNames;
+            var TaxCodes;
+            $.when(
+                // Initial Ajax Requests, while page loading
+                //Load Customers
+                $.ajax({
+                    url: "@Url.Action("GetActiveSuppliers", "Supplier", null)",
+                    type: 'get',
+                    contentType: 'application/x-www-form-urlencoded',
+                    success: function (data) {
+
+                        CustomerNameCodes = data;
+
+                        $("#CardCode").parent().parent().find('.overlay').hide();
+                        $("#CardName").parent().parent().find('.overlay').hide();
+                    },
+                    error: function () { }
+                }),
+                //Load Item Codes
+                $.ajax({
+                url: "@Url.Action("GetActiveItems", "Item", null)",
+                type: 'get',
+                contentType: 'application/x-www-form-urlencoded',
+                success: function (data) {
+
+                    ItemCodesAndNames = data;
+
+                    $("#ItemCode").parent().parent().find('.overlay').hide();
+                    $("#Description").parent().parent().find('.overlay').hide();
+                },
+                error: function () { }
+                }),
+                //Load Location Codes
+                $.ajax({
+                    url: "@Url.Action("GetWarehouses", "Location", null)",
+                    type: 'get',
+                    contentType: 'application/x-www-form-urlencoded',
+                    success: function (data) {
+
+                       LocationCodeAndNames = data;
+                        $("#Location").parent().parent().find('.overlay').hide();
+                    },
+                    error: function () { }
+                }),
+                $.ajax({
+                url: "@Url.Action("GetTaxCodes", "Tax", null)",
+                type: 'get',
+                contentType: 'application/x-www-form-urlencoded',
+                data: ko.toJS({ TaxType: "I" }),
+                success: function (data) {
+
+                    TaxCodes = data;
+                    $("#GstName").parent().parent().find('.overlay').hide();
+
+                },
+                error: function () { }
+                })
+
+            ).done(function () {
+                   //View Model Object Initialization
+                var POVM = new POViewModel(@Html.ViewModelToJson(Model));
+                POVM.CustomerNameCodes = CustomerNameCodes;
+
+
+                POVM.ItemCodesAndNames = ItemCodesAndNames;
+                POVM.LocationCodeAndNames = LocationCodeAndNames;
+                POVM.TaxCodes = TaxCodes;
+
+                ko.applyBindings(POVM);
+
+                    //Editing PO
+                    var ExisingPO = @Html.ViewModelToJson(Model);
+
+                    var PoLines = ExisingPO.lines;
+                if (PoLines !== null) {
+                    var polinetable = $('#ItemListTable').DataTable();
+                        for (var i = 0; i < PoLines.length; i++) {
+                            var defaultDescription = '-';
+                            var AddtionalRemarks = '';
+                            if (PoLines[i].overwriteDescription !== null) {
+                                defaultDescription = PoLines[i].overwriteDescription;
+                            }
+                            else {
+                                defaultDescription = PoLines[i].description;
+                            }
+                            if (PoLines[i].description2 !== null) {
+                                AddtionalRemarks = AddtionalRemarks + PoLines[i].description2 + "<br/>"
+                            }
+                            if (PoLines[i].description3 !== null) {
+                                AddtionalRemarks = AddtionalRemarks + PoLines[i].description3 + "<br/>"
+                            }
+                            if (PoLines[i].description4 !== null) {
+                                AddtionalRemarks = AddtionalRemarks + PoLines[i].description4 + "<br/>"
+                            }
+                            if (PoLines[i].description5 !== null) {
+                                AddtionalRemarks = AddtionalRemarks + PoLines[i].description5 + "<br/>"
+                            }
+                            if (PoLines[i].description6 !== null) {
+                                AddtionalRemarks = AddtionalRemarks + PoLines[i].description6
+                            }
+                            defaultDescription = defaultDescription + "<span data-toggle='popover' data-trigger='hover' data-placement='top' data-html='true' data-content='" + AddtionalRemarks + "' data-title='Additional Remarks'><i class='fa fa-fw fa-info-circle'></i></span>";
+
+                            var rowNode = polinetable.row.add([
+                                i + 1,
+                                PoLines[i].itemCode,
+                                defaultDescription,
+                                parseFloat(PoLines[i].qty).toFixed(3),
+                                parseFloat(PoLines[i].openQty).toFixed(3),
+                                parseFloat(PoLines[i].gRPOQty).toFixed(3),
+                                PoLines[i].locationText,
+                                parseFloat(PoLines[i].unitPrice).toFixed(4),
+                                PoLines[i].gstName,
+                                parseFloat(PoLines[i].lineTotal).toFixed(2),
+                                "<button type='button' class='btn btn-danger btn-xs' data-bind ='disable: disableLineEdit,event: { click: function(rowid, data, event) { deletePOLine("
+                                + i + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                            ]).draw().node();
+                            $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editPOLine(" + i + ", data, event) } }");
+
+                            ko.applyBindings(POVM, rowNode);
+                        }
+                    polinetable.columns.adjust().draw();
+
+                    }
+                var SqNoteLines = ExisingPO.noteLines;
+
+                if (SqNoteLines !== null) {
+                    if (jQuery.type(SqNoteLines) !== "undefined") {
+                        var sqnotetable = $('#NoteListTable').DataTable();
+                        for (var i = 0; i < SqNoteLines.length; i++) {
+
+                            var rowNode = sqnotetable.row.add([
+                                i + 1,
+                                SqNoteLines[i].note,
+                                "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deletePONote("
+                                + i + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                            ]).draw().node();
+                            $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editPONote(" + i + ", data, event) } }");
+
+                            ko.applyBindings(POVM, rowNode);
+                        }
+                        sqnotetable.columns.adjust().draw();
+                    }
+                }
+
+            });
+
+
+
+
+
+            $('.select2').select2();
+            $('.datepicker').datepicker({ format: 'dd/mm/yyyy', autoclose: true });
+            var table = $('#ItemListTable').DataTable(
+                {
+                    "columnDefs": [
+                        { className: "text-right", "targets": [3, 4, 5, 7, 9] }
+                    ]
+                }
+            );
+            var LocationStocktable = $('#LocationStock').DataTable({
+                "columnDefs": [
+                    { className: "text-right", "targets": [1] }
+                ]
+            });
+
+            var PriceHistorytable = $('#PriceHistory').DataTable(
+                {
+                    "columnDefs": [
+                        { className: "text-right", "targets": [2, 3] }
+                    ]
+                });
+
+            var NoteListTable = $('#NoteListTable').DataTable(
+                {
+
+                });
+
+
+
+
+
+            $('table.bmdatatable tbody').on('click', 'tr td button.btn-danger', function () {
+
+                table.row($(this).parents('tr')).remove().draw();
+                //if ($(this).parent().parent().hasClass('highlight')) {
+                //    $(this).parent().parent().removeClass('highlight');
+                //}
+                //else {
+                //    table.$('tr.highlight').removeClass('highlight');
+                //    $(this).parent().parent().addClass('highlight');
+                //}
+            });
+
+            // Datables Need to be re-drawn again if datatable intialised in hidden area(That is when we put datatables inside tabs)
+            // So here we are call draw to redraw table when each tabs become visible
+            $(document).on('shown.bs.modal', '#AddUpdateItemModal', function (event) {
+                var table = $('#PriceHistory').DataTable();
+                table.columns.adjust().draw();
+            });
+
+            $('body').popover({
+                selector: '[data-toggle="popover"]',
+                trigger: 'hover',
+                html: true,
+            });
+        });
+    </script>
+}

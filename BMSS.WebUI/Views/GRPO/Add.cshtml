@@ -1,0 +1,2167 @@
+﻿@using BMSS.WebUI.Models.GRPOViewModels
+@model GRPOViewModel
+@{
+
+    var isCreating = Model.DocNum == "New";
+    ViewBag.Title = (isCreating) ? "Add New Purchase Delivery Note" : "Edit Purchase Delivery Note #" + Model.DocNum;
+}
+@section Content_Header {
+    <section class="content-header">
+        <h1>
+            @ViewBag.Title
+            <small>Purchase Delivery Note</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i>Transactions</a></li>
+            <li class="active"><a href='@Url.Action("Index", "GRPO")'>Purchase Delivery Note</a></li>
+        </ol>
+    </section>
+}
+@section Styles {
+    @Styles.Render("~/DataTablesCss")
+    @Styles.Render("~/Select2Css")
+    @Styles.Render("~/DatePicker")
+}
+<div class="row" id="MainContent">
+    <div class="col-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">Purchase Delivery Note</h3>
+            </div>
+            @using (Html.BeginForm(null, null, null, FormMethod.Post, new { @id = "GRPOForm", @class = "form-horizontal", data_bind = "submit: validateAndSubmit" }))
+            {
+                @Html.ValidationSummary()
+                @Html.AntiForgeryToken()
+                <div class="box-body">
+
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.CardCode)
+                                @Html.DropDownListFor(x => x.CardCode, Enumerable.Empty<SelectListItem>(), null, new { @class = "form-control select2", data_bind = "options: SupplierNameCodes, optionsText: 'Value', optionsValue: 'Value', value: GRPO.cardCode ,optionsCaption: 'Select Supplier Code'" })
+                            </div>
+                            <div class="overlay">
+                                <i class="fa fa-refresh fa-spin text-gray"></i>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.DocNum)
+                                @Html.TextBoxFor(x => x.DocNum, new { @class = "form-control", disabled = "", data_bind = "value: GRPO.docNum" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PrintedStatus)
+                                @Html.TextBoxFor(x => x.PrintedStatus, new { @class = "form-control", disabled = "", data_bind = "value: GRPO.printedStatusName" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.Currency)
+                                @Html.TextBoxFor(x => x.Currency, new { @class = "form-control", disabled = "", data_bind = "value: GRPO.currency" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.CreatedBy)
+                                @Html.TextBoxFor(x => x.CreatedBy, new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.CardName)
+                                @Html.DropDownListFor(x => x.CardName, Enumerable.Empty<SelectListItem>(), null, new { @class = "form-control select2", data_bind = "options: SupplierNameCodes, optionsText: 'Text', optionsValue: 'Value', value: GRPO.cardName,optionsCaption: 'Select Company Name'" })
+                            </div>
+                            <div class="overlay">
+                                <i class="fa fa-refresh fa-spin text-gray"></i>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.DocDate)
+                                @Html.TextBoxFor(x => x.DocDate, new { @class = "form-control datepicker", data_bind = "value: GRPO.docDate" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.Status)
+                                @Html.TextBox("Status", Html.GetDocStatusName(Model.Status), new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.ExRate)
+                                @Html.TextBoxFor(x => x.ExRate, new { @class = "form-control", data_bind = "value: GRPO.exRate" })
+                            </div>                            
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.CreatedOn)
+                                @if (Model.CreatedOn.ToString("dd'/'MM'/'yyyy").Equals("01/01/0001"))
+                                {
+                                    @Html.TextBox("CreatedOnString", null, null, new { @class = "form-control", disabled = "" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(x => x.CreatedOn, "{0:dd'/'MM'/'yyyy HH:mm:ss tt}", new { @class = "form-control", disabled = "" })
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.OfficeTelNo)
+                                @Html.TextBoxFor(x => x.OfficeTelNo, new { @class = "form-control", data_bind = "value: GRPO.officeTelNo" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.DueDate)
+                                @Html.TextBoxFor(x => x.DueDate, new { @class = "form-control datepicker", data_bind = "value: GRPO.dueDate" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.CopiedPO)
+                                @Html.TextBoxFor(x => x.CopiedPO, new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PaymentTermName)
+                                @Html.TextBoxFor(x => x.PaymentTermName, new { @class = "form-control", data_bind = "value: GRPO.paymentTermName", disabled = "" })
+                            </div>
+                            
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.UpdatedBy)
+                                @Html.TextBoxFor(x => x.UpdatedBy, new { @class = "form-control", disabled = "" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.Fax)
+                                @Html.TextBoxFor(x => x.Fax, new { @class = "form-control", data_bind = "value: GRPO.fax" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.DeliveryDate)
+                                @Html.TextBoxFor(x => x.DeliveryDate, new { @class = "form-control datepicker", data_bind = "value: GRPO.deliveryDate, attr : {'disabled' : isDisabledDelivereyDate}" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PORNo)
+                                @Html.TextBoxFor(x => x.PORNo, new { @class = "form-control", data_bind = "value: GRPO.pORNo"})
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.SlpName)
+                                @Html.TextBoxFor(x => x.SlpName, new { @class = "form-control", data_bind = "value: GRPO.slpName", disabled = "" })
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.UpdatedOn)
+                                @if (Model.UpdatedOn.ToString("dd'/'MM'/'yyyy").Equals("01/01/0001"))
+                                {
+                                    @Html.TextBox("UpdatedOnString", null, null, new { @class = "form-control", disabled = "" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(x => x.UpdatedOn, "{0:dd'/'MM'/'yyyy HH:mm:ss tt}", new { @class = "form-control", disabled = "" })
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="nav-tabs-custom">
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item active"><a href="#tab_1" data-toggle="tab" class="nav-link active">Contents</a></li>
+                                    <li class="nav-item"><a href="#tab_2" data-toggle="tab" class="nav-link">Logistics</a></li>
+                                    <li class="nav-item"><a href="#tab_3" data-toggle="tab" class="nav-link">Notes</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="tab_1">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <button type="button" class="btn btn-primary float-right mr-1" data-bind="click: addGRPOLine">Add</button>
+                                            </div>
+                                        </div>
+
+                                        <table id="ItemListTable" class="table table-striped table-bordered responsive nowrap bmdatatable" data-fixed-header="true" data-auto-width="true" data-paging='false' data-searching="false" data-length-change="false" data-page-length="5" data-ordering="false" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Line No</th>
+                                                    <th>Stock Code</th>
+                                                    <th>Description</th>
+                                                    <th class="text-right">Qty</th>
+                                                    <th>Location</th>
+                                                    <th class="text-right">Unit Price</th>
+                                                    <th>GST</th>
+                                                    <th>Line Total</th>
+                                                    <th>Delete</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                                <div class="form-group">
+                                                    @Html.Label("Header Remarks")
+                                                    @Html.TextBoxFor(x => x.HeaderRemarks1, new { @class = "form-control", data_bind = "value: GRPO.headerRemarks1" })
+                                                </div>
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(x => x.HeaderRemarks2, new { @class = "form-control", data_bind = "value: GRPO.headerRemarks2" })
+                                                </div>
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(x => x.HeaderRemarks3, new { @class = "form-control", data_bind = "value: GRPO.headerRemarks3" })
+                                                </div>
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(x => x.HeaderRemarks4, new { @class = "form-control", data_bind = "value: GRPO.headerRemarks4" })
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                                <div class="form-group">
+                                                    @Html.Label("Footer Remarks")
+                                                    @Html.TextBoxFor(x => x.FooterRemarks1, new { @class = "form-control", data_bind = "value: GRPO.footerRemarks1" })
+                                                </div>
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(x => x.FooterRemarks2, new { @class = "form-control", data_bind = "value: GRPO.footerRemarks2" })
+                                                </div>
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(x => x.FooterRemarks3, new { @class = "form-control", data_bind = "value: GRPO.footerRemarks3" })
+                                                </div>
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(x => x.FooterRemarks4, new { @class = "form-control", data_bind = "value: GRPO.footerRemarks4" })
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                                <div class="form-group row">
+                                                    @Html.LabelFor(x => x.NetTotal, new { @class = "col-form-label col-4" })
+                                                    <div class="col-8">
+                                                        @Html.TextBoxFor(x => x.NetTotal, new { @class = "form-control", data_bind = "value: GRPO.netTotal", disabled = "", style = "text-align: right; " })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    @Html.LabelFor(x => x.DiscByPercent, new { @class = "col-form-label col-4" })
+                                                    <div class="col-4">
+                                                        Percentage @Html.RadioButtonFor(x => x.DiscByPercent, "true", new { data_bind = "checked: GRPO.discByPercent" })
+                                                    </div>
+                                                    <div class="col-4">
+                                                        Amount @Html.RadioButtonFor(x => x.DiscByPercent, "false", new { data_bind = "checked: GRPO.discByPercent" })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    @Html.LabelFor(x => x.DiscPercent, new { @class = "col-form-label col-4" })
+                                                    <div class="col-8">
+                                                        @Html.TextBoxFor(x => x.DiscPercent, new { @class = "form-control", data_bind = "textInput: GRPO.discPercent", style = "text-align: right; " })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    @Html.LabelFor(x => x.DiscAmount, new { @class = "col-form-label col-4" })
+                                                    <div class="col-8">
+                                                        @Html.TextBoxFor(x => x.DiscAmount, new { @class = "form-control", data_bind = "textInput: GRPO.discAmount", style = "text-align: right; " })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    @Html.LabelFor(x => x.GstTotal, new { @class = "col-form-label col-4" })
+                                                    <div class="col-8">
+                                                        @Html.TextBoxFor(x => x.GstTotal, new { @class = "form-control", data_bind = "value: GRPO.gstTotal", style = "text-align: right; ", disabled = "" })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    @Html.LabelFor(x => x.GrandTotal, new { @class = "col-form-label col-4" })
+                                                    <div class="col-8">
+                                                        @Html.TextBoxFor(x => x.GrandTotal, new { @class = "form-control", data_bind = "value: GRPO.grandTotal", style = "text-align: right; ", disabled = "" })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="tab_2">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.ShipTo)
+                                                            @Html.DropDownListFor(x => x.ShipTo, Enumerable.Empty<SelectListItem>(), null, new { @class = "form-control select2", style = "width:100%", data_bind = "options: SupplierShipToAddresses, optionsText: 'Text', optionsValue: 'Value', value: GRPO.shipTo,optionsCaption: 'Select Ship To'" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.ShipToAddress1)
+                                                            @Html.TextBoxFor(x => x.ShipToAddress1, new { @class = "form-control", data_bind = "value: GRPO.shipToAddress1" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.ShipToAddress2)
+                                                            @Html.TextBoxFor(x => x.ShipToAddress2, new { @class = "form-control", data_bind = "value: GRPO.shipToAddress2" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.ShipToAddress3)
+                                                            @Html.TextBoxFor(x => x.ShipToAddress3, new { @class = "form-control", data_bind = "value: GRPO.shipToAddress3" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.ShipToAddress4)
+                                                            @Html.TextBoxFor(x => x.ShipToAddress4, new { @class = "form-control", data_bind = "value: GRPO.shipToAddress4" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.ShipToAddress5)
+                                                            @Html.TextBoxFor(x => x.ShipToAddress5, new { @class = "form-control", data_bind = "value: GRPO.shipToAddress5" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.BillTo)
+                                                            @Html.DropDownListFor(x => x.BillTo, Enumerable.Empty<SelectListItem>(), null, new { @class = "form-control select2", style = "width:100%", data_bind = "options: SupplierBillToAddresses, optionsText: 'Text', optionsValue: 'Value', value: GRPO.billTo,optionsCaption: 'Select Bill To'" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.BillToAddress1)
+                                                            @Html.TextBoxFor(x => x.BillToAddress1, new { @class = "form-control", data_bind = "value: GRPO.billToAddress1" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.BillToAddress2)
+                                                            @Html.TextBoxFor(x => x.BillToAddress2, new { @class = "form-control", data_bind = "value: GRPO.billToAddress2" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.BillToAddress3)
+                                                            @Html.TextBoxFor(x => x.BillToAddress3, new { @class = "form-control", data_bind = "value: GRPO.billToAddress3" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.BillToAddress4)
+                                                            @Html.TextBoxFor(x => x.BillToAddress4, new { @class = "form-control", data_bind = "value: GRPO.billToAddress4" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.BillToAddress5)
+                                                            @Html.TextBoxFor(x => x.BillToAddress5, new { @class = "form-control", data_bind = "value: GRPO.billToAddress5" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.SelfCollect)
+                                                            @Html.CheckBoxFor(x => x.SelfCollect, new { data_bind = "checked: GRPO.selfCollect" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.SelfCollectRemarks1)
+                                                            @Html.TextBoxFor(x => x.SelfCollectRemarks1, new { @class = "form-control", data_bind = "value: GRPO.selfCollectRemarks1" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.SelfCollectRemarks2)
+                                                            @Html.TextBoxFor(x => x.SelfCollectRemarks2, new { @class = "form-control", data_bind = "value: GRPO.selfCollectRemarks2" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.SelfCollectRemarks3)
+                                                            @Html.TextBoxFor(x => x.SelfCollectRemarks3, new { @class = "form-control", data_bind = "value: GRPO.selfCollectRemarks3" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.SelfCollectRemarks4)
+                                                            @Html.TextBoxFor(x => x.SelfCollectRemarks4, new { @class = "form-control", data_bind = "value: GRPO.selfCollectRemarks4" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(x => x.SelfCollectRemarks5)
+                                                            @Html.TextBoxFor(x => x.SelfCollectRemarks5, new { @class = "form-control", data_bind = "value: GRPO.selfCollectRemarks5" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="tab_3">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <button type="button" class="btn btn-primary float-right mr-1" data-bind="click: addGRPONote">Add</button>
+                                            </div>
+                                        </div>
+                                        <table id="NoteListTable" class="table table-striped table-bordered responsive nowrap bmdatatable dblEdit" data-fixed-header="true" data-auto-width="false" data-paging='false' data-searching="false" data-length-change="false" data-page-length="5" data-ordering="false" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 10%;">Line No</th>
+                                                    <th style="width: 80%;">Note</th>
+                                                    <th style="width: 10%;">Delete</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+
+                    <Button type="submit" Class="btn btn-primary" data-bind="attr : {'disabled' : isDisabled}">Save</Button>
+                    <Button type="submit" Class="btn btn-primary" data-bind="click: validateAndUpdateNotes, attr : {'disabled' : GRPO.currentUserIsNotInRoleNotes}">Update Notes</Button>
+                    <a class="btn btn-primary" href="@Url.Action("Index")" role="button">Close w/o Saving</a>
+                    @*<a class="btn btn-primary" target="_blank" href="@Url.Action("GRPOViewer.aspx","WForms/", new { id = Model.DocEntry })" role="button">Print</a>*@
+                    <a class="btn btn-primary" target="_blank"  href="#" data-bind="click: printPreview" role="button">Print</a>
+                    <Button type="submit" Class="btn btn-primary" data-bind="click: validateAndSubmitToSAP, attr : {'disabled' : isDisabled}">Submit To SAP</Button>
+                    <Button type="submit" Class="btn btn-primary" data-bind="click: validateAndSubmitToSAP, attr : {'disabled' : isDisabledResubmit}">Re-Submit To SAP</Button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section BootModals {
+    @Html.Partial("_GRPOLineDetailModal", new GRPOLineViewModel() { });
+    @Html.Partial("_GRPONoteDetailModal", new GRPONoteViewModel() { });
+}
+@section Scripts {
+    @Scripts.Render("~/DataTables")
+    @Scripts.Render("~/bundles/Jquery-Validation-and-Ajax")
+    @Scripts.Render("~/Select2")
+    @Scripts.Render("~/DatePickerJS")
+    @Scripts.Render("~/Knockout")
+
+    <script>
+        function GRPOViewModel(dO) {
+            var self = this;
+            self.isCreating = dO.docNum == "New";
+            self.previewUrl = ko.observable('@Url.Action("GRPOViewer.aspx", "WForms/", new { id = Model.DocEntry })');
+            // Loaded from ajax - Observable Arrays
+            self.SupplierNameCodes = ko.observableArray();
+            self.SupplierContactPersons = ko.observableArray();
+            self.ChildItemDetails = ko.observableArray();
+
+            self.isDisabled = ko.observable(false);
+            self.isDisabledResubmit = ko.observable(true);
+            self.isDisabledDelivereyDate = ko.observable(false);
+
+            self.isEditingLine = false; // To prevent unit price change while clicking Edit line Button for the first time
+
+            self.ItemCodesAndNames = ko.observableArray();
+            self.LocationCodeAndNames = ko.observableArray();
+            self.TaxCodes = ko.observableArray();
+
+            self.SupplierShipToAddresses = ko.observableArray();
+            self.SupplierBillToAddresses = ko.observableArray();
+
+            var LoadingFinished = true;
+            if (!self.isCreating) {
+                LoadingFinished = false;
+            }
+
+            self.CopyDescToOwDesc = function () {
+                self.GRPOLine.overwriteDescription($('#AddUpdateItemModal').find("#Description:first").find("option:selected").text());
+            }
+
+            self.LoadSupplierBasedDropdowns = function (cardcode) {
+                    $.when(
+                    // Initial Ajax Requests, while page loading
+                    //Load Supplier's ContactPersons
+                    $.ajax({
+                        url: "@Url.Action("GetContactPersons", "ContactPersons", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ CardCode: cardcode }),
+                        success: function (data) {
+                            self.SupplierContactPersons(data);
+
+                        },
+                        error: function () { }
+                    }),
+                    //Load Shipping Addresses
+                    $.ajax({
+                        url: "@Url.Action("GetCustomerShippingAddresses", "CustomerAddress", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ CardCode: 'BM-SHIPTO' }),
+                        success: function (data) {
+
+                            self.SupplierShipToAddresses(data);
+
+                        },
+                        error: function () { }
+                    }),
+                    //Load Billing Addresses
+                    $.ajax({
+                        url: "@Url.Action("GetCustomerBillingAddresses", "CustomerAddress", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ CardCode: cardcode }),
+                        success: function (data) {
+
+                            self.SupplierBillToAddresses(data);
+                        },
+                        error: function () { }
+                    })
+                    ).done(function () {
+
+                            if (LoadingFinished === false) {
+
+
+                                self.GRPO.billTo(dO.billTo);
+                                $('#BillTo').val(dO.billTo).trigger('change');
+                                self.GRPO.shipTo(dO.shipTo);
+                                $('#ShipTo').val(dO.shipTo).trigger('change');
+
+
+                                 $.ajax({
+                                                url: "@Url.Action("GetSupplierDetails", "Supplier", null)",
+                                                type: 'post',
+                                                contentType: 'application/x-www-form-urlencoded',
+                                                    data: ko.toJS({ CardCode: cardcode }),
+                                success: function (data) {                                                                                                         
+                                                    $('#GstName').val(data.DefaultTaxGroup).trigger('change');                                                                                       
+                                                },
+                                                error: function () { }
+                                            });
+
+                                LoadingFinished = true;
+                            }
+                        else {
+                            $.ajax({
+                                                url: "@Url.Action("GetSupplierDetails", "Supplier", null)",
+                                                type: 'post',
+                                                contentType: 'application/x-www-form-urlencoded',
+                                                    data: ko.toJS({ CardCode: cardcode }),
+                                                success: function (data) {
+
+                                                    var PaymentTermsDays = parseInt(data.PaymentTermDays);
+                                                    self.GRPO.fax(data.Fax);
+                                                    self.GRPO.officeTelNo(data.OfficeTelNo);
+
+                                                    self.GRPO.currency(data.Currency);
+
+                                                    self.GRPO.paymentTermName(data.PymntGroup);
+                                                    self.GRPO.slpName(data.SlpName);
+
+
+                                                    let BillToDefVal = data.BillToDef;
+                                                    $('#BillTo').val("").trigger('change');
+                                                    $('#BillTo').val(BillToDefVal).trigger('change');
+
+                                                    let ShipToDefVal = data.ShipToDef;
+                                                    $('#ShipTo').val("").trigger('change');
+                                                    $('#ShipTo').val(ShipToDefVal).trigger('change');
+
+
+                                                    $('#GstName').val(data.DefaultTaxGroup).trigger('change');
+                                                    var DDate = self.GRPO.docDate();
+                                                    var DateParts = DDate.split("/");
+                                                    var dt = new Date(parseInt(DateParts[2], 10),
+                                                        parseInt(DateParts[1], 10) - 1,
+                                                        parseInt(DateParts[0], 10) + PaymentTermsDays);
+                                                    var dd = dt.getDate();
+                                                    var mm = dt.getMonth() + 1;
+
+                                                    var yyyy = dt.getFullYear();
+                                                    if (dd < 10) {
+                                                        dd = '0' + dd;
+                                                    }
+                                                    if (mm < 10) {
+                                                        mm = '0' + mm;
+                                                    }
+                                                    var FormattedDueDate = dd + '/' + mm + '/' + yyyy;
+
+                                                    self.GRPO.dueDate(FormattedDueDate);
+
+
+
+                                                },
+                                                error: function () { }
+                                            });
+                        }
+
+
+                });
+            };
+
+            // Model Binding
+            self.GRPO = {                
+                docNum: ko.observable(dO.docNum),
+                cardCode: ko.observable(dO.cardCode),
+                cardName: ko.observable(dO.cardName),
+                currency: ko.observable(dO.currency),
+                officeTelNo: ko.observable(dO.officeTelNo),
+                fax: ko.observable(dO.fax),
+                printedStatus: ko.observable(dO.printedStatus),
+                docDate: ko.observable(dO.docDate),
+                dueDate: ko.observable(dO.dueDate),
+                deliveryDate: ko.observable(dO.deliveryDate),
+                poNo: ko.observable(dO.poNo),
+                exRate: ko.observable(parseFloat(dO.exRate).toFixed(6)),
+                paymentTermName: ko.observable(dO.paymentTermName),
+                slpName: ko.observable(dO.slpName),
+                pORNo: ko.observable(dO.pORNo),
+                headerRemarks1: ko.observable(dO.headerRemarks1),
+                headerRemarks2: ko.observable(dO.headerRemarks2),
+                headerRemarks3: ko.observable(dO.headerRemarks3),
+                headerRemarks4: ko.observable(dO.headerRemarks4),
+                footerRemarks1: ko.observable(dO.footerRemarks1),
+                footerRemarks2: ko.observable(dO.footerRemarks2),
+                footerRemarks3: ko.observable(dO.footerRemarks3),
+                footerRemarks4: ko.observable(dO.footerRemarks4),
+                billTo: ko.observable(dO.billTo),
+                billToAddress1: ko.observable(dO.billToAddress1),
+                billToAddress2: ko.observable(dO.billToAddress2),
+                billToAddress3: ko.observable(dO.billToAddress3),
+                billToAddress4: ko.observable(dO.billToAddress4),
+                billToAddress5: ko.observable(dO.billToAddress5),
+
+                shipTo: ko.observable(dO.shipTo),
+                shipToAddress1: ko.observable(dO.shipToAddress1),
+                shipToAddress2: ko.observable(dO.shipToAddress2),
+                shipToAddress3: ko.observable(dO.shipToAddress3),
+                shipToAddress4: ko.observable(dO.shipToAddress4),
+                shipToAddress5: ko.observable(dO.shipToAddress5),
+
+                selfCollect: ko.observable(dO.selfCollect),
+                selfCollectRemarks1: ko.observable(dO.selfCollectRemarks1),
+                selfCollectRemarks2: ko.observable(dO.selfCollectRemarks2),
+                selfCollectRemarks3: ko.observable(dO.selfCollectRemarks3),
+                selfCollectRemarks4: ko.observable(dO.selfCollectRemarks4),
+                selfCollectRemarks5: ko.observable(dO.selfCollectRemarks5),
+
+                discByPercent: ko.observable(dO.discByPercent),
+                discPercent: ko.observable(dO.discPercent),
+                discAmount: ko.observable(dO.discAmount),                
+                grandTotal: ko.observable(parseFloat(dO.grandTotal).toFixed(2)),
+                submittedToSAP: ko.observable(dO.submittedToSAP),
+                syncedToSAP: ko.observable(dO.syncedToSAP),
+                syncStatus: ko.observable(dO.syncStatus),
+                currentUserIsNotInRoleNotes: ko.observable(dO.currentUserIsNotInRoleNotes),
+                lines: ko.observableArray(dO.lines),
+                noteLines: ko.observableArray(dO.noteLines),
+
+
+            }
+
+            if (dO.printedStatus === 0) {
+                self.GRPO.printedStatusName = ko.observable('Not Printed');
+            }
+            else {
+                self.GRPO.printedStatusName = ko.observable('Printed');
+            }
+            self.GRPO.printedStatus.subscribe(function (newValue) {
+                if (newValue === 0)
+                    self.GRPO.printedStatusName('Not Printed');
+                else
+                    self.GRPO.printedStatusName('Printed');
+            })
+            self.printPreview = function () {
+              
+                $.ajax({
+                url: "@Url.Action("CanPrint", "GRPO", null)",
+                type: 'post',
+                contentType: 'application/x-www-form-urlencoded',
+                data: ko.toJS({ DocEntry: @Model.DocEntry }),
+                success: function (data)
+                {
+                    if (data.canAccess) {                       
+                        self.GRPO.printedStatus(1);
+                        window.open(self.previewUrl(), '_blank');       
+                    }
+                    else {                        
+                        let form = $('form[id="GRPOForm"]');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        $('<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Alert!</h4><p>Access denied</p></div>')
+                            .prependTo($(form))
+                            .delay(5000)
+                            .slideUpAndRemove('slow');   
+                    }
+                            
+                },
+                error: function ()
+                {
+                             
+                }
+                });
+            }
+
+
+            self.isDisabled(self.GRPO.submittedToSAP());
+            if (self.isDisabled() === false) {
+                self.isDisabled(self.GRPO.syncedToSAP());
+            }
+            if (self.GRPO.syncStatus() == 3) { // Sync Failed
+                self.isDisabledResubmit(false);
+                if (self.isDisabled() === false) {
+                    self.isDisabled(true);
+                }
+            }
+            else {
+                self.isDisabledResubmit(true);
+
+            }
+            //Total Calculation
+            self.GRPO.netTotal = ko.computed(function () {
+
+                 
+                var calculated = 0;
+                if (self.GRPO.lines() !== null) {
+                    for (var i = 0; i < self.GRPO.lines().length; i++) {
+                        calculated = calculated + parseFloat(self.GRPO.lines()[i].lineTotal);
+                    }
+                }
+                if (isNaN(calculated)) {
+                    return 0;
+                }
+                else {
+                    return roundToTwo(calculated);
+                }
+            }, self) //Computed observable
+            self.GRPO.gstTotal = ko.computed(function () {
+                var calculated = 0;
+                var discAmt = 0;
+                var disperc = 0;
+                disperc = self.GRPO.discPercent();
+                if (isNaN(disperc)) {
+                    disperc = 0
+                }
+                if (self.GRPO.lines() !== null) {
+                    let lines = ko.toJS(self.GRPO.lines());
+                    let groupedLines = groupBy(lines, 'gstName');
+
+                    Object.keys(groupedLines).forEach(key => {
+                        let lineGroupTotal = 0;
+                        for (var i = 0; i < groupedLines[key].length; i++) {
+                            if (disperc > 0) {
+                                discAmt = parseFloat(groupedLines[key][i].lineTotal) * parseFloat(disperc) / 100;
+                            }
+                            lineGroupTotal = parseFloat(roundToTwo(lineGroupTotal + parseFloat(roundToTwo((parseFloat(groupedLines[key][i].lineTotal) - discAmt)))));
+                        }
+                        calculated = calculated + (parseFloat(lineGroupTotal) * (parseFloat(groupedLines[key][0].gst) / 100));
+                    }); 
+                }
+               
+                if (isNaN(calculated)) {
+                    return 0;
+                }              
+                else {
+                    return roundToTwo(calculated);
+                }
+            }, self) //Computed observable
+            self.GRPO.netTotal.subscribe(function (newValue) {
+                self.CalcDiscounts();
+            }, self)
+            self.GRPO.discPercent.subscribe(function (newValue) {
+                self.CalcDiscounts();
+            }, self)
+            self.GRPO.discAmount.subscribe(function (newValue) {
+                self.CalcDiscounts();
+            }, self)
+            self.GRPO.gstTotal.subscribe(function (newValue) {
+                self.CalcTotals();
+            }, self)
+
+            self.CalcTotals = function () {
+
+                
+
+                var GrandTotal = 0;
+                if (!isNaN(self.GRPO.netTotal()) && !isNaN(self.GRPO.discAmount()) && !isNaN(self.GRPO.gstTotal())) {
+                    GrandTotal = parseFloat(self.GRPO.netTotal()) - parseFloat(self.GRPO.discAmount()) + parseFloat(self.GRPO.gstTotal());
+
+                }
+                 
+                if (isNaN(GrandTotal)) {
+                    self.GRPO.grandTotal(0);
+                }
+                else {
+                    GrandTotal = parseFloat(GrandTotal).toFixed(2);
+                    self.GRPO.grandTotal(GrandTotal);
+                }
+
+            }
+            self.CalcDiscounts = function () {
+
+                if (self.GRPO.discByPercent() === "true") {
+
+                    var calculated = 0;
+                    if (!isNaN(self.GRPO.netTotal()) && !isNaN(self.GRPO.discPercent())) {
+                        calculated = self.GRPO.netTotal() * (self.GRPO.discPercent() / 100);
+                    }
+                    if (isNaN(calculated)) {
+                        self.GRPO.discAmount(0);
+                    }
+                    else {
+                        calculated = roundToTwo(calculated);
+                        self.GRPO.discAmount(calculated);
+                    }
+                }
+                else {
+
+                    var calculated = 0;
+                    if (!isNaN(self.GRPO.netTotal()) && !isNaN(self.GRPO.discAmount())) {
+
+                        calculated = (self.GRPO.discAmount() * 100) / self.GRPO.netTotal();
+                    }
+                    if (isNaN(calculated)) {
+                        self.GRPO.discPercent(0);
+                    }
+                    else {
+                        calculated = roundToTwo(calculated);
+                        self.GRPO.discPercent(calculated);
+                    }
+                }
+
+                self.CalcTotals();
+
+
+            }
+
+            if (!self.isCreating) {
+                self.LoadSupplierBasedDropdowns(self.GRPO.cardCode);
+            }
+
+            var originalState = dO;
+
+            //Single GRPOLine Object Setup
+            self.GRPOLine = {
+                lineNum: ko.observable(),
+                itemCode: ko.observable(),
+                description: ko.observable(),
+                overwriteDescription: ko.observable(),
+                description2: ko.observable(),
+                description3: ko.observable(),
+                description4: ko.observable(),
+                description5: ko.observable(),
+                description6: ko.observable(),
+                serialNumber: ko.observable(),
+                qty: ko.observable(),
+                location: ko.observable(),
+                locationText: '',
+                unitPrice: ko.observable(),
+                gstName: ko.observable(),
+                gst: '',
+            }
+            //Single GRPONote Object Setup
+            self.GRPONote = {
+                lineNum: ko.observable(),
+                note: ko.observable(),
+            }
+            self.GRPOLine.lineTotal = ko.computed(function () {
+                var calculated = parseFloat(self.GRPOLine.qty()) * parseFloat(self.GRPOLine.unitPrice());
+                if (isNaN(calculated)) {
+                    return 0;
+                }
+                else {
+                    return roundToTwo(calculated);
+                }
+            }, self) //Computed observable
+
+
+            // Add/Update/Delete GRPO Lines
+            self.validateAndAddline = function (form) {
+                if (!$(form).valid()) {
+                    $('#AddUpdateItemModal').scrollTop(0);
+                }
+                else {
+                    var lineNum = 0;
+                    if (self.GRPO.lines() !== null) {
+                        lineNum = self.GRPO.lines().length;
+                    }
+
+                    // Remove All li before submission, which he had in the previous validation
+                    $(form).find(".validation-summary-errors ul li").remove();
+                    $(form).find(".validation-summary-valid ul li").remove();
+                    var InputDescription = $(form).find("#Description:first").find("option:selected").text();
+                    var LocationText = $(form).find("#Location:first").find("option:selected").text();
+                    var GstValue = 0;
+                    for (var i = 0; i < self.TaxCodes.length; i++) {
+                        if (self.TaxCodes[i].Text === self.GRPOLine.gstName()) {
+                            GstValue = self.TaxCodes[i].Value;                            
+                        }
+                    }
+
+                    if (self.GRPOLine.lineNum() === "") {
+                        self.GRPO.lines.push({
+                            lineNum: lineNum,
+                            itemCode: self.GRPOLine.itemCode(),
+                            description: InputDescription,
+                            overwriteDescription: self.GRPOLine.overwriteDescription(),
+                            description2: self.GRPOLine.description2(),
+                            description3: self.GRPOLine.description3(),
+                            description4: self.GRPOLine.description4(),
+                            description5: self.GRPOLine.description5(),
+                            description6: self.GRPOLine.description6(),
+                            serialNumber: self.GRPOLine.serialNumber(),
+                            qty: parseFloat(self.GRPOLine.qty()).toFixed(3),
+                            location: self.GRPOLine.location(),
+                            locationText: LocationText,
+                            unitPrice: parseFloat(self.GRPOLine.unitPrice()).toFixed(4),
+                            gstName: self.GRPOLine.gstName(),
+                            gst: GstValue,
+                            lineTotal: parseFloat(self.GRPOLine.lineTotal()).toFixed(2),
+                        });
+                    }
+                    else {
+                        var LineIndex = parseInt(self.GRPOLine.lineNum());
+
+                        self.GRPO.lines.replace(self.GRPO.lines()[LineIndex], {
+                            lineNum: self.GRPOLine.lineNum(),
+                            itemCode: self.GRPOLine.itemCode(),
+                            description: InputDescription,
+                            overwriteDescription: self.GRPOLine.overwriteDescription(),
+                            description2: self.GRPOLine.description2(),
+                            description3: self.GRPOLine.description3(),
+                            description4: self.GRPOLine.description4(),
+                            description5: self.GRPOLine.description5(),
+                            description6: self.GRPOLine.description6(),
+                            serialNumber: self.GRPOLine.serialNumber(),
+                            qty: parseFloat(self.GRPOLine.qty()).toFixed(3),
+                            location: self.GRPOLine.location(),
+                            locationText: LocationText,
+                            unitPrice: parseFloat(self.GRPOLine.unitPrice()).toFixed(4),
+                            gstName: self.GRPOLine.gstName(),
+                            gst: GstValue,
+                            lineTotal: parseFloat(self.GRPOLine.lineTotal()).toFixed(2),
+                        });
+                    }
+                }
+            }
+            self.editGRPOLine = function (rowid, data, event) {
+
+                var clickedRowId = parseInt(rowid);
+                if (clickedRowId < self.GRPO.lines().length) {
+                    self.GRPOLine.lineNum(clickedRowId);
+
+                     self.isEditingLine = true;
+
+                    var itemcode = self.GRPO.lines()[clickedRowId].itemCode;
+                    $('#ItemCode').val(itemcode).trigger('change');
+
+                    self.GRPOLine.itemCode(itemcode);
+                    self.GRPOLine.description(itemcode);
+                    self.GRPOLine.overwriteDescription(self.GRPO.lines()[clickedRowId].overwriteDescription);
+                    self.GRPOLine.description2(self.GRPO.lines()[clickedRowId].description2);
+                    self.GRPOLine.description3(self.GRPO.lines()[clickedRowId].description3);
+                    self.GRPOLine.description4(self.GRPO.lines()[clickedRowId].description4);
+                    self.GRPOLine.description5(self.GRPO.lines()[clickedRowId].description5);
+                    self.GRPOLine.description6(self.GRPO.lines()[clickedRowId].description6);
+                    self.GRPOLine.serialNumber(self.GRPO.lines()[clickedRowId].serialNumber);
+                    self.GRPOLine.qty(self.GRPO.lines()[clickedRowId].qty);
+
+                    var location = self.GRPO.lines()[clickedRowId].location;
+                    self.GRPOLine.location(location);
+                    $('#Location').val(location).trigger('change');
+
+                    self.GRPOLine.unitPrice(self.GRPO.lines()[clickedRowId].unitPrice);
+                    var gstName = self.GRPO.lines()[clickedRowId].gstName;
+                    self.GRPOLine.gstName(gstName);
+                    $('#GstName').val(gstName).trigger('change');
+
+                    //self.GRPOLine.lineTotal(self.GRPOLine.lineTotal); //Computed automatically
+                    $('#AddUpdateItemModal').modal('show');
+                }
+            }
+            self.addGRPOLine = function () {
+                $('#AddUpdateItemModal').modal('show');
+                self.InitializeGRPOLine();
+            }
+            self.deleteGRPOLine = function (rowid, data, event) {
+                var clickedRowId = parseInt(rowid);
+
+                if (clickedRowId < self.GRPO.lines().length) {
+                    self.GRPO.lines.remove(self.GRPO.lines()[clickedRowId]);
+
+                }
+
+
+                var table = $('#ItemListTable').DataTable();
+
+                if (self.GRPO.lines().length > 0) {
+                    table.clear();
+
+                    var i;
+                    for (i = 0; i < self.GRPO.lines().length; i++) {
+                        var AddtionalRemarks = '';
+                        var defaultDescription = '-';
+                        if (self.GRPO.lines()[i].overwriteDescription === null) {
+                            defaultDescription = self.GRPO.lines()[i].description;
+                        }
+                        else if (self.GRPO.lines()[i].overwriteDescription === "") {
+                            defaultDescription = self.GRPO.lines()[i].description;
+                        }
+                        else {
+                            defaultDescription = self.GRPO.lines()[i].overwriteDescription;
+                        }
+                        if (self.GRPO.lines()[i].description2 !== null) {
+                            if (self.GRPO.lines()[i].description2 !== "") {
+                                AddtionalRemarks = AddtionalRemarks + self.GRPO.lines()[i].description2 + "<br/>"
+                            }
+                        }
+                        if (self.GRPO.lines()[i].description3 !== null) {
+                            if (self.GRPO.lines()[i].description3 !== "") {
+                                AddtionalRemarks = AddtionalRemarks + self.GRPO.lines()[i].description3 + "<br/>"
+                            }
+                        }
+                        if (self.GRPO.lines()[i].description4 !== null) {
+                            if (self.GRPO.lines()[i].description4 !== "") {
+                                AddtionalRemarks = AddtionalRemarks + self.GRPO.lines()[i].description4 + "<br/>"
+                            }
+                        }
+                        if (self.GRPO.lines()[i].description5 !== null) {
+                            if (self.GRPO.lines()[i].description5 !== "") {
+                                AddtionalRemarks = AddtionalRemarks + self.GRPO.lines()[i].description5 + "<br/>"
+                            }
+                        }
+                        if (self.GRPO.lines()[i].description6 !== null) {
+                            if (self.GRPO.lines()[i].description6 !== "") {
+                                AddtionalRemarks = AddtionalRemarks + self.GRPO.lines()[i].description6 + "<br/>"
+                            }
+                        }
+                        defaultDescription = defaultDescription + "<span data-toggle='popover' data-trigger='hover' data-placement='top' data-html='true' data-content='" + AddtionalRemarks + "' data-title='Additional Remarks'><i class='fa fa-fw fa-info-circle'></i></span>";
+
+
+                        var rowNode = table.row.add([
+                            i + 1,
+                            self.GRPO.lines()[i].itemCode,
+                            defaultDescription,
+                            self.GRPO.lines()[i].qty,
+                            self.GRPO.lines()[i].locationText,
+                            self.GRPO.lines()[i].unitPrice,
+                            self.GRPO.lines()[i].gstName,
+                            self.GRPO.lines()[i].lineTotal,
+                            "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteGRPOLine("
+                            + i + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                        ]).draw().node();
+                        $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editGRPOLine(" + i + ", data, event) } }");
+                        ko.applyBindings(self, rowNode);
+                    }
+
+                }
+                else {
+                    table.clear().draw();
+                }
+
+
+
+                ////Deletes Row from html table and by calling draw datatable will be redrawn
+                //var table = $('#ItemListTable').DataTable();
+                //table.row(clickedRowId).remove().draw();
+
+            }
+            self.InitializeGRPOLine = function () {
+                self.GRPOLine.lineNum('');
+                self.GRPOLine.itemCode('');
+                self.GRPOLine.description('');
+                self.GRPOLine.overwriteDescription('');
+                self.GRPOLine.description2('');
+                self.GRPOLine.description3('');
+                self.GRPOLine.description4('');
+                self.GRPOLine.description5('');
+                self.GRPOLine.description6('');
+                self.GRPOLine.serialNumber('');
+                self.GRPOLine.qty('');
+                self.GRPOLine.location('');
+                $('#Location').val('').trigger('change');
+                self.GRPOLine.unitPrice('');
+                //self.GRPOLine.gstName('');
+                //$('#GstName').val('').trigger('change');
+            }
+            //Data Table operations
+            self.GRPO.lines.subscribe(function (changes) {
+
+
+                // Add Lines
+                if (changes[0].status === "deleted") {
+
+
+                }
+                else if (self.GRPOLine.lineNum() === "") {
+                    var table = $('#ItemListTable').DataTable();
+                    var AddtionalRemarks = '';
+                    var defaultDescription = '-';
+                    if (changes[0].value.overwriteDescription === null) {
+                        defaultDescription = changes[0].value.description;
+                    }
+                    else if (changes[0].value.overwriteDescription === "") {
+                        defaultDescription = changes[0].value.description;
+                    }
+                    else {
+                        defaultDescription = changes[0].value.overwriteDescription;
+                    }
+                    if (changes[0].value.description2 !== null) {
+                        if (changes[0].value.description2 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description2 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description3 !== null) {
+                        if (changes[0].value.description3 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description3 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description4 !== null) {
+                        if (changes[0].value.description4 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description4 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description5 !== null) {
+                        if (changes[0].value.description5 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description5 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description6 !== null) {
+                        if (changes[0].value.description6 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description6 + "<br/>"
+                        }
+                    }
+                    defaultDescription = defaultDescription + "<span data-toggle='popover' data-trigger='hover' data-placement='top' data-html='true' data-content='" + AddtionalRemarks + "' data-title='Additional Remarks'><i class='fa fa-fw fa-info-circle'></i></span>";
+
+
+                    var rowNode = table.row.add([
+                        changes[0].index + 1,
+                        changes[0].value.itemCode,
+                        defaultDescription,
+                        changes[0].value.qty,
+                        changes[0].value.locationText,
+                        changes[0].value.unitPrice,
+                        changes[0].value.gstName,
+                        changes[0].value.lineTotal,
+                        "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteGRPOLine("
+                        + changes[0].index + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                    ]).draw().node();
+                    $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editGRPOLine(" + changes[0].index + ", data, event) } }");
+
+                    ko.applyBindings(self, rowNode);
+                } //Update Lines
+                else {
+
+                    var table = $('#ItemListTable').DataTable();
+                    var LineIndex = parseInt(self.GRPOLine.lineNum());
+                    var AddtionalRemarks = '';
+                    var defaultDescription = '-';
+                    if (changes[0].value.overwriteDescription === null) {
+                        defaultDescription = changes[0].value.description;
+                    }
+                    else if (changes[0].value.overwriteDescription === "") {
+                        defaultDescription = changes[0].value.description;
+                    }
+                    else {
+                        defaultDescription = changes[0].value.overwriteDescription;
+                    }
+                    if (changes[0].value.description2 !== null) {
+                        if (changes[0].value.description2 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description2 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description3 !== null) {
+                        if (changes[0].value.description3 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description3 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description4 !== null) {
+                        if (changes[0].value.description4 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description4 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description5 !== null) {
+                        if (changes[0].value.description5 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description5 + "<br/>"
+                        }
+                    }
+                    if (changes[0].value.description6 !== null) {
+                        if (changes[0].value.description6 !== "") {
+                            AddtionalRemarks = AddtionalRemarks + changes[0].value.description6 + "<br/>"
+                        }
+                    }
+                    defaultDescription = defaultDescription + "<span data-toggle='popover' data-trigger='hover' data-placement='top' data-html='true' data-content='" + AddtionalRemarks + "' data-title='Additional Remarks'><i class='fa fa-fw fa-info-circle'></i></span>";
+
+
+                    var rowNode = table.row(LineIndex).data([
+                        changes[0].index + 1,
+                        changes[0].value.itemCode,
+                        defaultDescription,
+                        changes[0].value.qty,
+                        changes[0].value.locationText,
+                        changes[0].value.unitPrice,
+                        changes[0].value.gstName,
+                        changes[0].value.lineTotal,
+                        "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteGRPOLine("
+                        + changes[0].index + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                    ]).draw().node();
+
+                    table.columns.adjust().draw();
+                    ko.cleanNode(rowNode);
+                    ko.applyBindings(self, rowNode);
+                    //ko.applyBindings(GRPOVM, rowNode);
+                }
+
+                $('#AddUpdateItemModal').modal('hide');
+
+            }, self, "arrayChange");
+
+
+
+            // Add/Update/Delete GRPO Notes
+            self.InitializeGRPONote = function () {
+                self.GRPONote.lineNum('');
+                self.GRPONote.note('');
+            }
+            self.validateAndAddNote = function (form) {
+                if (!$(form).valid()) {
+
+                    $('#AddUpdateNoteModal').scrollTop(0);
+                }
+                else {
+
+                    var lineNum = 0;
+                    if (self.GRPO.noteLines() !== null) {
+                        lineNum = self.GRPO.noteLines().length;
+                    }
+
+                    if (self.GRPONote.lineNum() === "") {
+                        self.GRPO.noteLines.push({
+                            lineNum: lineNum,
+                            note: self.GRPONote.note(),
+                        });
+                    }
+                    else {
+
+                        var LineIndex = parseInt(self.GRPONote.lineNum());
+
+                        self.GRPO.noteLines.replace(self.GRPO.noteLines()[LineIndex], {
+                            lineNum: self.GRPONote.lineNum(),
+                            note: self.GRPONote.note(),
+                        });
+                    }
+                }
+            }
+            self.GRPO.noteLines.subscribe(function (changes) {
+
+                if (changes[0].status === "deleted") {
+
+
+                }
+                else if (self.GRPONote.lineNum() === "") {
+
+                    var table = $('#NoteListTable').DataTable();
+                    var rowNode = table.row.add([
+                        changes[0].index + 1,
+                        changes[0].value.note,
+                        "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteGRPONote("
+                        + changes[0].index + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                    ]).draw().node();
+                    $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editGRPONote(" + changes[0].index + ", data, event) } }");
+                    ko.applyBindings(self, rowNode);
+                } //Update Lines
+                else {
+
+                    var table = $('#NoteListTable').DataTable();
+                    var LineIndex = parseInt(self.GRPONote.lineNum());
+                    var rowNode = table.row(LineIndex).data([
+                        changes[0].index + 1,
+                        changes[0].value.note,
+                        "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteGRPONote("
+                        + changes[0].index + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                    ]).draw().node();
+
+                    table.columns.adjust().draw();
+                    ko.cleanNode(rowNode);
+                    ko.applyBindings(self, rowNode);
+                }
+
+
+                $('#AddUpdateNoteModal').modal('hide');
+
+            }, self, "arrayChange");
+            self.editGRPONote = function (rowid, data, event) {
+
+                var clickedRowId = parseInt(rowid);
+                if (clickedRowId < self.GRPO.noteLines().length) {
+                    self.GRPONote.lineNum(clickedRowId);
+                    self.GRPONote.note(self.GRPO.noteLines()[clickedRowId].note);
+
+                    //self.GRPOLine.lineTotal(self.GRPOLine.lineTotal); //Computed automatically
+                    $('#AddUpdateNoteModal').modal('show');
+                }
+            }
+            self.addGRPONote = function () {
+                $('#AddUpdateNoteModal').modal('show');
+                self.InitializeGRPONote();
+            }
+            self.deleteGRPONote = function (rowid, data, event) {
+                var clickedRowId = parseInt(rowid);
+
+                if (clickedRowId < self.GRPO.noteLines().length) {
+                    self.GRPO.noteLines.remove(self.GRPO.noteLines()[clickedRowId]);
+
+                }
+
+
+                var table = $('#NoteListTable').DataTable();
+
+                if (self.GRPO.noteLines().length > 0) {
+                    table.clear();
+
+                    var i;
+                    for (i = 0; i < self.GRPO.noteLines().length; i++) {
+
+                        var rowNode = table.row.add([
+                            i + 1,
+                            self.GRPO.noteLines()[i].note,
+                            "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteGRPONote("
+                            + i + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                        ]).draw().node();
+                        $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editGRPONote(" + i + ", data, event) } }");
+                        ko.applyBindings(self, rowNode);
+                    }
+
+                }
+                else {
+                    table.clear().draw();
+                }
+
+
+
+
+
+            }
+
+
+
+             // on Change of ItemCode - ItemName value will be selected
+            self.GRPOLine.itemCode.subscribe(function (newValue) {
+                //self.GRPOLine.description(newValue);
+                // Above statement is enough to trigger the change of selection in knockout
+                // because of select2 is used we have to use below statement to trigger the change of selection
+                $('#Description').val(newValue).trigger('change');
+                self.LoadItemDetails();
+            });
+
+            self.LoadItemDetails = function () {
+                if (self.GRPOLine.itemCode() !== null) {
+                    var LocationStocktable = $('#LocationStock').DataTable();
+                    LocationStocktable.clear().draw();
+                    $.ajax({
+                        url: "@Url.Action("GetLocationStockQty", "Item", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ ItemCode: self.GRPOLine.itemCode() }),
+                        success: function (data) {
+
+                            var LocStockLines = data;
+                            if (LocStockLines !== null) {
+
+                                for (var i = 0; i < LocStockLines.length; i++) {
+                                    LocationStocktable.row.add([
+                                        LocStockLines[i].WarhouseName,
+                                        parseFloat(LocStockLines[i].AvailableQty).toFixed(3),
+                                    ]).draw().node();
+                                }
+                            }
+
+                        },
+                        error: function () { }
+                    });
+
+                    var PriceHistorytable = $('#PriceHistory').DataTable();
+                    PriceHistorytable.clear().draw();
+                    $.ajax({
+                        url: "@Url.Action("GetGRPOLastPriceHistory", "GRPO", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ ItemCode: self.GRPOLine.itemCode() }),
+                        success: function (data) {
+
+                            var PriceHistoryLines = data;
+                            if (PriceHistoryLines !== null) {
+
+                                for (var i = 0; i < PriceHistoryLines.length; i++) {
+                                    PriceHistorytable.row.add([
+                                        PriceHistoryLines[i].DocDate,
+                                        PriceHistoryLines[i].DocNum,
+                                        parseFloat(PriceHistoryLines[i].Qty).toFixed(3),
+                                        parseFloat(PriceHistoryLines[i].UnitPrice).toFixed(4),
+                                    ]).draw().node();
+                                }
+                            }
+
+                        },
+                        error: function () { }
+                    });
+
+                    $.ajax({
+                        url: "@Url.Action("GetItemDefaultWhs", "Item", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ ItemCode: self.GRPOLine.itemCode() }),
+                        success: function (data) {
+
+                            if (jQuery.type(self.GRPOLine.location()) == "undefined") {
+                                let LocationCodeVal = data.DefaultWhs;
+                                $('#Location').val(LocationCodeVal).trigger('change');
+                            }
+                            else if (self.GRPOLine.location() == '') {
+                                let LocationCodeVal = data.DefaultWhs;
+                                $('#Location').val(LocationCodeVal).trigger('change');
+                            }     
+                            
+                        },
+                        error: function () { }
+                    });
+
+                      @*$.ajax({
+                            url: "@Url.Action("GetItemDetails", "Item", null)",
+                            type: 'post',
+                            contentType: 'application/x-www-form-urlencoded',
+                            data: ko.toJS({ ItemCode: self.GRPOLine.itemCode() }),
+                            success: function (data) {
+
+                                let DefaultTaxVal = data.DefaultTax;
+                                $('#GstName').val(DefaultTaxVal).trigger('change');
+
+                            },
+                            error: function () { }
+                      });*@
+
+                    if (self.isEditingLine == false) {
+                        $.ajax({
+                                url: "@Url.Action("GetItemUnitPrice", "Item", null)",
+                                type: 'post',
+                                contentType: 'application/x-www-form-urlencoded',
+                            data: ko.toJS({ ItemCode: self.GRPOLine.itemCode(), CardCode: self.GRPO.cardCode() }),
+                                success: function (data) {
+                                                                                       
+                                        self.GRPOLine.unitPrice(parseFloat(data.UnitPrice).toFixed(4));                               
+                                },
+                                error: function () { }
+                        });
+                    }
+                    else {
+                        self.isEditingLine = false;
+                    }
+                    $.ajax({
+                            url: "@Url.Action("GetChildItems", "Item", null)",
+                            type: 'post',
+                            contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ ParentItemCode: self.GRPOLine.itemCode() }),
+                            success: function (data) {                                 
+                                    self.ChildItemDetails(data);
+                            },
+                            error: function () { }
+                        });
+                }
+            }
+
+            // on Change of ItemName - ItemCode value will be selected
+            self.GRPOLine.description.subscribe(function (newValue) {
+                //self.GRPOLine.itemCode(newValue);
+                // Above statement is enough to trigger the change of selection in knockout
+                // because of select2 is used we have to use below statement to trigger the change of selection
+                $('#ItemCode').val(newValue).trigger('change');
+            });
+
+            // Initialize Add/Update GRPO Model to the Initial State of page loaded first
+            self.Initialize = function () { // Used to initialize Form
+
+                self.GRPO.cardCode(originalState.cardCode);
+                $('#CardCode').val(originalState.cardCode).trigger('change');
+                self.GRPO.cardName(originalState.cardName);
+                $('#CardName').val(originalState.cardName).trigger('change');
+                self.GRPO.currency(originalState.currency);
+                self.GRPO.officeTelNo(originalState.officeTelNo);
+
+
+                self.GRPO.fax(originalState.fax);
+                self.GRPO.docDate(originalState.docDate);
+                self.GRPO.dueDate(originalState.dueDate);
+                self.GRPO.deliveryDate(originalState.deliveryDate);
+                self.GRPO.poNo(originalState.poNo);
+
+                self.GRPO.paymentTermName(originalState.paymentTermName);
+
+
+                self.GRPO.slpName(originalState.slpName);
+                self.GRPO.pORNo(originalState.pORNo);
+
+                self.GRPO.exRate(parseFloat(originalState.exRate).toFixed(6));
+                self.GRPO.headerRemarks1(originalState.headerRemarks1);
+                self.GRPO.headerRemarks2(originalState.headerRemarks2);
+                self.GRPO.headerRemarks3(originalState.headerRemarks3);
+                self.GRPO.headerRemarks4(originalState.footerRemarks4);
+                self.GRPO.footerRemarks1(originalState.footerRemarks1);
+                self.GRPO.footerRemarks2(originalState.footerRemarks2);
+                self.GRPO.footerRemarks3(originalState.footerRemarks3);
+                self.GRPO.footerRemarks4(originalState.footerRemarks4);
+                self.GRPO.billTo(originalState.billTo);
+                $('#BillTo').val(originalState.billTo).trigger('change');
+                self.GRPO.billToAddress1(originalState.billToAddress1);
+                self.GRPO.billToAddress2(originalState.billToAddress2);
+                self.GRPO.billToAddress3(originalState.billToAddress3);
+                self.GRPO.billToAddress4(originalState.billToAddress4);
+                self.GRPO.billToAddress5(originalState.billToAddress5);
+
+                self.GRPO.shipTo(originalState.shipTo);
+                $('#ShipTo').val(originalState.shipTo).trigger('change');
+                self.GRPO.shipToAddress1(originalState.shipToAddress1);
+                self.GRPO.shipToAddress2(originalState.shipToAddress2);
+                self.GRPO.shipToAddress3(originalState.shipToAddress3);
+                self.GRPO.shipToAddress4(originalState.shipToAddress4);
+                self.GRPO.shipToAddress5(originalState.shipToAddress5);
+
+                self.GRPO.selfCollect(originalState.selfCollect);
+                self.GRPO.selfCollectRemarks1(originalState.selfCollectRemarks1);
+                self.GRPO.selfCollectRemarks2(originalState.selfCollectRemarks2);
+                self.GRPO.selfCollectRemarks3(originalState.selfCollectRemarks3);
+                self.GRPO.selfCollectRemarks4(originalState.selfCollectRemarks4);
+                self.GRPO.selfCollectRemarks5(originalState.selfCollectRemarks5);
+
+                self.GRPO.discByPercent(originalState.discByPercent);
+                self.GRPO.discPercent(originalState.discPercent);
+                self.GRPO.discAmount(originalState.discAmount);
+                self.GRPO.grandTotal(originalState.grandTotal);
+                self.GRPO.currentUserIsNotInRoleNotes(originalState.currentUserIsNotInRoleNotes);
+
+
+                if (originalState.lines !== null) {
+                    //Original state lines are not nul
+                    self.GRPO.lines(originalState.lines);
+                }
+                else {
+                    //Original state lines are null
+
+                    self.GRPO.lines.removeAll();
+                }
+
+
+            }
+ 
+
+            self.validateAndSubmitToSAP = function () {
+                var form = $('form[id="GRPOForm"]');
+
+                if (!$(form).valid()) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+                else {
+
+                    // Remove All li before submission, which he had in the previous validation
+                    $(form).find(".validation-summary-errors ul li").remove();
+                    $(form).find(".validation-summary-valid ul li").remove();
+
+                    self.GRPO.__RequestVerificationToken = $(form).find('input[name="__RequestVerificationToken"]').val();
+                    self.GRPO.submittedToSAP(true);
+
+                    $.ajax({
+                        url: "@Url.Action("Add", "GRPO", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS(self.GRPO),
+                        success: function (data)
+                        {
+                            self.successfulSave(form, data);
+                        },
+                        error: function ()
+                        {
+                            self.errorSave(form);
+                        }
+                    });
+                }
+            }
+            // GRPO Form Submission using Ajax
+            self.validateAndSubmit = function (form) {
+
+                //By Default this function will return false, so form submission will not happen
+                if (!$(form).valid()) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                }
+                else {
+
+                    // Remove All li before submission, which he had in the previous validation
+                    $(form).find(".validation-summary-errors ul li").remove();
+                    $(form).find(".validation-summary-valid ul li").remove();
+
+                    self.GRPO.__RequestVerificationToken = form[0].value;
+                    $.ajax({
+                        url: "@Url.Action("Add", "GRPO", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS(self.GRPO),
+                        success: function (data)
+                        {
+                            self.successfulSave(form, data);
+                        },
+                        error: function ()
+                        {
+                            self.errorSave(form);
+                        }
+                    });
+
+                }
+            }
+            self.validateAndUpdateNotes = function () {
+                 var form = $('form[id="GRPOForm"]');
+
+                if (!$(form).valid()) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+                else {
+
+                    // Remove All li before submission, which he had in the previous validation
+                    $(form).find(".validation-summary-errors ul li").remove();
+                    $(form).find(".validation-summary-valid ul li").remove();
+
+                    self.GRPO.__RequestVerificationToken = $(form).find('input[name="__RequestVerificationToken"]').val();                   
+
+                    $.ajax({
+                        url: "@Url.Action("UpdateNotes", "GRPO", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS(self.GRPO),
+                        success: function (data)
+                        {
+                            self.successfulSave(form, data);
+                        },
+                        error: function ()
+                        {
+                            self.errorSave(form);
+                        }
+                    });
+                }
+            }
+            self.removeDocID = function (URL) {
+                var res = URL.split("/");
+                res.pop();
+                URL = res.join("/") + "/"
+                return URL;
+            }
+
+            self.successfulSave = function (form, data) {
+                if (Boolean(data.IsModelValid) === true) {
+
+                    if (self.isCreating) {
+                        //self.Initialize();
+                        //var table = $('#ItemListTable').DataTable();
+                        //table.clear().draw();
+
+                        self.GRPO.docNum(data.DocNum);
+                        self.isCreating = false;
+
+                        URL = self.removeDocID(self.previewUrl());
+                        URL = URL + data.DocEntry;
+                        self.previewUrl(URL);
+
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        $('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Success!</h4> Purchase Delivery Note ' + data.DocNum + ' Saved Successfully</div>')
+                            .prependTo($(form))
+                            .delay(5000)
+                            .slideUpAndRemove('slow');
+
+                    } else {
+                        if (self.GRPO.submittedToSAP()) {
+                            self.isDisabled(self.GRPO.submittedToSAP());
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                            $('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Success!</h4> Purchase Delivery Note ' + self.GRPO.docNum() + ' Updated Successfully</div>')
+                                .prependTo($(form))
+                                .delay(5000)
+                                .slideUpAndRemove('slow');
+                        }
+                        else {
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                            $('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Success!</h4> Purchase Delivery Note ' + self.GRPO.docNum() + ' Updated Successfully</div>')
+                                .prependTo($(form))
+                                .delay(5000)
+                                .slideUpAndRemove('slow');
+                        }
+
+                    }
+
+
+                }
+                else {
+
+                    var ErrArray = data.ModelErrList;
+
+                        $(form).find(".validation-summary-errors ul li").remove(); // Remove All li if before Submission had client side errors
+                        $(form).find(".validation-summary-valid ul li").remove();  // Remove one li with diplay:none style if before Submission didn't had any client side errors
+
+                        for (var i = 0; i < data.ModelErrList.length; i++) {
+                            $(form).find(".validation-summary-errors ul").append("<li>" + ErrArray[i] + "</li>");
+                            $(form).find(".validation-summary-valid ul").append("<li>" + ErrArray[i] + "</li>");
+                        }
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+
+            }
+            self.errorSave = function (form) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                $('<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Alert!</h4><p>Sorry, Some thing went wrong, Please contact website adminitrator</p></div>')
+                    .prependTo($(form))
+                    .delay(5000)
+                    .slideUpAndRemove('slow');
+            }
+
+            // on Change of CardCode - CardName value will be selected
+            self.GRPO.cardCode.subscribe(function (newValue) {
+
+                //self.GRPO.cardName(newValue);
+                // Above statement is enough to trigger the change of selection in knockout
+                // because of select2 is used we have to use below statement to trigger the change of selection
+                $('#CardName').val(newValue).trigger('change');
+                //self.LoadSupplierDetails(newValue);
+                self.LoadSupplierBasedDropdowns(newValue);
+            });
+            self.GRPO.currency.subscribe(function (newValue) {
+
+                $.ajax({
+                        url: "@Url.Action("GetExchangeRate", "ExRate", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                    data: ko.toJS({ Currency: self.GRPO.currency(), DocDate: self.GRPO.docDate() }),
+                        success: function (data)
+                        {
+                            if (data == '') {
+                                self.GRPO.exRate(parseFloat(0).toFixed(6));
+                            }
+                            else {
+                                self.GRPO.exRate(parseFloat(data).toFixed(6));
+                            }
+                            
+                            
+                        },
+                        error: function ()
+                        {
+                           
+                        }
+                    });
+
+            });
+            self.GRPO.docDate.subscribe(function (newValue) {
+
+                $.ajax({
+                        url: "@Url.Action("GetExchangeRate", "ExRate", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                    data: ko.toJS({ Currency: self.GRPO.currency(), DocDate: self.GRPO.docDate() }),
+                        success: function (data)
+                        {
+                            if (data == '') {
+                                self.GRPO.exRate(parseFloat(0).toFixed(6));
+                            }
+                            else {
+                                self.GRPO.exRate(parseFloat(data).toFixed(6));
+                            }
+                           
+                        },
+                        error: function ()
+                        {
+                           
+                        }
+                });
+
+                                  $.ajax({
+                                                url: "@Url.Action("GetSupplierDetails", "Supplier", null)",
+                                                type: 'post',
+                                                contentType: 'application/x-www-form-urlencoded',
+                                                data: ko.toJS({ CardCode: self.GRPO.cardCode() }),
+                                                success: function (data) {
+
+                                                    var PaymentTermsDays = parseInt(data.PaymentTermDays);
+                                                     
+                                                    var DDate = self.GRPO.docDate();
+                                                    var DateParts = DDate.split("/");
+                                                    var dt = new Date(parseInt(DateParts[2], 10),
+                                                        parseInt(DateParts[1], 10) - 1,
+                                                        parseInt(DateParts[0], 10) + PaymentTermsDays);
+                                                    var dd = dt.getDate();
+                                                    var mm = dt.getMonth() + 1;
+
+                                                    var yyyy = dt.getFullYear();
+                                                    if (dd < 10) {
+                                                        dd = '0' + dd;
+                                                    }
+                                                    if (mm < 10) {
+                                                        mm = '0' + mm;
+                                                    }
+                                                    var FormattedDueDate = dd + '/' + mm + '/' + yyyy;
+
+                                                    self.GRPO.dueDate(FormattedDueDate);
+
+
+
+                                                },
+                                                error: function () { }
+                                            });
+
+            });
+
+            self.GRPO.selfCollect.subscribe(function (newValue) {
+
+                if (newValue === false) {
+                    self.GRPO.selfCollectRemarks1('');
+                    self.GRPO.selfCollectRemarks2('');
+                    self.GRPO.selfCollectRemarks3('');
+                    self.GRPO.selfCollectRemarks4('');
+                    self.GRPO.selfCollectRemarks5('');
+                    self.isDisabledDelivereyDate(false);
+                }
+                else {
+                    self.GRPO.shipTo(null);
+                    $('#ShipTo').val(null).trigger('change');
+                    self.GRPO.shipToAddress1('');
+                    self.GRPO.shipToAddress2('');
+                    self.GRPO.shipToAddress3('');
+                    self.GRPO.shipToAddress4('');
+                    self.GRPO.shipToAddress5('');
+                    self.isDisabledDelivereyDate(true);
+                }
+
+            });
+            // on Change of CardName - CardCode value will be selected
+            self.GRPO.cardName.subscribe(function (newValue) {
+                //self.GRPO.cardCode(newValue);
+                // Above statement is enough to trigger the change of selection in knockout
+                // because of select2 is used we have to use below statement to trigger the change of selection
+                $('#CardCode').val(newValue).trigger('change');
+
+            });
+
+            self.GRPO.billTo.subscribe(function (newValue) {
+                if (LoadingFinished === true) {
+                    $.ajax({
+                        url: "@Url.Action("GetCustomerBillingAddressDetails", "CustomerAddress", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ CardCode: self.GRPO.cardCode, AddressCode: newValue }),
+                        success: function (data) {
+
+                            self.GRPO.billToAddress1(data.Street);
+                            self.GRPO.billToAddress2(data.Block);
+                            self.GRPO.billToAddress3(data.City);
+                            self.GRPO.billToAddress4(data.County);
+                            self.GRPO.billToAddress5(data.StreetNo);
+
+                        },
+                        error: function () { }
+                    });
+                }
+            });
+            self.GRPO.shipTo.subscribe(function (newValue) {
+                if (LoadingFinished === true) {
+                    $.ajax({
+                        url: "@Url.Action("GetCustomerShippingAddressDetails", "CustomerAddress", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ CardCode: self.GRPO.cardCode, AddressCode: newValue }),
+                        success: function (data) {
+
+                            self.GRPO.shipToAddress1(data.Street);
+                            self.GRPO.shipToAddress2(data.Block);
+                            self.GRPO.shipToAddress3(data.City);
+                            self.GRPO.shipToAddress4(data.County);
+                            self.GRPO.shipToAddress5(data.StreetNo);
+                        },
+                        error: function () { }
+                    });
+                }
+            });
+
+
+        }
+        // Once Document Ready
+        $(function () {
+
+            var SupplierNameCodes;
+
+            var ItemCodesAndNames;
+            var LocationCodeAndNames;
+            var TaxCodes;
+            $.when(
+                // Initial Ajax Requests, while page loading
+                //Load Suppliers
+                $.ajax({
+                    url: "@Url.Action("GetActiveSuppliers", "Supplier", null)",
+                    type: 'get',
+                    contentType: 'application/x-www-form-urlencoded',
+                    success: function (data) {
+
+                        SupplierNameCodes = data;
+
+                        $("#CardCode").parent().parent().find('.overlay').hide();
+                        $("#CardName").parent().parent().find('.overlay').hide();
+                    },
+                    error: function () { }
+                }),
+                //Load Item Codes
+                $.ajax({
+                url: "@Url.Action("GetActiveItems", "Item", null)",
+                type: 'get',
+                contentType: 'application/x-www-form-urlencoded',
+                success: function (data) {
+
+                    ItemCodesAndNames = data;
+
+                    $("#ItemCode").parent().parent().find('.overlay').hide();
+                    $("#Description").parent().parent().find('.overlay').hide();
+                },
+                error: function () { }
+                }),
+                //Load Location Codes
+                $.ajax({
+                    url: "@Url.Action("GetWarehouses", "Location", null)",
+                    type: 'get',
+                    contentType: 'application/x-www-form-urlencoded',
+                    success: function (data) {
+
+                       LocationCodeAndNames = data;
+                        $("#Location").parent().parent().find('.overlay').hide();
+                    },
+                    error: function () { }
+                }),
+                $.ajax({
+                url: "@Url.Action("GetTaxCodes", "Tax", null)",
+                type: 'get',
+                contentType: 'application/x-www-form-urlencoded',
+                data: ko.toJS({ TaxType: "I" }),
+                success: function (data) {
+
+                    TaxCodes = data;
+                    $("#GstName").parent().parent().find('.overlay').hide();
+
+                },
+                error: function () { }
+               })
+            ).done(function () {
+                   //View Model Object Initialization
+                var GRPOVM = new GRPOViewModel(@Html.ViewModelToJson(Model));
+                GRPOVM.SupplierNameCodes = SupplierNameCodes;
+                GRPOVM.ItemCodesAndNames = ItemCodesAndNames;
+                GRPOVM.LocationCodeAndNames = LocationCodeAndNames;
+                GRPOVM.TaxCodes = TaxCodes;
+
+                ko.applyBindings(GRPOVM);
+
+                    //Editing GRPO
+                    var ExisingGRPO = @Html.ViewModelToJson(Model);
+
+                    var GrpoLines = ExisingGRPO.lines;
+                    if (GrpoLines !== null) {
+                        for (var i = 0; i < GrpoLines.length; i++) {
+                            var dolinetable = $('#ItemListTable').DataTable();
+                            var defaultDescription = '-';
+                            var AddtionalRemarks = '';
+                            if (GrpoLines[i].overwriteDescription !== null) {
+                                defaultDescription = GrpoLines[i].overwriteDescription;
+                            }
+                            else {
+                                defaultDescription = GrpoLines[i].description;
+                            }
+                            if (GrpoLines[i].description2 !== null) {
+                                AddtionalRemarks = AddtionalRemarks + GrpoLines[i].description2 + "<br/>"
+                            }
+                            if (GrpoLines[i].description3 !== null) {
+                                AddtionalRemarks = AddtionalRemarks + GrpoLines[i].description3 + "<br/>"
+                            }
+                            if (GrpoLines[i].description4 !== null) {
+                                AddtionalRemarks = AddtionalRemarks + GrpoLines[i].description4 + "<br/>"
+                            }
+                            if (GrpoLines[i].description5 !== null) {
+                                AddtionalRemarks = AddtionalRemarks + GrpoLines[i].description5 + "<br/>"
+                            }
+                            if (GrpoLines[i].description6 !== null) {
+                                AddtionalRemarks = AddtionalRemarks + GrpoLines[i].description6
+                            }
+                            defaultDescription = defaultDescription + "<span data-toggle='popover' data-trigger='hover' data-placement='top' data-html='true' data-content='" + AddtionalRemarks + "' data-title='Additional Remarks'><i class='fa fa-fw fa-info-circle'></i></span>";
+                            var rowNode = dolinetable.row.add([
+                                i + 1,
+                                GrpoLines[i].itemCode,
+                                defaultDescription,
+                                parseFloat(GrpoLines[i].qty).toFixed(3),
+                                GrpoLines[i].locationText,
+                                parseFloat(GrpoLines[i].unitPrice).toFixed(4),
+                                GrpoLines[i].gstName,
+                                parseFloat(GrpoLines[i].lineTotal).toFixed(2),
+                                "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteGRPOLine("
+                                + i + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                            ]).draw().node();
+                            $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editGRPOLine(" + i + ", data, event) } }");
+
+                            ko.applyBindings(GRPOVM, rowNode);
+                        }
+                    }
+                var SqNoteLines = ExisingGRPO.noteLines;
+
+                if (SqNoteLines !== null) {
+                    if (jQuery.type(SqNoteLines) !== "undefined") {
+
+                        for (var i = 0; i < SqNoteLines.length; i++) {
+                            var sqnotetable = $('#NoteListTable').DataTable();
+                            var rowNode = sqnotetable.row.add([
+                                i + 1,
+                                SqNoteLines[i].note,
+                                "<button type='button' class='btn btn-danger btn-xs' data-bind ='event: { click: function(rowid, data, event) { deleteGRPONote("
+                                + i + ", data, event) } }'><i class='fa fa-fw fa-remove'></i></button>"
+                            ]).draw().node();
+                            $(rowNode).attr("data-bind", "event: { dblclick: function(rowid, data, event) { editGRPONote(" + i + ", data, event) } }");
+
+                            ko.applyBindings(GRPOVM, rowNode);
+                        }
+                    }
+                }
+
+            });
+
+
+
+
+
+            $('.select2').select2();
+            $('.datepicker').datepicker({ format: 'dd/mm/yyyy', autoclose: true });
+            var table = $('#ItemListTable').DataTable(
+                {
+                    "columnDefs": [
+                        { className: "text-right", "targets": [3, 5, 7] }
+                    ]
+                }
+            );
+            var LocationStocktable = $('#LocationStock').DataTable({
+                "columnDefs": [
+                    { className: "text-right", "targets": [1] }
+                ]
+            });
+
+            var PriceHistorytable = $('#PriceHistory').DataTable(
+                {
+                    "columnDefs": [
+                        { className: "text-right", "targets": [2, 3] }
+                    ]
+                });
+            var NoteListTable = $('#NoteListTable').DataTable(
+                {
+
+                });
+
+
+
+
+
+
+            $('table.bmdatatable tbody').on('click', 'tr td button.btn-danger', function () {
+
+                table.row($(this).parents('tr')).remove().draw();
+                //if ($(this).parent().parent().hasClass('highlight')) {
+                //    $(this).parent().parent().removeClass('highlight');
+                //}
+                //else {
+                //    table.$('tr.highlight').removeClass('highlight');
+                //    $(this).parent().parent().addClass('highlight');
+                //}
+            });
+
+            // Datables Need to be re-drawn again if datatable intialised in hidden area(That is when we put datatables inside tabs)
+            // So here we are call draw to redraw table when each tabs become visible
+            $(document).on('shown.bs.modal', '#AddUpdateItemModal', function (event) {
+                var table = $('#PriceHistory').DataTable();
+                table.columns.adjust().draw();
+            });
+            $('body').popover({
+                selector: '[data-toggle="popover"]',
+                trigger: 'hover',
+                html: true,
+            });
+        });
+    </script>
+}

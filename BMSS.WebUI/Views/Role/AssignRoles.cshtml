@@ -1,0 +1,112 @@
+﻿@using BMSS.WebUI.Models.RoleViewModels
+@using BMSS.WebUI.Models.UserIdentity
+@model List<UserRoleViewModel>
+@{
+    ViewBag.Title = "Assign Roles";
+    IEnumerable<AppUser> UserNames = ViewBag.Usernames;
+    IEnumerable<AppRole> RoleNames = ViewBag.Rolenames;
+
+    int RoleNamesCount = RoleNames.Count();
+
+    AjaxOptions ajaxOpts = new AjaxOptions
+    {
+        OnSuccess = "AjaxSimpleFormSuccessNoReplace('AssignUserRolesFormContainer','AssignUserRolesForm','Assigned Successfully',data)",
+        Url = Url.Action("AssignRoles"),
+        HttpMethod = "POST"
+    };
+}
+@section Content_Header {
+    <section class="content-header">
+        <h1>
+            Assign Roles
+            <small>Assign User Roles</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href='@Url.Action("Index", "Home")'><i class="fa fa-dashboard"></i>Administration</a></li>
+            <li class="active">Roles</li>
+        </ol>
+    </section>
+}
+@section Styles {
+    @Styles.Render("~/DataTablesCss")
+}
+<div class="row">
+    <div class="col-12" id="AssignUserRolesFormContainer">
+        <div class="box box-info">
+            @using (Ajax.BeginForm("AssignRoles", null, ajaxOpts, new { id = "AssignUserRolesForm" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="box-header">
+                    <h3 class="box-title">Assign Roles</h3>
+                </div>
+                <div class="box-body" id="user-list">
+                    @Html.ValidationSummary()
+                    <table class="table table-striped table-bordered nowrap bmdatatable-fixecol" data-scroll-x="true" data-fixed-header="true" data-auto-width="true" data-paging='false' data-searching="false" data-length-change="false"  data-ordering="false" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Users</th>
+                                <th colspan="@RoleNamesCount">Roles</th>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                @foreach (AppRole role in RoleNames)
+                                {
+                                    <th>@role.Name</th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (AppUser user in UserNames)
+                            {
+                                UserRoleViewModel result = Model.Find(x => x.Username == @user.UserName);
+
+                                <tr>
+                                    <td>@user.UserName</td>
+                                    @foreach (AppRole role in RoleNames)
+                                    {
+                                        if (result.RolesAssigned.Contains(role.Name))
+                                        {
+                                            <td> <input type="checkbox" name="IdsToAdd" value="@(String.Format("{0}{1}", user.Id, role.Id))" checked="checked"> </td>
+                                        }
+                                        else
+                                        {
+                                            <td> <input type="checkbox" name="IdsToAdd" value="@(String.Format("{0}{1}", user.Id, role.Id))"> </td>
+                                        }
+
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/DataTables")
+    @Scripts.Render("~/bundles/Jquery-Validation-and-Ajax")
+    @Scripts.Render("~/Own")
+<script>
+    $(document).ready(function () {
+        //Initialize Select2 Elements
+
+
+
+        $('.bmdatatable-fixecol').DataTable(
+            {      
+                scrollY: "550px",
+                scrollCollapse:true,
+                fixedColumns: {
+                    leftColumns: 1                   
+                },
+                "order": [[0, "desc"]]                
+            }
+        );
+
+    });
+</script>
+}

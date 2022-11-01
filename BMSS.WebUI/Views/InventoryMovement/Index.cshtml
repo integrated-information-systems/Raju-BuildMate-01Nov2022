@@ -1,0 +1,105 @@
+﻿@using BMSS.WebUI.Models.InventoryMovementViewModels
+@model List<InventoryMovementReportViewModels>
+@{
+    ViewBag.Title = "Inventory Movement Report";
+}
+@section Styles {
+    @Styles.Render("~/DataTablesCss")
+    @Styles.Render("~/Select2Css")
+}
+@section Content_Header {
+    <section class="content-header">
+        <h1>
+            Inventory Movement Report
+            <small>Inventory Movement</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href='@Url.Action("Index", "Home")'><i class="fa fa-dashboard"></i>Reports</a></li>
+            <li class="active">Inventory Movement Report</li>
+        </ol>
+    </section>
+}
+@{
+    IEnumerable<SelectListItem> ItemList = ViewBag.ItemList;
+    decimal ReportTotalQty = ViewBag.ReportTotalQty;
+}
+<div class="row">
+    <div class="col-12" id="AssignUserRolesFormContainer">
+        <div class="box box-info">
+            @using (Html.BeginForm("GetInventoryMovementDetails", null, FormMethod.Post, new { id = "AssignUserRolesForm" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="box-header">
+                    <h3 class="box-title">Inventory Movement Report</h3>
+                </div>
+                <div class="box-body" id="user-list">
+                    @Html.ValidationSummary()
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4">
+                            <div class="form-group">
+                                @Html.Label("Item Code")
+                                @Html.DropDownList("ItemCode", ItemList, "Select", new { @class = "form-control select2 trigger", style = "width:100%", data_val = "true", data_val_required = "The Item Code field is required" })
+                            </div>
+                        </div>
+                    </div>
+                    @*<div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl">
+                        <div class="form-group">
+                            @Html.Label("Item Name")
+                            @Html.DropDownList("ItemName", ItemNameList, "Select", new { @class = "form-control select2 trigger", style = "width:100%", data_val = "true", data_val_required = "The Item Code field is required" })
+                        </div>
+                    </div>
+                </div>*@
+                    <div class="box-footer clearfix">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                    <table id="DocumentList" class="table table-bordered table-striped responsive nowrap bmdatatable" data-fixed-header="true" data-auto-width="true" data-paging="true" data-searching="true" data-length-change="true" data-page-length="100" data-ordering="true" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Doc Date</th>
+                                <th>Document Type</th>
+                                <th>Doc#</th>
+                                <th>Item Code</th>
+                                <th>Warehouse</th>
+                                <th class="text-right">Unit Price</th>
+                                <th class="text-right">Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody>                            
+                            @foreach (var i in Model)
+                            {
+                                <tr>
+                                    <td>@i.DocDate.ToString("dd'/'MM'/'yyyy")</td>
+                                    <td>@i.DocType</td>
+                                    <td>@i.DocNum</td>
+                                    <td>@i.ItemCode</td>
+                                    <td>@i.LocationText</td>
+                                    <td class="text-right">@i.UnitPrice</td>
+                                    <td class="text-right">@i.Qty</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <th class="text-right">Balance</th>
+                                <td class="text-right">@ReportTotalQty</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            }
+            
+        </div>
+        
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/DataTables")   
+    @Scripts.Render("~/Own")
+    @Scripts.Render("~/Select2")
+}

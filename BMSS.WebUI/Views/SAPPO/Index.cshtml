@@ -1,0 +1,134 @@
+﻿
+@section Styles {
+    @Styles.Render("~/DataTablesCss")
+    @Styles.Render("~/Select2Css")
+    @Styles.Render("~/DatePicker")
+}
+@{
+    ViewBag.Title = "List of Purchase Order (SAP)";
+    
+}
+@section Content_Header {
+    <section class="content-header">
+        <h1>
+            Purchase Order (SAP) Listing
+            <small>Purchase Order (SAP) </small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href='@Url.Action("Index", "Home")'><i class="fa fa-dashboard"></i>Transactions</a></li>
+            <li class="active">Purchase Order (SAP) </li>
+        </ol>
+    </section>
+}
+@using (Html.BeginForm("Edit", null, null, FormMethod.Get, new { id = "DetailForm" }))
+{
+    @Html.Hidden("DocNum", "")
+}
+<div class="row">
+    <div class="col-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">List of Purchase Orders (SAP)</h3>
+                <div class="box-tools" style="top: 3px;"><a class="btn btn-primary" href="@Url.Action("Add", "SAPPO")" role="button">Add</a></div>
+            </div>
+            <div class="box-body">
+                <table id="ItemList" class="table table-bordered table-striped responsive nowrap" data-fixed-header="true" data-auto-width="true" data-paging="true" data-searching="true" data-length-change="true" data-page-length="100" data-ordering="true" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>SAP Doc #</th>
+                            <th>Date</th>
+                            <th>Account #</th>
+                            <th class="text-right">Amount</th>
+                            <th>Del Date</th>
+                            <th>Status</th>
+                            <th data-priority="1">Print</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/DataTables")
+    @Scripts.Render("~/bundles/Jquery-Validation-and-Ajax")
+    @Scripts.Render("~/Select2")
+    @Scripts.Render("~/DatePickerJS")
+    @Scripts.Render("~/Knockout")
+    @Scripts.Render("~/Own")
+    <script>
+ $(document).ready(function () {
+
+            $(document).on('click', '.printPreview', function (e) {
+                e.preventDefault();
+
+
+                let DocNumber = $(this).data('row-docnum');
+                let DocEntry = $(this).data('row-docentry');
+                let URL = $(this).attr("href") + '/' + DocEntry;
+
+
+
+                    setTimeout(function () {
+                        table.ajax.reload();
+                    }, 5000);
+
+                    window.open(URL, '_blank');
+
+
+
+        });
+
+            var table = $('#ItemList')
+                .DataTable({
+                    'processing': true,
+                    'serverSide': true,
+                    'serverMethod': 'post',
+                    'ajax': {
+                        'url': '@Url.Action("IndexPagining", "SAPPO", null)'
+                    },
+                    'columns': [
+                        { data: 'DocNum', orderable: true },
+                        { data: 'DocDate', orderable: true },
+                        { data: 'CardName', orderable: true },
+                        {
+                            data: 'DocTotal',
+                            render: $.fn.dataTable.render.number(',', '.', 2, ''),
+                            className: "text-right",
+                            orderable: true
+                        },
+                        { data: 'DocDueDate', orderable: true },                       
+                        {
+                            data: null,
+                            render: function (data, type, row, meta) {
+                                if (data.DocStatus !== 'O')
+                                    return "Open";
+                                else if (data.DocStatus != 'C')
+                                    return "Close";
+                            },
+                            orderable: true
+                        },
+                        {
+                            data: null,
+                            render: function (data, type, row, meta) {
+                                return "<a class='btn btn-primary btn-xs printPreview' target='_blank' data-row-docentry='" + data.DocEntry + "' data-row-docnum='" + row.DocNum + "' href='@Url.Action("SAPPOViewer.aspx", "WForms/")' role='button'>Print</a>";
+                            },
+                            orderable: false
+                        },
+                    ],
+                    "order": [[0, "desc"]]
+
+                });
+                //.on('xhr', function () {
+                //    console.log('data loaded');
+                //    ko.cleanNode(document.getElementById("ItemList"));
+                //    ko.applyBindings(DOVM, document.getElementById("ItemList"));
+                //});
+
+            
+
+        });
+
+
+    </script>
+}

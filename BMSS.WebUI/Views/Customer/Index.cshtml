@@ -1,0 +1,125 @@
+﻿@using BMSS.Domain.Entities
+@using System.Globalization;
+@using System.Web;
+@using BMSS.Domain.Models;
+@model List<CustomerList>
+@{
+    ViewBag.Title = "List of Customers";
+}
+@section Styles {
+    @Styles.Render("~/DataTablesCss")
+}
+@section Content_Header {
+    <section class="content-header">
+        <h1>
+            Customers
+            <small>SAP Customers</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href='@Url.Action("Index", "Home")'><i class="fa fa-dashboard"></i>Administration</a></li>
+            <li class="active">Customers</li>
+        </ol>
+    </section>
+}
+<div class="row">
+    <div class="col-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">List of Customers</h3>
+            </div>
+            <div class="box-body">
+                <table id="CustomerList" class="table table-bordered table-striped responsive nowrap bmdatatable dblEdit" data-fixed-header="true" data-auto-width="true" data-paging="true" data-searching="true" data-length-change="true" data-page-length="100" data-ordering="true" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Acc No</th>
+                            <th>Company</th>
+                            <th>Category</th>
+                            <th>Sales Person</th>
+                            <th>Status</th>
+                            <th class="text-right">Outstanding Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var i in Model)
+                        {
+                            <tr data-toggle="tooltip" title="double click to edit">
+                                <td>
+                                    @i.CardCode
+                                    @using (Html.BeginForm("Detail", null, null, FormMethod.Get, new { id = "DetailForm" }))
+                                    {
+                                        @Html.Hidden("CardCode", Server.UrlEncode(i.CardCode))
+                                    }
+                                </td>
+                                <td>@i.cardname</td>
+                                <td>@i.GroupName</td>
+                                <td>@i.SlpName</td>
+                                <td>
+                                    @if (i.frozenFor.Equals("N") && i.validTo.Equals(null))
+                                    {
+                                        @:Active
+                                    }
+                                    else
+                                    {
+                                        @:Inactive
+                                    }
+                                </td>
+                                <td class="text-right">
+                                    @i.Balance.ToString("N2", new CultureInfo("en-US"))
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/DataTables")
+    <script>
+    $(document).ready(function () {
+        var table = $('#CustomerList').DataTable({
+
+        });
+
+        $(document).on("dblclick", 'table.bmdatatable.dblEdit tr', function () {
+
+
+            var unid = $(this).attr('data-unid');
+            //$(this).addClass("highlight");
+            if (jQuery.type(unid) !== "undefined") {
+                //Forms in 1st Column
+                var Forms = $(this).find("td:nth-child(1) form");
+                if (Forms.length > 0) {
+                    alert('hi1');
+                    $(this).find("td:nth-child(1) form").find("input[id$='ID'][type = hidden]").val(unid);
+                    var CardCode = $(this).find("td:nth-child(1) form").find("input[id$='ID'][type = hidden]").val();
+                    //$(this).find("td:nth-child(1) form").submit();
+                     window.open('@Url.Action("Detail", "Customer")?CardCode=' + CardCode);
+                }
+                else {
+                    alert('hi2');
+                    //Forms in 2nd Column
+                    var Forms2ndColumn = $(this).find("td:nth-child(2) form");
+                    if (Forms2ndColumn.length > 0) {
+                        $(this).find("td:nth-child(2) form").find("input[id$='ID'][type = hidden]").val(unid);
+                        $(this).find("td:nth-child(2) form").submit();
+                    }
+                }
+            }
+            else {
+
+                //$(this).find("td:nth-child(1)").find("form#DetailForm").submit();
+                var CardCode = $(this).find("td:nth-child(1)").find("form#DetailForm").find("#CardCode").val();                 
+                window.open('@Url.Action("Detail", "Customer")?CardCode=' + CardCode);
+            }
+        });
+
+    });
+
+
+    </script>
+    @*@Scripts.Render("~/Own")*@
+
+
+}

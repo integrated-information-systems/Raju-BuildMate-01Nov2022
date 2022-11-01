@@ -1,0 +1,551 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D1D498C4-671B-4320-8C61-9F659BC8CAF7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BMSS.Domain</RootNamespace>
+    <AssemblyName>BMSS.Domain</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>default</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>default</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>default</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Linq.Dynamic, Version=1.0.6132.35681, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Dynamic.1.0.8\lib\net40\System.Linq.Dynamic.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Abstract\I_CashSalesCreditDocH_Repository.cs" />
+    <Compile Include="Abstract\I_CashSalesCreditDocLs_Repository.cs" />
+    <Compile Include="Abstract\I_CashSalesCustomer_Repository.cs" />
+    <Compile Include="Abstract\I_CashSalesDocH_Repository.cs" />
+    <Compile Include="Abstract\I_CashSalesDocLs_Repository.cs" />
+    <Compile Include="Abstract\I_ChangeCRLimit_Repository.cs" />
+    <Compile Include="Abstract\I_DODocH_Repository.cs" />
+    <Compile Include="Abstract\I_DODocLs_Repository.cs" />
+    <Compile Include="Abstract\I_DODocStockLoan_Repository.cs" />
+    <Compile Include="Abstract\I_GRPODocH_Repository.cs" />
+    <Compile Include="Abstract\I_GRPODocLs_Repository.cs" />
+    <Compile Include="Abstract\I_InventoryMovement_Repository.cs" />
+    <Compile Include="Abstract\I_ItmNotes_Repository.cs" />
+    <Compile Include="Abstract\I_Log_Repository.cs" />
+    <Compile Include="Abstract\I_Notes_Repository.cs" />
+    <Compile Include="Abstract\I_Numbering_Repository.cs" />
+    <Compile Include="Abstract\I_OpeningBalance_Repository.cs" />
+    <Compile Include="Abstract\I_PaymentDocH_Repository.cs" />
+    <Compile Include="Abstract\I_PODocH_Repository.cs" />
+    <Compile Include="Abstract\I_PODocLs_Repository.cs" />
+    <Compile Include="Abstract\I_PQDocH_Repository.cs" />
+    <Compile Include="Abstract\I_PQDocLs_Repository.cs" />
+    <Compile Include="Abstract\I_SQDocH_Repository.cs" />
+    <Compile Include="Abstract\I_SQDocLs_Repository.cs" />
+    <Compile Include="Abstract\I_StockIssueDocH_Repository.cs" />
+    <Compile Include="Abstract\I_StockIssueDocLs_Repository.cs" />
+    <Compile Include="Abstract\I_StockReceiptDocH_Repository.cs" />
+    <Compile Include="Abstract\I_StockReceiptDocLs_Repository.cs" />
+    <Compile Include="Abstract\I_StockTransDocH_Repository.cs" />
+    <Compile Include="Abstract\I_StockTransDocLs_Repository.cs" />
+    <Compile Include="Abstract\Planner\I_DeliveryPlanner_Repository.cs" />
+    <Compile Include="Abstract\SAP\I_CRD1_Repository.cs" />
+    <Compile Include="Abstract\SAP\I_INV1_Repository.cs" />
+    <Compile Include="Abstract\SAP\I_ITM1_Repository.cs" />
+    <Compile Include="Abstract\SAP\I_ITT1_Repository.cs" />
+    <Compile Include="Abstract\SAP\I_OACT_Repository.cs" />
+    <Compile Include="Abstract\SAP\I_OADM_Repository.cs" />
+    <Compile Include="Abstract\SAP\I_OCPR_Repository.cs" />
+    <Compile Include="Abstract\SAP\I_OCRC_Repository.cs" />
+    <Compile Include="Abstract\SAP\I_OITT_Repository.cs" />
+    <Compile Include="Abstract\SAP\I_OCRD_Repository.cs" />
+    <Compile Include="Abstract\SAP\I_OCTG_Repository.cs" />
+    <Compile Include="Abstract\SAP\I_OINM_Repository.cs" />
+    <Compile Include="Abstract\SAP\I_OITM_Repository.cs" />
+    <Compile Include="Abstract\SAP\I_OITW_Repository.cs" />
+    <Compile Include="Abstract\SAP\I_OPLN_Repository.cs" />
+    <Compile Include="Abstract\SAP\I_OPOR_Repository.cs" />
+    <Compile Include="Abstract\SAP\I_ORCT_Repository.cs" />
+    <Compile Include="Abstract\SAP\I_ORTT_Repository.cs" />
+    <Compile Include="Abstract\SAP\I_OSLP_Repository.cs" />
+    <Compile Include="Abstract\SAP\I_OVTG_Repository.cs" />
+    <Compile Include="Abstract\SAP\I_OWHS_Repository.cs" />
+    <Compile Include="Abstract\SAP\I_PDN1_Repository.cs" />
+    <Compile Include="Abstract\SAP\I_POR1_Repository.cs" />
+    <Compile Include="Abstract\SAP\I_SPP1_Repository.cs" />
+    <Compile Include="Abstract\SAP\I_SPP2_Repository.cs" />
+    <Compile Include="CashSalesCreditDocH.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CashSalesCreditDocLs.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CashSalesCreditDocNotes.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CashSalesCreditDocPays.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CashSalesCustomerMaster.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CashSalesDocH.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CashSalesDocLs.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CashSalesDocNotes.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CashSalesDocPays.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ChangeCRLimit.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CNotesAll.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CNotesMngt.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Concrete\EF_CashSalesCreditDocHeader_Repository.cs" />
+    <Compile Include="Concrete\EF_CashSalesCreditDocLine_Repository.cs" />
+    <Compile Include="Concrete\EF_CashSalesCustomer_Repository.cs" />
+    <Compile Include="Concrete\EF_CashSalesDocHeader_Repository.cs" />
+    <Compile Include="Concrete\EF_CashSalesDocLine_Repository.cs" />
+    <Compile Include="Concrete\EF_ChangeCRLimit_Repository.cs" />
+    <Compile Include="Concrete\EF_CNotesAll_Repository.cs" />
+    <Compile Include="Concrete\EF_CNotesMngt_Repository.cs" />
+    <Compile Include="Concrete\EF_DODocHeader_Repository.cs" />
+    <Compile Include="Concrete\EF_DODocLine_Repository.cs" />
+    <Compile Include="Concrete\EF_DODocStockLoan_Repository.cs" />
+    <Compile Include="Concrete\EF_GRPODocHeader_Repository.cs" />
+    <Compile Include="Concrete\EF_GRPODocLine_Repository.cs" />
+    <Compile Include="Concrete\EF_InventoryMovement_Repository.cs" />
+    <Compile Include="Concrete\EF_ItmNotesAll_Repository.cs" />
+    <Compile Include="Concrete\EF_ItmNotesMngt_Repository.cs" />
+    <Compile Include="Concrete\EF_Log_Repository.cs" />
+    <Compile Include="Concrete\EF_NumberingAlPay_Repository.cs" />
+    <Compile Include="Concrete\EF_NumberingCrSale_Repository.cs" />
+    <Compile Include="Concrete\EF_NumberingCSale_Repository.cs" />
+    <Compile Include="Concrete\EF_NumberingDO_Repository.cs" />
+    <Compile Include="Concrete\EF_NumberingGRN_Repository.cs" />
+    <Compile Include="Concrete\EF_NumberingPay_Repository.cs" />
+    <Compile Include="Concrete\EF_NumberingPO_Repository.cs" />
+    <Compile Include="Concrete\EF_NumberingPQ_Repository.cs" />
+    <Compile Include="Concrete\EF_NumberingSI_Repository.cs" />
+    <Compile Include="Concrete\EF_NumberingSL_Repository.cs" />
+    <Compile Include="Concrete\EF_NumberingSQ_Repository.cs" />
+    <Compile Include="Concrete\EF_NumberingSR_Repository.cs" />
+    <Compile Include="Concrete\EF_NumberingST_Repository.cs" />
+    <Compile Include="Concrete\EF_OpeningBalance_Repository.cs" />
+    <Compile Include="Concrete\EF_PaymentDocHeader_Repository.cs" />
+    <Compile Include="Concrete\EF_PODocHeader_Repository.cs" />
+    <Compile Include="Concrete\EF_PODocLine_Repository.cs" />
+    <Compile Include="Concrete\EF_PQDocHeader_Repository.cs" />
+    <Compile Include="Concrete\EF_PQDocLine_Repository.cs" />
+    <Compile Include="Concrete\EF_SNotesAll_Repository.cs" />
+    <Compile Include="Concrete\EF_SNotesMngt_Repository.cs" />
+    <Compile Include="Concrete\EF_SQDocHeader_Repository.cs" />
+    <Compile Include="Concrete\EF_SQDocLine_Repository.cs" />
+    <Compile Include="Concrete\EF_StockIssueDocHeader_Repository.cs" />
+    <Compile Include="Concrete\EF_StockIssueDocLine_Repository.cs" />
+    <Compile Include="Concrete\EF_StockReceiptDocHeader_Repository.cs" />
+    <Compile Include="Concrete\EF_StockReceiptDocLine_Repository.cs" />
+    <Compile Include="Concrete\EF_StockTransDocHeader_Repository.cs" />
+    <Compile Include="Concrete\EF_StockTransDocLine_Repository.cs" />
+    <Compile Include="Concrete\Planner\EF_DeliveryPlanner_Repository.cs" />
+    <Compile Include="Concrete\SAP\EFSapDbContext.cs" />
+    <Compile Include="Concrete\SAP\EF_CRD1_Repository.cs" />
+    <Compile Include="Concrete\SAP\EF_INV1_Repository.cs" />
+    <Compile Include="Concrete\SAP\EF_ITM1_Repository.cs" />
+    <Compile Include="Concrete\SAP\EF_ITT1_Repository.cs" />
+    <Compile Include="Concrete\SAP\EF_OACT_Repository.cs" />
+    <Compile Include="Concrete\SAP\EF_OADM_Repository.cs" />
+    <Compile Include="Concrete\SAP\EF_OCPR_Repository.cs" />
+    <Compile Include="Concrete\SAP\EF_OCRC_Repository.cs" />
+    <Compile Include="Concrete\SAP\EF_OITT_Repository.cs" />
+    <Compile Include="Concrete\SAP\EF_OCRD_Repository.cs" />
+    <Compile Include="Concrete\SAP\EF_OCTG_Repository.cs" />
+    <Compile Include="Concrete\SAP\EF_OINM_Repository.cs" />
+    <Compile Include="Concrete\SAP\EF_OITM_Repository.cs" />
+    <Compile Include="Concrete\SAP\EF_OITW_Repository.cs" />
+    <Compile Include="Concrete\SAP\EF_OPLN_Repository.cs" />
+    <Compile Include="Concrete\SAP\EF_OPOR_Repository.cs" />
+    <Compile Include="Concrete\SAP\EF_ORCT_Repository.cs" />
+    <Compile Include="Concrete\SAP\EF_ORTT_Repository.cs" />
+    <Compile Include="Concrete\SAP\EF_OSLP_Repository.cs" />
+    <Compile Include="Concrete\SAP\EF_OVTG_Repository.cs" />
+    <Compile Include="Concrete\SAP\EF_OWHS_Repository.cs" />
+    <Compile Include="Concrete\SAP\EF_PDN1_Repository.cs" />
+    <Compile Include="Concrete\SAP\EF_POR1_Repository.cs" />
+    <Compile Include="Concrete\SAP\EF_SPP1_Repository.cs" />
+    <Compile Include="Concrete\SAP\EF_SPP2_Repository.cs" />
+    <Compile Include="DeliveryPlanner.cs">
+      <DependentUpon>PlannerDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DODocH.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DODocLs.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DODocNotes.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DODocStockLoan.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DomainDb.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DomainDb.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DomainDb.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DomainDb.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DomainDb.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CRD1.cs" />
+    <Compile Include="Entities\INV1.cs" />
+    <Compile Include="Entities\ITM1.cs" />
+    <Compile Include="Entities\ITT1.cs" />
+    <Compile Include="Entities\NNM1.cs" />
+    <Compile Include="Entities\OACT.cs" />
+    <Compile Include="Entities\OADM.cs" />
+    <Compile Include="Entities\OCPR.cs" />
+    <Compile Include="Entities\OCRC.cs" />
+    <Compile Include="Entities\OCRD.cs" />
+    <Compile Include="Entities\OCRG.cs" />
+    <Compile Include="Entities\OCRY.cs" />
+    <Compile Include="Entities\OCTG.cs" />
+    <Compile Include="Entities\OINM.cs" />
+    <Compile Include="Entities\OINV.cs" />
+    <Compile Include="Entities\OITB.cs" />
+    <Compile Include="Entities\OITM.cs" />
+    <Compile Include="Entities\OITT.cs" />
+    <Compile Include="Entities\OITW.cs" />
+    <Compile Include="Entities\OPCH.cs" />
+    <Compile Include="Entities\OPDN.cs" />
+    <Compile Include="Entities\OPLN.cs" />
+    <Compile Include="Entities\OPOR.cs" />
+    <Compile Include="Entities\ORCT.cs" />
+    <Compile Include="Entities\ORIN.cs" />
+    <Compile Include="Entities\ORPC.cs" />
+    <Compile Include="Entities\ORTT.cs" />
+    <Compile Include="Entities\OSLP.cs" />
+    <Compile Include="Entities\OVTG.cs" />
+    <Compile Include="Entities\OWHS.cs" />
+    <Compile Include="Entities\PCH1.cs" />
+    <Compile Include="Entities\PDN1.cs" />
+    <Compile Include="Entities\POR1.cs" />
+    <Compile Include="Entities\SPP1.cs" />
+    <Compile Include="Entities\SPP2.cs" />
+    <Compile Include="GRPODocH.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GRPODocLs.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GRPODocNotes.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INotesAll.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INotesMngt.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="InventoryLog.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="InvMovmentView.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ItemMonthlySales.cs" />
+    <Compile Include="Models\AgingBucket.cs" />
+    <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\DocNumbering.cs" />
+    <Compile Include="NumberingAlPay.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NumberingCrSale.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NumberingCSale.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NumberingDO.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NumberingGRN.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NumberingPay.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NumberingPO.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NumberingPQ.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NumberingSI.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NumberingSL.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NumberingSQ.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NumberingSR.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NumberingST.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OpeningBalanceSetup.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PaymentDocH.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PaymentDocLs.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PaymentDocNotes.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PlannerDb.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PlannerDb.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PlannerDb.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PlannerDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PlannerDb.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PlannerDb.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="PODocH.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PODocLs.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PODocNotes.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="POPDNs.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PQDocH.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PQDocLs.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PQDocNotes.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SNotesAll.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SNotesMngt.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQDocH.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQDocLs.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQDocNotes.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StockBalance.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StockBalanceLog.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StockIssueDocH.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StockIssueDocLs.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StockIssueDocNotes.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StockReceiptDocH.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StockReceiptDocLs.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StockReceiptDocNotes.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StockTransDocH.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StockTransDocLs.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StockTransDocNotes.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SyncErrLog.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SyncLog.cs">
+      <DependentUpon>DomainDb.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <EntityDeploy Include="DomainDb.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DomainDb.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="DomainDb.edmx.diagram">
+      <DependentUpon>DomainDb.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+    <EntityDeploy Include="PlannerDb.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>PlannerDb.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="PlannerDb.edmx.diagram">
+      <DependentUpon>PlannerDb.edmx</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="DomainDb.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DomainDb.edmx</DependentUpon>
+      <LastGenOutput>DomainDb.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="DomainDb.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DomainDb.edmx</DependentUpon>
+      <LastGenOutput>DomainDb.cs</LastGenOutput>
+    </Content>
+    <Content Include="PlannerDb.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PlannerDb.edmx</DependentUpon>
+      <LastGenOutput>PlannerDb.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="PlannerDb.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PlannerDb.edmx</DependentUpon>
+      <LastGenOutput>PlannerDb.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
+</Project>

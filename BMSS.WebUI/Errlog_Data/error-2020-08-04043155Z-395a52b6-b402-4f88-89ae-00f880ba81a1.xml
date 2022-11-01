@@ -1,0 +1,422 @@
+﻿<error errorId="395a52b6-b402-4f88-89ae-00f880ba81a1" host="DESKTOP-I7NGPI4" type="System.Web.Mvc.HttpAntiForgeryException" message="The required anti-forgery form field &quot;__RequestVerificationToken&quot; is not present." source="System.Web.WebPages" detail="System.Web.Mvc.HttpAntiForgeryException (0x80004005): The required anti-forgery form field &quot;__RequestVerificationToken&quot; is not present.&#xD;&#xA;   at System.Web.Helpers.AntiXsrf.TokenValidator.ValidateTokens(HttpContextBase httpContext, IIdentity identity, AntiForgeryToken sessionToken, AntiForgeryToken fieldToken)&#xD;&#xA;   at System.Web.Helpers.AntiXsrf.AntiForgeryWorker.Validate(HttpContextBase httpContext)&#xD;&#xA;   at System.Web.Helpers.AntiForgery.Validate()&#xD;&#xA;   at System.Web.Mvc.ValidateAntiForgeryTokenAttribute.OnAuthorization(AuthorizationContext filterContext)&#xD;&#xA;   at System.Web.Mvc.ControllerActionInvoker.InvokeAuthorizationFilters(ControllerContext controllerContext, IList`1 filters, ActionDescriptor actionDescriptor)&#xD;&#xA;   at System.Web.Mvc.Async.AsyncControllerActionInvoker.&lt;&gt;c__DisplayClass3_1.&lt;BeginInvokeAction&gt;b__0(AsyncCallback asyncCallback, Object asyncState)&#xD;&#xA;   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResult`1.CallBeginDelegate(AsyncCallback callback, Object callbackState)&#xD;&#xA;   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResultBase`1.Begin(AsyncCallback callback, Object state, Int32 timeout)&#xD;&#xA;   at System.Web.Mvc.Async.AsyncControllerActionInvoker.BeginInvokeAction(ControllerContext controllerContext, String actionName, AsyncCallback callback, Object state)&#xD;&#xA;   at System.Web.Mvc.Controller.&lt;&gt;c.&lt;BeginExecuteCore&gt;b__152_0(AsyncCallback asyncCallback, Object asyncState, ExecuteCoreState innerState)&#xD;&#xA;   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncVoid`1.CallBeginDelegate(AsyncCallback callback, Object callbackState)&#xD;&#xA;   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResultBase`1.Begin(AsyncCallback callback, Object state, Int32 timeout)&#xD;&#xA;   at System.Web.Mvc.Controller.BeginExecuteCore(AsyncCallback callback, Object state)&#xD;&#xA;   at System.Web.Mvc.Controller.&lt;&gt;c.&lt;BeginExecute&gt;b__151_1(AsyncCallback asyncCallback, Object callbackState, Controller controller)&#xD;&#xA;   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncVoid`1.CallBeginDelegate(AsyncCallback callback, Object callbackState)&#xD;&#xA;   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResultBase`1.Begin(AsyncCallback callback, Object state, Int32 timeout)&#xD;&#xA;   at System.Web.Mvc.Controller.BeginExecute(RequestContext requestContext, AsyncCallback callback, Object state)&#xD;&#xA;   at System.Web.Mvc.Controller.System.Web.Mvc.Async.IAsyncController.BeginExecute(RequestContext requestContext, AsyncCallback callback, Object state)&#xD;&#xA;   at System.Web.Mvc.MvcHandler.&lt;&gt;c.&lt;BeginProcessRequest&gt;b__20_0(AsyncCallback asyncCallback, Object asyncState, ProcessRequestState innerState)&#xD;&#xA;   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncVoid`1.CallBeginDelegate(AsyncCallback callback, Object callbackState)&#xD;&#xA;   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResultBase`1.Begin(AsyncCallback callback, Object state, Int32 timeout)&#xD;&#xA;   at System.Web.Mvc.MvcHandler.BeginProcessRequest(HttpContextBase httpContext, AsyncCallback callback, Object state)&#xD;&#xA;   at System.Web.Mvc.MvcHandler.BeginProcessRequest(HttpContext httpContext, AsyncCallback callback, Object state)&#xD;&#xA;   at System.Web.Mvc.MvcHandler.System.Web.IHttpAsyncHandler.BeginProcessRequest(HttpContext context, AsyncCallback cb, Object extraData)&#xD;&#xA;   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()&#xD;&#xA;   at System.Web.HttpApplication.ExecuteStepImpl(IExecutionStep step)&#xD;&#xA;   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean&amp; completedSynchronously)" user="Admin" time="2020-08-04T04:31:55.9773323Z" statusCode="500">
+  <serverVariables>
+    <item name="ALL_HTTP">
+      <value string="HTTP_CACHE_CONTROL:no-cache&#xD;&#xA;HTTP_CONNECTION:keep-alive&#xD;&#xA;HTTP_PRAGMA:no-cache&#xD;&#xA;HTTP_CONTENT_LENGTH:1966&#xD;&#xA;HTTP_CONTENT_TYPE:application/x-www-form-urlencoded&#xD;&#xA;HTTP_ACCEPT:*/*&#xD;&#xA;HTTP_ACCEPT_ENCODING:gzip, deflate&#xD;&#xA;HTTP_ACCEPT_LANGUAGE:en-US,en;q=0.5&#xD;&#xA;HTTP_COOKIE:__RequestVerificationToken=KSt34cc8xfMQAPGSnZFwe2gSMSQsQUr1xwXq2nT8JF8QrpVgUniXb6ESU4xDVrAtxs41ifA0tKW0Zxb5avySCYFJ-Am568IutNoJRFjw-cM1; .AspNet.ApplicationCookie=YTfwBH3HeWEAuwcj5W_4yu66osarCtZUyAbntNe_1cVLHqYxygZgVx89dDaePUdNk7LvxxvX15PY8gtQmLo0rIA3JIqKMiLD5b7DIUj4uRzwpIB0xNhea5KWvbZ1wXU5RVbGcn_-rafz1wvJIOzABOD99nxo0Namx30ZAWyp9pAw1rqDC0yREqwffaTmsV0ZAEBTnvJYFBpWVDOtgLctAt2I3u7lc-_3kuuJCR77_BDX8T-r8JhQWArm5YnjXvNDIaLtz4DxHb9zv5jNkNVlF_f15TGEpjCohz-BVVl9kLxxWnFaevHmSBWTQOsegfX1iYgBju0TvtYf8r8JxNRFAQYJWQ5enLmP9lHxByflTg-nsChuPwV0Ms_yyeJ-0JmxQ_rArpJuDUbCIZ37Ur1wbe-6g1LdusA2W5fOTaRW93uPcmw_VOv4CP4t18zwDcsBqejUdexzVEYDhfoZHFWU1TIma6fv01XRJgCU6gDO9L61AmtYOB1371Zo7MwlT0Q_oFw8xeh2JKF_NDCJ3Ecxj0ibgMu0-96ecstjvD-JzleiNUEedNCbD6LZFH4aFGhKIeYR1CQURcUNkheL10wg7i9TMSXqnD1PPH5K45CrO5BcXw0GqV5a4PqW7rrTqqAUE55kZUpnk28zKmjGt7RtcjcAiI9t-DGWLSJy4zt85BEN8W0xISErTV24C55drDrGlWceeg452891Sh6mwcn6X2_46eHHH2Lm0S7RBGGn1QeA6r3BFWqZ37nfzWveEGmCCnW0t2pPzcuUJ_7xekuvzA&#xD;&#xA;HTTP_HOST:localhost:50878&#xD;&#xA;HTTP_REFERER:http://localhost:50878/PQ/Edit?DocNum=PQU2100007&#xD;&#xA;HTTP_USER_AGENT:Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:79.0) Gecko/20100101 Firefox/79.0&#xD;&#xA;HTTP_X_REQUESTED_WITH:XMLHttpRequest&#xD;&#xA;HTTP_ORIGIN:http://localhost:50878&#xD;&#xA;" />
+    </item>
+    <item name="ALL_RAW">
+      <value string="Cache-Control: no-cache&#xD;&#xA;Connection: keep-alive&#xD;&#xA;Pragma: no-cache&#xD;&#xA;Content-Length: 1966&#xD;&#xA;Content-Type: application/x-www-form-urlencoded&#xD;&#xA;Accept: */*&#xD;&#xA;Accept-Encoding: gzip, deflate&#xD;&#xA;Accept-Language: en-US,en;q=0.5&#xD;&#xA;Cookie: __RequestVerificationToken=KSt34cc8xfMQAPGSnZFwe2gSMSQsQUr1xwXq2nT8JF8QrpVgUniXb6ESU4xDVrAtxs41ifA0tKW0Zxb5avySCYFJ-Am568IutNoJRFjw-cM1; .AspNet.ApplicationCookie=YTfwBH3HeWEAuwcj5W_4yu66osarCtZUyAbntNe_1cVLHqYxygZgVx89dDaePUdNk7LvxxvX15PY8gtQmLo0rIA3JIqKMiLD5b7DIUj4uRzwpIB0xNhea5KWvbZ1wXU5RVbGcn_-rafz1wvJIOzABOD99nxo0Namx30ZAWyp9pAw1rqDC0yREqwffaTmsV0ZAEBTnvJYFBpWVDOtgLctAt2I3u7lc-_3kuuJCR77_BDX8T-r8JhQWArm5YnjXvNDIaLtz4DxHb9zv5jNkNVlF_f15TGEpjCohz-BVVl9kLxxWnFaevHmSBWTQOsegfX1iYgBju0TvtYf8r8JxNRFAQYJWQ5enLmP9lHxByflTg-nsChuPwV0Ms_yyeJ-0JmxQ_rArpJuDUbCIZ37Ur1wbe-6g1LdusA2W5fOTaRW93uPcmw_VOv4CP4t18zwDcsBqejUdexzVEYDhfoZHFWU1TIma6fv01XRJgCU6gDO9L61AmtYOB1371Zo7MwlT0Q_oFw8xeh2JKF_NDCJ3Ecxj0ibgMu0-96ecstjvD-JzleiNUEedNCbD6LZFH4aFGhKIeYR1CQURcUNkheL10wg7i9TMSXqnD1PPH5K45CrO5BcXw0GqV5a4PqW7rrTqqAUE55kZUpnk28zKmjGt7RtcjcAiI9t-DGWLSJy4zt85BEN8W0xISErTV24C55drDrGlWceeg452891Sh6mwcn6X2_46eHHH2Lm0S7RBGGn1QeA6r3BFWqZ37nfzWveEGmCCnW0t2pPzcuUJ_7xekuvzA&#xD;&#xA;Host: localhost:50878&#xD;&#xA;Referer: http://localhost:50878/PQ/Edit?DocNum=PQU2100007&#xD;&#xA;User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:79.0) Gecko/20100101 Firefox/79.0&#xD;&#xA;X-Requested-With: XMLHttpRequest&#xD;&#xA;Origin: http://localhost:50878&#xD;&#xA;" />
+    </item>
+    <item name="APPL_MD_PATH">
+      <value string="/LM/W3SVC/2/ROOT" />
+    </item>
+    <item name="APPL_PHYSICAL_PATH">
+      <value string="D:\WebApplications\BuildMateSalesSystem-From07Nov2019\BMSS.WebUI\" />
+    </item>
+    <item name="AUTH_TYPE">
+      <value string="ApplicationCookie" />
+    </item>
+    <item name="AUTH_USER">
+      <value string="Admin" />
+    </item>
+    <item name="AUTH_PASSWORD">
+      <value string="" />
+    </item>
+    <item name="LOGON_USER">
+      <value string="Admin" />
+    </item>
+    <item name="REMOTE_USER">
+      <value string="Admin" />
+    </item>
+    <item name="CERT_COOKIE">
+      <value string="" />
+    </item>
+    <item name="CERT_FLAGS">
+      <value string="" />
+    </item>
+    <item name="CERT_ISSUER">
+      <value string="" />
+    </item>
+    <item name="CERT_KEYSIZE">
+      <value string="" />
+    </item>
+    <item name="CERT_SECRETKEYSIZE">
+      <value string="" />
+    </item>
+    <item name="CERT_SERIALNUMBER">
+      <value string="" />
+    </item>
+    <item name="CERT_SERVER_ISSUER">
+      <value string="" />
+    </item>
+    <item name="CERT_SERVER_SUBJECT">
+      <value string="" />
+    </item>
+    <item name="CERT_SUBJECT">
+      <value string="" />
+    </item>
+    <item name="CONTENT_LENGTH">
+      <value string="1966" />
+    </item>
+    <item name="CONTENT_TYPE">
+      <value string="application/x-www-form-urlencoded" />
+    </item>
+    <item name="GATEWAY_INTERFACE">
+      <value string="CGI/1.1" />
+    </item>
+    <item name="HTTPS">
+      <value string="off" />
+    </item>
+    <item name="HTTPS_KEYSIZE">
+      <value string="" />
+    </item>
+    <item name="HTTPS_SECRETKEYSIZE">
+      <value string="" />
+    </item>
+    <item name="HTTPS_SERVER_ISSUER">
+      <value string="" />
+    </item>
+    <item name="HTTPS_SERVER_SUBJECT">
+      <value string="" />
+    </item>
+    <item name="INSTANCE_ID">
+      <value string="2" />
+    </item>
+    <item name="INSTANCE_META_PATH">
+      <value string="/LM/W3SVC/2" />
+    </item>
+    <item name="LOCAL_ADDR">
+      <value string="::1" />
+    </item>
+    <item name="PATH_INFO">
+      <value string="/PQ/Add" />
+    </item>
+    <item name="PATH_TRANSLATED">
+      <value string="D:\WebApplications\BuildMateSalesSystem-From07Nov2019\BMSS.WebUI\PQ\Add" />
+    </item>
+    <item name="QUERY_STRING">
+      <value string="" />
+    </item>
+    <item name="REMOTE_ADDR">
+      <value string="::1" />
+    </item>
+    <item name="REMOTE_HOST">
+      <value string="::1" />
+    </item>
+    <item name="REMOTE_PORT">
+      <value string="52781" />
+    </item>
+    <item name="REQUEST_METHOD">
+      <value string="POST" />
+    </item>
+    <item name="SCRIPT_NAME">
+      <value string="/PQ/Add" />
+    </item>
+    <item name="SERVER_NAME">
+      <value string="localhost" />
+    </item>
+    <item name="SERVER_PORT">
+      <value string="50878" />
+    </item>
+    <item name="SERVER_PORT_SECURE">
+      <value string="0" />
+    </item>
+    <item name="SERVER_PROTOCOL">
+      <value string="HTTP/1.1" />
+    </item>
+    <item name="SERVER_SOFTWARE">
+      <value string="Microsoft-IIS/10.0" />
+    </item>
+    <item name="URL">
+      <value string="/PQ/Add" />
+    </item>
+    <item name="HTTP_CACHE_CONTROL">
+      <value string="no-cache" />
+    </item>
+    <item name="HTTP_CONNECTION">
+      <value string="keep-alive" />
+    </item>
+    <item name="HTTP_PRAGMA">
+      <value string="no-cache" />
+    </item>
+    <item name="HTTP_CONTENT_LENGTH">
+      <value string="1966" />
+    </item>
+    <item name="HTTP_CONTENT_TYPE">
+      <value string="application/x-www-form-urlencoded" />
+    </item>
+    <item name="HTTP_ACCEPT">
+      <value string="*/*" />
+    </item>
+    <item name="HTTP_ACCEPT_ENCODING">
+      <value string="gzip, deflate" />
+    </item>
+    <item name="HTTP_ACCEPT_LANGUAGE">
+      <value string="en-US,en;q=0.5" />
+    </item>
+    <item name="HTTP_COOKIE">
+      <value string="__RequestVerificationToken=KSt34cc8xfMQAPGSnZFwe2gSMSQsQUr1xwXq2nT8JF8QrpVgUniXb6ESU4xDVrAtxs41ifA0tKW0Zxb5avySCYFJ-Am568IutNoJRFjw-cM1; .AspNet.ApplicationCookie=YTfwBH3HeWEAuwcj5W_4yu66osarCtZUyAbntNe_1cVLHqYxygZgVx89dDaePUdNk7LvxxvX15PY8gtQmLo0rIA3JIqKMiLD5b7DIUj4uRzwpIB0xNhea5KWvbZ1wXU5RVbGcn_-rafz1wvJIOzABOD99nxo0Namx30ZAWyp9pAw1rqDC0yREqwffaTmsV0ZAEBTnvJYFBpWVDOtgLctAt2I3u7lc-_3kuuJCR77_BDX8T-r8JhQWArm5YnjXvNDIaLtz4DxHb9zv5jNkNVlF_f15TGEpjCohz-BVVl9kLxxWnFaevHmSBWTQOsegfX1iYgBju0TvtYf8r8JxNRFAQYJWQ5enLmP9lHxByflTg-nsChuPwV0Ms_yyeJ-0JmxQ_rArpJuDUbCIZ37Ur1wbe-6g1LdusA2W5fOTaRW93uPcmw_VOv4CP4t18zwDcsBqejUdexzVEYDhfoZHFWU1TIma6fv01XRJgCU6gDO9L61AmtYOB1371Zo7MwlT0Q_oFw8xeh2JKF_NDCJ3Ecxj0ibgMu0-96ecstjvD-JzleiNUEedNCbD6LZFH4aFGhKIeYR1CQURcUNkheL10wg7i9TMSXqnD1PPH5K45CrO5BcXw0GqV5a4PqW7rrTqqAUE55kZUpnk28zKmjGt7RtcjcAiI9t-DGWLSJy4zt85BEN8W0xISErTV24C55drDrGlWceeg452891Sh6mwcn6X2_46eHHH2Lm0S7RBGGn1QeA6r3BFWqZ37nfzWveEGmCCnW0t2pPzcuUJ_7xekuvzA" />
+    </item>
+    <item name="HTTP_HOST">
+      <value string="localhost:50878" />
+    </item>
+    <item name="HTTP_REFERER">
+      <value string="http://localhost:50878/PQ/Edit?DocNum=PQU2100007" />
+    </item>
+    <item name="HTTP_USER_AGENT">
+      <value string="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:79.0) Gecko/20100101 Firefox/79.0" />
+    </item>
+    <item name="HTTP_X_REQUESTED_WITH">
+      <value string="XMLHttpRequest" />
+    </item>
+    <item name="HTTP_ORIGIN">
+      <value string="http://localhost:50878" />
+    </item>
+  </serverVariables>
+  <form>
+    <item name="docNum">
+      <value string="PQU2100007" />
+    </item>
+    <item name="cardCode">
+      <value string="AWGINS" />
+    </item>
+    <item name="cardName">
+      <value string="AWGINS" />
+    </item>
+    <item name="currency">
+      <value string="SGD" />
+    </item>
+    <item name="officeTelNo">
+      <value string="" />
+    </item>
+    <item name="fax">
+      <value string="6282 6188" />
+    </item>
+    <item name="docDate">
+      <value string="04/08/2020" />
+    </item>
+    <item name="deliveryDate">
+      <value string="04/08/2020" />
+    </item>
+    <item name="ref">
+      <value string="" />
+    </item>
+    <item name="exRate">
+      <value string="1.000000" />
+    </item>
+    <item name="slpName">
+      <value string="-No Sales Employee-" />
+    </item>
+    <item name="deliveryTime">
+      <value string="" />
+    </item>
+    <item name="headerRemarks1">
+      <value string="" />
+    </item>
+    <item name="headerRemarks2">
+      <value string="" />
+    </item>
+    <item name="headerRemarks3">
+      <value string="" />
+    </item>
+    <item name="headerRemarks4">
+      <value string="" />
+    </item>
+    <item name="footerRemarks1">
+      <value string="" />
+    </item>
+    <item name="footerRemarks2">
+      <value string="" />
+    </item>
+    <item name="footerRemarks3">
+      <value string="" />
+    </item>
+    <item name="footerRemarks4">
+      <value string="" />
+    </item>
+    <item name="billToAddress1">
+      <value string="" />
+    </item>
+    <item name="billToAddress2">
+      <value string="" />
+    </item>
+    <item name="billToAddress3">
+      <value string="" />
+    </item>
+    <item name="billToAddress4">
+      <value string="" />
+    </item>
+    <item name="billToAddress5">
+      <value string="" />
+    </item>
+    <item name="shipTo">
+      <value string="1 Joo Yee Road" />
+    </item>
+    <item name="shipToAddress1">
+      <value string="1 Joo Yee Road" />
+    </item>
+    <item name="shipToAddress2">
+      <value string="Singapore 619197" />
+    </item>
+    <item name="shipToAddress3">
+      <value string="" />
+    </item>
+    <item name="shipToAddress4">
+      <value string="" />
+    </item>
+    <item name="shipToAddress5">
+      <value string="" />
+    </item>
+    <item name="selfCollect">
+      <value string="false" />
+    </item>
+    <item name="selfCollectRemarks1">
+      <value string="" />
+    </item>
+    <item name="selfCollectRemarks2">
+      <value string="" />
+    </item>
+    <item name="selfCollectRemarks3">
+      <value string="" />
+    </item>
+    <item name="selfCollectRemarks4">
+      <value string="" />
+    </item>
+    <item name="selfCollectRemarks5">
+      <value string="" />
+    </item>
+    <item name="discByPercent">
+      <value string="true" />
+    </item>
+    <item name="discPercent">
+      <value string="0" />
+    </item>
+    <item name="discAmount">
+      <value string="0" />
+    </item>
+    <item name="grandTotal">
+      <value string="128.40" />
+    </item>
+    <item name="currentUserIsNotInRoleNotes">
+      <value string="true" />
+    </item>
+    <item name="lines[0][lineNum]">
+      <value string="0" />
+    </item>
+    <item name="lines[0][itemCode]">
+      <value string="B01-011A" />
+    </item>
+    <item name="lines[0][description]">
+      <value string="Bollard Round (150Wx180H) Fire Engine Access" />
+    </item>
+    <item name="lines[0][overwriteDescription]">
+      <value string="" />
+    </item>
+    <item name="lines[0][description2]">
+      <value string="" />
+    </item>
+    <item name="lines[0][description3]">
+      <value string="" />
+    </item>
+    <item name="lines[0][description4]">
+      <value string="" />
+    </item>
+    <item name="lines[0][description5]">
+      <value string="" />
+    </item>
+    <item name="lines[0][description6]">
+      <value string="" />
+    </item>
+    <item name="lines[0][serialNumber]">
+      <value string="" />
+    </item>
+    <item name="lines[0][qty]">
+      <value string="15" />
+    </item>
+    <item name="lines[0][location]">
+      <value string="JYR" />
+    </item>
+    <item name="lines[0][locationText]">
+      <value string="Joo Yee" />
+    </item>
+    <item name="lines[0][unitPrice]">
+      <value string="5" />
+    </item>
+    <item name="lines[0][gst]">
+      <value string="7" />
+    </item>
+    <item name="lines[0][gstName]">
+      <value string="TX7" />
+    </item>
+    <item name="lines[0][lineTotal]">
+      <value string="75" />
+    </item>
+    <item name="lines[1][lineNum]">
+      <value string="1" />
+    </item>
+    <item name="lines[1][itemCode]">
+      <value string="B01-011B" />
+    </item>
+    <item name="lines[1][description]">
+      <value string="Bollard Round (150Wx900H) -" />
+    </item>
+    <item name="lines[1][overwriteDescription]">
+      <value string="" />
+    </item>
+    <item name="lines[1][description2]">
+      <value string="" />
+    </item>
+    <item name="lines[1][description3]">
+      <value string="" />
+    </item>
+    <item name="lines[1][description4]">
+      <value string="" />
+    </item>
+    <item name="lines[1][description5]">
+      <value string="" />
+    </item>
+    <item name="lines[1][description6]">
+      <value string="" />
+    </item>
+    <item name="lines[1][serialNumber]">
+      <value string="" />
+    </item>
+    <item name="lines[1][qty]">
+      <value string="15" />
+    </item>
+    <item name="lines[1][location]">
+      <value string="JYR" />
+    </item>
+    <item name="lines[1][locationText]">
+      <value string="Joo Yee" />
+    </item>
+    <item name="lines[1][unitPrice]">
+      <value string="3" />
+    </item>
+    <item name="lines[1][gst]">
+      <value string="7" />
+    </item>
+    <item name="lines[1][gstName]">
+      <value string="TX7" />
+    </item>
+    <item name="lines[1][lineTotal]">
+      <value string="45" />
+    </item>
+    <item name="netTotal">
+      <value string="120.00" />
+    </item>
+    <item name="gstTotal">
+      <value string="8.40" />
+    </item>
+    <item name="__RequestVerificationToken">
+      <value string="" />
+    </item>
+  </form>
+  <cookies>
+    <item name="__RequestVerificationToken">
+      <value string="KSt34cc8xfMQAPGSnZFwe2gSMSQsQUr1xwXq2nT8JF8QrpVgUniXb6ESU4xDVrAtxs41ifA0tKW0Zxb5avySCYFJ-Am568IutNoJRFjw-cM1" />
+    </item>
+    <item name=".AspNet.ApplicationCookie">
+      <value string="YTfwBH3HeWEAuwcj5W_4yu66osarCtZUyAbntNe_1cVLHqYxygZgVx89dDaePUdNk7LvxxvX15PY8gtQmLo0rIA3JIqKMiLD5b7DIUj4uRzwpIB0xNhea5KWvbZ1wXU5RVbGcn_-rafz1wvJIOzABOD99nxo0Namx30ZAWyp9pAw1rqDC0yREqwffaTmsV0ZAEBTnvJYFBpWVDOtgLctAt2I3u7lc-_3kuuJCR77_BDX8T-r8JhQWArm5YnjXvNDIaLtz4DxHb9zv5jNkNVlF_f15TGEpjCohz-BVVl9kLxxWnFaevHmSBWTQOsegfX1iYgBju0TvtYf8r8JxNRFAQYJWQ5enLmP9lHxByflTg-nsChuPwV0Ms_yyeJ-0JmxQ_rArpJuDUbCIZ37Ur1wbe-6g1LdusA2W5fOTaRW93uPcmw_VOv4CP4t18zwDcsBqejUdexzVEYDhfoZHFWU1TIma6fv01XRJgCU6gDO9L61AmtYOB1371Zo7MwlT0Q_oFw8xeh2JKF_NDCJ3Ecxj0ibgMu0-96ecstjvD-JzleiNUEedNCbD6LZFH4aFGhKIeYR1CQURcUNkheL10wg7i9TMSXqnD1PPH5K45CrO5BcXw0GqV5a4PqW7rrTqqAUE55kZUpnk28zKmjGt7RtcjcAiI9t-DGWLSJy4zt85BEN8W0xISErTV24C55drDrGlWceeg452891Sh6mwcn6X2_46eHHH2Lm0S7RBGGn1QeA6r3BFWqZ37nfzWveEGmCCnW0t2pPzcuUJ_7xekuvzA" />
+    </item>
+  </cookies>
+</error>

@@ -1,0 +1,396 @@
+﻿@using BMSS.WebUI.Models.Customer
+@model CashCustomerViewModel
+@{
+    ViewBag.Title = "Cash Customer";
+}
+@section Styles {
+    @Styles.Render("~/DataTablesCss")
+}
+@section Content_Header {
+    <section class="content-header">
+        <h1>
+            Cash Customers
+            <small>Cash Customers</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href='@Url.Action("Index", "CashSalesCustomer")'><i class="fa fa-dashboard"></i>Administration</a></li>
+            <li class="active">Cash Customer</li>
+        </ol>
+    </section>
+}
+<div class="row">
+    <div class="col-6" id="CashCustomerForm">
+        <div class="box box-info">
+            <div class="box-header with-border">
+                <h3 class="box-title">Add Cash Customer</h3>
+            </div>
+            @using (Html.BeginForm(null, null, null, FormMethod.Post, new { @id = "AddCashSalesCustomerForm", @class = "form-horizontal", data_bind = "submit: validateAndSubmit" }))
+            {
+                @Html.ValidationSummary()
+                @Html.AntiForgeryToken()
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.CustomerName)
+                            @Html.TextBoxFor(x => x.CustomerName, new { @class = "form-control", data_bind = "textInput: CSC.customerName" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.CustomerID)
+                            @Html.TextBoxFor(x => x.CustomerID, new { @class = "form-control", data_bind = "textInput: CSC.customerID, attr : {'disabled' : isDisabled}" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.AddressLine1)
+                            @Html.TextBoxFor(x => x.AddressLine1, new { @class = "form-control", data_bind = "textInput: CSC.addressLine1" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.AddressLine2)
+                            @Html.TextBoxFor(x => x.AddressLine2, new { @class = "form-control", data_bind = "textInput: CSC.addressLine2" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.AddressLine3)
+                            @Html.TextBoxFor(x => x.AddressLine3, new { @class = "form-control", data_bind = "textInput: CSC.addressLine3" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.AddressLine4)
+                            @Html.TextBoxFor(x => x.AddressLine4, new { @class = "form-control", data_bind = "textInput: CSC.addressLine4" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.Country)
+                            @Html.TextBoxFor(x => x.Country, new { @class = "form-control", data_bind = "textInput: CSC.country" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.PostalCode)
+                            @Html.TextBoxFor(x => x.PostalCode, new { @class = "form-control", data_bind = "textInput: CSC.postalCode" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.SlpCode)
+                            @*@Html.TextBoxFor(x => x.SalesPerson, new { @class = "form-control", data_bind = "textInput: CSC.salesPerson" })*@
+                            @Html.DropDownListFor(x => x.SlpCode, Enumerable.Empty<SelectListItem>(), null, new { @class = "form-control select2", data_bind = "options: SalesPersons, optionsText: 'Text', optionsValue: 'Value', value: CSC.slpCode" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-primary pull-right btn-sm">Save</button>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="col-6" id="CashCustomerList">
+        <div class="box box-info">
+            <div class="box-header with-border">
+                <h3 class="box-title">Cash Customer List</h3>
+            </div>
+            <div class="box-body">
+                <table id="CashSalesCustomerListTbl" class="table table-striped table-bordered responsive nowrap bmdatatable" data-auto-width="false" data-paging='true' data-searching="false" data-length-change="false" data-page-length="10" data-ordering="true" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th rowspan="2">Company Name / Personal Name</th>
+                            <th rowspan="2" data-priority="1">Contact No</th>
+                            <th rowspan="2">Sales Person</th>
+                            <th rowspan="2">Date Created</th>
+                            <th colspan="2" data-priority="1">Actions</th>
+                        </tr>
+                        <tr>
+                            <th data-priority="1">Edit</th>
+                            <th data-priority="1">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/DataTables")
+    @Scripts.Render("~/bundles/Jquery-Validation-and-Ajax")
+    @Scripts.Render("~/Knockout")
+    <script>
+        function CashSalesCustomerViewModel(cSC) {
+            var self = this;
+            self.deleteCustomerID = null;
+            self.SalesPersons  = ko.observableArray();
+            self.isCreating = true;
+            self.isDisabled = ko.observable(false);
+            
+            // Model Binding
+            self.CSC = {
+                docEntry: ko.observable(cSC.docEntry),
+                customerID: ko.observable(cSC.customerID),
+                customerName: ko.observable(cSC.customerName),
+                addressLine1: ko.observable(cSC.addressLine1),
+                addressLine2: ko.observable(cSC.addressLine2),
+                addressLine3: ko.observable(cSC.addressLine3),
+                addressLine4: ko.observable(cSC.addressLine4),
+                country: ko.observable(cSC.country),
+                postalCode: ko.observable(cSC.postalCode),
+                slpCode: ko.observable(cSC.slpCode),
+
+            }
+            // Initialize Add/Update SQ Model to the Initial State of page loaded first
+            self.Initialize = function () { // Used to initialize Form
+                self.CSC.docEntry(0);
+                self.CSC.customerID(null);
+                self.CSC.customerName(null);
+                self.CSC.addressLine1(null);
+                self.CSC.addressLine2(null);
+                self.CSC.addressLine3(null);
+                self.CSC.addressLine4(null);
+                self.CSC.country(null);
+                self.CSC.postalCode(null);
+                self.CSC.slpCode(null);
+            }
+            // SQ Form Submission using Ajax
+            self.validateAndSubmit = function (form) {
+                //By Default this function will return false, so form submission will not happen
+                if (!$(form).valid()) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+                else {
+
+                    // Remove All li before submission, which he had in the previous validation
+                    $(form).find(".validation-summary-errors ul li").remove();
+                    $(form).find(".validation-summary-valid ul li").remove();
+
+                    self.CSC.__RequestVerificationToken = form[0].value;
+                    $.ajax({
+                        url: "@Url.Action("Add", "CashSalesCustomer", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS(self.CSC),
+                        success: function (data)
+                        {
+                            self.isDisabled(false);
+                            self.successfulSave(form, data);
+                        },
+                        error: function ()
+                        {
+                            self.errorSave(form);
+                        }
+                    });
+                }
+            }
+            self.LoadCustomerList = function () {
+
+                var CashCustomerTable = $('#CashSalesCustomerListTbl').DataTable();
+                CashCustomerTable.clear().draw();
+                    $.ajax({
+                        url: "@Url.Action("GetCashSalesCustomerList", "CashSalesCustomer", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({}),
+                        success: function (data) {
+
+                            var CashCustomerLines = data;
+                            if (CashCustomerLines !== null) {
+
+                                for (var i = 0; i < CashCustomerLines.length; i++) {
+                                    var rowNode =  CashCustomerTable.row.add([
+                                        CashCustomerLines[i].CustomerName,
+                                        CashCustomerLines[i].CustomerID,
+                                        CashCustomerLines[i].SalesPerson,               
+                                        CashCustomerLines[i].CreatedOn,                                        
+                                        '<button type="button" class="btn btn-info btn-xs" data-bind="click: function(customerid, data, event) { validateAndEdit(' + CashCustomerLines[i].DocEntry + ', data, event)}" name="EditRow" id="EditRow" ><i class="fa fa-fw fa-edit"></i></button>',
+                                        '<button type="button" class="btn btn-danger btn-xs" data-bind="click: function(customerid, data, event) { validateAndDelete(' + CashCustomerLines[i].DocEntry + ', data, event)}" name="DeleteRow" id="DeleteRow" ><i class="fa fa-fw fa-remove"></i></button>',
+                                        
+
+                                    ]).draw().node();
+                                    ko.applyBindings(self, rowNode);
+
+                                }
+                                CashCustomerTable.columns.adjust().draw();
+                            }
+
+                        },
+                        error: function () { }
+                    });
+
+            }
+            self.validateAndEdit = function (CustomerID) {
+                $.ajax({
+                        url: "@Url.Action("Edit", "CashSalesCustomer", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ DocEntry: CustomerID }),
+                        success: function (data)
+                        {
+
+                            self.isCreating = false;
+                            self.isDisabled(true);
+                            self.CSC.docEntry(data.DocEntry);
+                            self.CSC.customerID(data.CustomerID);
+                            self.CSC.customerName(data.CustomerName);
+                            self.CSC.addressLine1(data.AddressLine1);
+                            self.CSC.addressLine2(data.AddressLine2);
+                            self.CSC.addressLine3(data.AddressLine3);
+                            self.CSC.addressLine4(data.AddressLine4);
+                            self.CSC.country(data.Country);
+                            self.CSC.postalCode(data.PostalCode);
+                            self.CSC.slpCode(data.SlpCode);
+                          
+                            $('#SlpCode').val(data.SlpCode).trigger('change');
+                        },
+                        error: function ()
+                        {
+                            self.errorSave(form);
+                        }
+                    });
+            }
+
+            self.validateAndDelete = function (CustomerID) {     
+               
+                self.deleteCustomerID = CustomerID;
+                deleteConfirmation();                      
+            }
+            self.validateAndDeleteLine = function () {
+               
+               
+                $.ajax({
+                        url: "@Url.Action("Delete", "CashSalesCustomer", null)",
+                        type: 'post',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: ko.toJS({ DocEntry: self.deleteCustomerID }),
+                        success: function (data)
+                        {
+                            self.deleteCustomerID = null;
+                            self.isDisabled(false);
+                            self.successfulDelete(data);
+                            $('#DeleteConfirmationModal').modal('toggle');
+                        },
+                        error: function ()
+                        {
+                            self.errorSave(form);
+                        }
+                    });
+            }
+
+            self.successfulDelete = function (data) {
+                self.Initialize();
+                self.LoadCustomerList();   
+                $('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Success!</h4> Customer Deleted Successfully</div>')
+                    .prependTo($("#CashCustomerList"))
+                    .delay(5000)
+                    .slideUpAndRemove('slow');
+            }
+            self.successfulSave = function (form, data) {
+                if (Boolean(data.IsModelValid) === true) {
+                    self.Initialize();
+                    self.LoadCustomerList();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    $('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Success!</h4> Customer Added/Updated Successfully</div>')
+                        .prependTo($(form))
+                        .delay(5000)
+                        .slideUpAndRemove('slow');
+
+                }
+                else {
+
+                    var ErrArray = data.ModelErrList;
+
+                    $(form).find(".validation-summary-errors ul li").remove(); // Remove All li if before Submission had client side errors
+                    $(form).find(".validation-summary-valid ul li").remove();  // Remove one li with diplay:none style if before Submission didn't had any client side errors
+
+                    for (var i = 0; i < data.ModelErrList.length; i++) {
+                        $(form).find(".validation-summary-errors ul").append("<li>" + ErrArray[i] + "</li>");
+                        $(form).find(".validation-summary-valid ul").append("<li>" + ErrArray[i] + "</li>");
+                    }
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+
+            }
+            self.errorSave = function (form) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                $('<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Alert!</h4><p>Sorry, Some thing went wrong, Please contact website adminitrator</p></div>')
+                    .prependTo($(form))
+                    .delay(5000)
+                    .slideUpAndRemove('slow');
+            }
+
+        }
+        $(function () {
+            var SalesPersons;
+            $.when(
+                // Initial Ajax Requests, while page loading
+                //Load Sales Persons
+                $.ajax({
+                    url: "@Url.Action("GetSalesPersons", "SalesPerson", null)",
+                    type: 'get',
+                    contentType: 'application/x-www-form-urlencoded',
+                    success: function (data) {
+
+                        SalesPersons = data;
+
+                    },
+                    error: function () { }
+                })                                  
+            ).done(function () {
+                   //View Model Object Initialization
+                var cSCVM = new CashSalesCustomerViewModel(@Html.ViewModelToJson(Model));
+                cSCVM.SalesPersons = SalesPersons;
+                 ko.applyBindings(cSCVM);
+                 cSCVM.LoadCustomerList();
+
+            });
+           
+
+        });
+        function deleteConfirmation() {
+            $('#DeleteConfirmationModal').modal('toggle');           
+        }
+    </script>
+}
+@section BootModals {
+    <div class="modal fade" id="DeleteConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="DeleteConfirmationModelTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="DeleteConfirmationModelTitle">Delete</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h6>Are you sure that you want to delete this?</h6>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="">Close</button>
+                    <button type="button" class="btn btn-danger" id="deleteLine" data-bind="click: function(data, event) { validateAndDeleteLine(data, event)}">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

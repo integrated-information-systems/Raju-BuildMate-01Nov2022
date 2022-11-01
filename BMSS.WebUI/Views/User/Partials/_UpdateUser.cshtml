@@ -1,0 +1,79 @@
+﻿@using BMSS.WebUI.Models.UserViewModels
+@model UpdateUserModel
+
+@{  
+    IEnumerable<SelectListItem> customers = ViewBag.CustomerList;
+    IEnumerable<SelectListItem> salesPersons = ViewBag.SalesPersonList;
+    IEnumerable<SelectListItem> wareHouses = ViewBag.WarehouseList;
+    AjaxOptions ajaxOpts = new AjaxOptions
+    {
+        OnSuccess = "AjaxFormSuccess('" + Model.AjaxOptions.UpdateActionTargetId + "', '" + Model.AjaxOptions.UpdateFormId + "', data)",
+        Url = Url.Action(Model.AjaxOptions.FormUpdateAction),
+        HttpMethod = "POST"
+    };
+
+}
+<div class="box box-info">
+    <div class="box-header with-border">
+        <h3 class="box-title">Edit User</h3>
+    </div>
+    @using (Ajax.BeginForm(Model.AjaxOptions.FormUpdateAction, null, ajaxOpts, new { id = Model.AjaxOptions.UpdateFormId }))
+    {
+        @Html.ValidationSummary()
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.Id)
+
+    <div class="box-body">
+        <div class="form-group row">
+            @Html.LabelFor(x => x.Name, new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-10">
+                @Html.TextBoxFor(x => x.Name, new { @class = "form-control", disabled = "" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(x => x.UpdatedEmail, new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-10">
+                @Html.TextBoxFor(x => x.UpdatedEmail, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(x => x.PreferredLocation, new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-10">
+                @Html.DropDownListFor(x => x.PreferredLocation, wareHouses, new { @class = "form-control select2", style = "width:100%" })
+
+            </div>
+        </div>
+        <div class="form-group row" >
+            @Html.LabelFor(x => x.PreferredCashCusomter, new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-10">
+                @Html.DropDownListFor(x => x.PreferredCashCusomter, customers, new { @class = "form-control select2", style = "width:100%" })
+            </div>
+        </div>
+        <div class="form-group row" >
+            @Html.LabelFor(x => x.PreferredSalesPerson, new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-10">
+                @Html.DropDownListFor(x => x.PreferredSalesPerson, salesPersons, new { @class = "form-control select2", style = "width:100%" })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(x => x.Password, new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-10">
+                @Html.PasswordFor(x => x.Password, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+        <div class="box-footer">
+            <button type="submit" class="btn btn-primary pull-right btn-sm">Save</button>
+        </div>
+    }
+</div>
+@section Scripts {
+    <script>
+        // Once Document Ready
+        $(function () {
+            $('.select2').select2();
+            
+        });
+    </script>
+}

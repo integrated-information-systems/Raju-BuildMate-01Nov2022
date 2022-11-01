@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a5e07083f44f42f5a970717e83a50171" Name="Diagram1" ZoomLevel="49" ShowGrid="true">
+        <EntityTypeShape EntityType="Model.CashSalesCreditDocLs" Width="1.5" PointX="18" PointY="2.25" />
+        <EntityTypeShape EntityType="Model.CashSalesCreditDocNotes" Width="1.5" PointX="18" PointY="8" />
+        <EntityTypeShape EntityType="Model.CashSalesCustomerMaster" Width="1.5" PointX="7.75" PointY="14.75" />
+        <EntityTypeShape EntityType="Model.CashSalesDocLs" Width="1.5" PointX="3" PointY="2.25" />
+        <EntityTypeShape EntityType="Model.CashSalesDocNotes" Width="1.5" PointX="3" PointY="8" />
+        <EntityTypeShape EntityType="Model.ChangeCRLimit" Width="1.5" PointX="12.75" PointY="16.75" />
+        <EntityTypeShape EntityType="Model.CNotesAll" Width="1.5" PointX="17.75" PointY="14.75" />
+        <EntityTypeShape EntityType="Model.CNotesMngt" Width="1.5" PointX="10.75" PointY="20.75" />
+        <EntityTypeShape EntityType="Model.DODocLs" Width="1.5" PointX="13" PointY="2.875" />
+        <EntityTypeShape EntityType="Model.DODocNotes" Width="1.5" PointX="13" PointY="13.5" />
+        <EntityTypeShape EntityType="Model.DODocStockLoan" Width="1.5" PointX="13" PointY="9.125" />
+        <EntityTypeShape EntityType="Model.GRPODocLs" Width="1.5" PointX="23" PointY="7.375" />
+        <EntityTypeShape EntityType="Model.GRPODocNotes" Width="1.5" PointX="23" PointY="4.625" />
+        <EntityTypeShape EntityType="Model.INotesAll" Width="1.5" PointX="12.75" PointY="20.75" />
+        <EntityTypeShape EntityType="Model.INotesMngt" Width="1.5" PointX="22.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.NumberingAlPay" Width="1.5" PointX="0.75" PointY="23.75" />
+        <EntityTypeShape EntityType="Model.NumberingCrSale" Width="1.5" PointX="2.75" PointY="23.75" />
+        <EntityTypeShape EntityType="Model.NumberingCSale" Width="1.5" PointX="10.75" PointY="24.75" />
+        <EntityTypeShape EntityType="Model.NumberingDO" Width="1.5" PointX="12.75" PointY="24.75" />
+        <EntityTypeShape EntityType="Model.NumberingGRN" Width="1.5" PointX="25.75" PointY="8.75" />
+        <EntityTypeShape EntityType="Model.NumberingPay" Width="1.5" PointX="25.75" PointY="13.75" />
+        <EntityTypeShape EntityType="Model.NumberingPO" Width="1.5" PointX="25.75" PointY="18.75" />
+        <EntityTypeShape EntityType="Model.NumberingSI" Width="1.5" PointX="25.75" PointY="23.75" />
+        <EntityTypeShape EntityType="Model.NumberingSL" Width="1.5" PointX="27.75" PointY="8.75" />
+        <EntityTypeShape EntityType="Model.NumberingSQ" Width="1.5" PointX="27.75" PointY="13.75" />
+        <EntityTypeShape EntityType="Model.NumberingSR" Width="1.5" PointX="17.75" PointY="27.75" />
+        <EntityTypeShape EntityType="Model.NumberingST" Width="1.5" PointX="27.75" PointY="18.75" />
+        <EntityTypeShape EntityType="Model.PaymentDocNotes" Width="1.5" PointX="3" PointY="16.375" />
+        <EntityTypeShape EntityType="Model.SNotesAll" Width="1.5" PointX="22.75" PointY="13.75" />
+        <EntityTypeShape EntityType="Model.SNotesMngt" Width="1.5" PointX="27.75" PointY="23.75" />
+        <EntityTypeShape EntityType="Model.SQDocNotes" Width="1.5" PointX="18" PointY="18.875" />
+        <EntityTypeShape EntityType="Model.StockIssueDocLs" Width="1.5" PointX="28" PointY="1.125" />
+        <EntityTypeShape EntityType="Model.StockIssueDocNotes" Width="1.5" PointX="28" PointY="6" />
+        <EntityTypeShape EntityType="Model.StockReceiptDocLs" Width="1.5" PointX="23" PointY="25.125" />
+        <EntityTypeShape EntityType="Model.StockReceiptDocNotes" Width="1.5" PointX="23" PointY="30" />
+        <EntityTypeShape EntityType="Model.StockTransDocLs" Width="1.5" PointX="23" PointY="17.125" />
+        <EntityTypeShape EntityType="Model.StockTransDocNotes" Width="1.5" PointX="23" PointY="22.25" />
+        <EntityTypeShape EntityType="Model.SyncErrLog" Width="1.5" PointX="27.75" PointY="27.75" />
+        <EntityTypeShape EntityType="Model.SyncLog" Width="1.5" PointX="0.75" PointY="28.75" />
+        <EntityTypeShape EntityType="Model.PODocNotes" Width="1.5" PointX="8" PointY="5.375" />
+        <EntityTypeShape EntityType="Model.POPDNs" Width="1.5" PointX="8" PointY="2.75" />
+        <EntityTypeShape EntityType="Model.NumberingPQ" Width="1.5" PointX="2.75" PointY="28.75" />
+        <EntityTypeShape EntityType="Model.PQDocNotes" Width="1.5" PointX="8" PointY="20.25" />
+        <EntityTypeShape EntityType="Model.PQDocLs" Width="1.5" PointX="8" PointY="23" />
+        <EntityTypeShape EntityType="Model.StockIssueDocH" Width="1.5" PointX="25.75" PointY="2" />
+        <EntityTypeShape EntityType="Model.StockTransDocH" Width="1.5" PointX="20.75" PointY="18.125" />
+        <AssociationConnector Association="Model.FK_StockIssueDocLs_StockIssueDocH" />
+        <AssociationConnector Association="Model.FK_StockIssueDocNotes_StockIssueDocH" />
+        <AssociationConnector Association="Model.FK_StockTransDocLs_StockTransDocH" />
+        <AssociationConnector Association="Model.FK_StockTransDocNotes_StockTransDocH" />
+        <EntityTypeShape EntityType="Model.CashSalesCreditDocPays" Width="1.5" PointX="18" PointY="10.75" />
+        <EntityTypeShape EntityType="Model.CashSalesDocPays" Width="1.5" PointX="3" PointY="10.75" />
+        <EntityTypeShape EntityType="Model.GRPODocH" Width="1.5" PointX="20.75" PointY="1.5" />
+        <EntityTypeShape EntityType="Model.PODocH" Width="1.5" PointX="5.75" PointY="1.5" />
+        <EntityTypeShape EntityType="Model.PQDocH" Width="1.5" PointX="5.75" PointY="18.375" />
+        <AssociationConnector Association="Model.FK_GRPODocLs_GRPODocH" />
+        <AssociationConnector Association="Model.FK_GRPODocNotes_GRPODocH" />
+        <AssociationConnector Association="Model.FK_PODocNotes_PODocH" />
+        <AssociationConnector Association="Model.FK_POPDNs_PODocH" />
+        <AssociationConnector Association="Model.FK_PQDocLs_PQDocH" />
+        <AssociationConnector Association="Model.FK_PQDocNotes_PQDocH" />
+        <EntityTypeShape EntityType="Model.SQDocH" Width="1.5" PointX="15.75" PointY="16.5" />
+        <AssociationConnector Association="Model.FK_SQDocNotes_SQDocH" />
+        <EntityTypeShape EntityType="Model.SQDocLs" Width="1.5" PointX="18" PointY="21.625" />
+        <AssociationConnector Association="Model.FK_SQDocLs_SQDocH" />
+        <EntityTypeShape EntityType="Model.PaymentDocLs" Width="1.5" PointX="3" PointY="19" />
+        <EntityTypeShape EntityType="Model.PODocLs" Width="1.5" PointX="8" PointY="8" />
+        <AssociationConnector Association="Model.FK_PODocLs_PODocH" />
+        <EntityTypeShape EntityType="Model.InventoryLog" Width="1.5" PointX="10.375" PointY="29.75" />
+        <EntityTypeShape EntityType="Model.StockBalance" Width="1.5" PointX="12.375" PointY="29.75" />
+        <EntityTypeShape EntityType="Model.StockBalanceLog" Width="1.5" PointX="30.375" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.OpeningBalanceSetup" Width="1.5" PointX="30.375" PointY="5.75" />
+        <EntityTypeShape EntityType="Model.CashSalesCreditDocH" Width="1.5" PointX="15.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.CashSalesDocH" Width="1.5" PointX="0.75" PointY="1.625" />
+        <EntityTypeShape EntityType="Model.DODocH" Width="1.5" PointX="10.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.PaymentDocH" Width="1.5" PointX="0.75" PointY="16.25" />
+        <EntityTypeShape EntityType="Model.StockReceiptDocH" Width="1.5" PointX="20.75" PointY="26.25" />
+        <AssociationConnector Association="Model.FK_CashSalesCreditDocLs_CashSalesCreditDocH" />
+        <AssociationConnector Association="Model.FK_CashSalesCreditDocNotes_CashSalesCreditDocH" />
+        <AssociationConnector Association="Model.FK_CashSalesCreditDocPays_CashSalesCreditDocH" />
+        <AssociationConnector Association="Model.FK_CashSalesDocLs_CashSalesDocH" />
+        <AssociationConnector Association="Model.FK_CashSalesDocNotes_CashSalesDocH" />
+        <AssociationConnector Association="Model.FK_CashSalesDocPays_CashSalesDocH" />
+        <AssociationConnector Association="Model.FK_DODocLs_DODocH" />
+        <AssociationConnector Association="Model.FK_DODocNotes_DODocH" />
+        <AssociationConnector Association="Model.FK_DODocStockLoan_DODocH" />
+        <AssociationConnector Association="Model.FK_PaymentDocLs_PaymentDocH" />
+        <AssociationConnector Association="Model.FK_PaymentDocNotes_PaymentDocH" />
+        <AssociationConnector Association="Model.FK_StockReceiptDocLs_StockReceiptDocH" />
+        <AssociationConnector Association="Model.FK_StockReceiptDocNotes_StockReceiptDocH" />
+        <EntityTypeShape EntityType="Model.InvMovmentView" Width="1.5" PointX="5.375" PointY="30.75" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

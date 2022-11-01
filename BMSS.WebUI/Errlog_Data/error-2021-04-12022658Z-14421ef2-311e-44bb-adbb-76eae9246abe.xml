@@ -1,0 +1,168 @@
+﻿<error errorId="14421ef2-311e-44bb-adbb-76eae9246abe" host="DESKTOP-I7NGPI4" type="System.Runtime.InteropServices.COMException" message="Retrieving the COM class factory for component with CLSID {4DB2E2BB-78E6-4AEA-BEFB-FDAAB610FD1B} failed due to the following error: 80040154 Class not registered (Exception from HRESULT: 0x80040154 (REGDB_E_CLASSNOTREG))." source="CrystalDecisions.CrystalReports.Engine" detail="System.Web.HttpUnhandledException (0x80004005): Exception of type 'System.Web.HttpUnhandledException' was thrown. ---&gt; System.TypeInitializationException: The type initializer for 'CrystalDecisions.CrystalReports.Engine.ReportDocument' threw an exception. ---&gt; System.Runtime.InteropServices.COMException: Retrieving the COM class factory for component with CLSID {4DB2E2BB-78E6-4AEA-BEFB-FDAAB610FD1B} failed due to the following error: 80040154 Class not registered (Exception from HRESULT: 0x80040154 (REGDB_E_CLASSNOTREG)).&#xD;&#xA;   at CrystalDecisions.CrystalReports.Engine.ReportDocument..cctor()&#xD;&#xA;   --- End of inner exception stack trace ---&#xD;&#xA;   at CrystalDecisions.CrystalReports.Engine.ReportDocument..ctor()&#xD;&#xA;   at BMSS.WebUI.WForms.SAPPOViewer.Page_Load(Object sender, EventArgs e) in D:\WebApplications\BuildMateSalesSystem-From29Jan2021\BMSS.WebUI\WForms\SAPPOViewer.aspx.cs:line 57&#xD;&#xA;   at System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)&#xD;&#xA;   at System.Web.UI.Control.OnLoad(EventArgs e)&#xD;&#xA;   at System.Web.UI.Control.LoadRecursive()&#xD;&#xA;   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)&#xD;&#xA;   at System.Web.UI.Page.HandleError(Exception e)&#xD;&#xA;   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)&#xD;&#xA;   at System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)&#xD;&#xA;   at System.Web.UI.Page.ProcessRequest()&#xD;&#xA;   at System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)&#xD;&#xA;   at System.Web.UI.Page.ProcessRequest(HttpContext context)&#xD;&#xA;   at ASP.wforms_sappoviewer_aspx.ProcessRequest(HttpContext context)&#xD;&#xA;   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()&#xD;&#xA;   at System.Web.HttpApplication.ExecuteStepImpl(IExecutionStep step)&#xD;&#xA;   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean&amp; completedSynchronously)" user="Admin" time="2021-04-12T02:26:58.7669702Z" statusCode="500" webHostHtmlMessage="&lt;!DOCTYPE html&gt;&#xD;&#xA;&lt;html&gt;&#xD;&#xA;    &lt;head&gt;&#xD;&#xA;        &lt;title&gt;Retrieving the COM class factory for component with CLSID {4DB2E2BB-78E6-4AEA-BEFB-FDAAB610FD1B} failed due to the following error: 80040154 Class not registered (Exception from HRESULT: 0x80040154 (REGDB_E_CLASSNOTREG)).&lt;/title&gt;&#xD;&#xA;        &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width&quot; /&gt;&#xD;&#xA;        &lt;style&gt;&#xD;&#xA;         body {font-family:&quot;Verdana&quot;;font-weight:normal;font-size: .7em;color:black;} &#xD;&#xA;         p {font-family:&quot;Verdana&quot;;font-weight:normal;color:black;margin-top: -5px}&#xD;&#xA;         b {font-family:&quot;Verdana&quot;;font-weight:bold;color:black;margin-top: -5px}&#xD;&#xA;         H1 { font-family:&quot;Verdana&quot;;font-weight:normal;font-size:18pt;color:red }&#xD;&#xA;         H2 { font-family:&quot;Verdana&quot;;font-weight:normal;font-size:14pt;color:maroon }&#xD;&#xA;         pre {font-family:&quot;Consolas&quot;,&quot;Lucida Console&quot;,Monospace;font-size:11pt;margin:0;padding:0.5em;line-height:14pt}&#xD;&#xA;         .marker {font-weight: bold; color: black;text-decoration: none;}&#xD;&#xA;         .version {color: gray;}&#xD;&#xA;         .error {margin-bottom: 10px;}&#xD;&#xA;         .expandable { text-decoration:underline; font-weight:bold; color:navy; cursor:pointer; }&#xD;&#xA;         @media screen and (max-width: 639px) {&#xD;&#xA;          pre { width: 440px; overflow: auto; white-space: pre-wrap; word-wrap: break-word; }&#xD;&#xA;         }&#xD;&#xA;         @media screen and (max-width: 479px) {&#xD;&#xA;          pre { width: 280px; }&#xD;&#xA;         }&#xD;&#xA;        &lt;/style&gt;&#xD;&#xA;    &lt;/head&gt;&#xD;&#xA;&#xD;&#xA;    &lt;body bgcolor=&quot;white&quot;&gt;&#xD;&#xA;&#xD;&#xA;            &lt;span&gt;&lt;H1&gt;Server Error in '/' Application.&lt;hr width=100% size=1 color=silver&gt;&lt;/H1&gt;&#xD;&#xA;&#xD;&#xA;            &lt;h2&gt; &lt;i&gt;Retrieving the COM class factory for component with CLSID {4DB2E2BB-78E6-4AEA-BEFB-FDAAB610FD1B} failed due to the following error: 80040154 Class not registered (Exception from HRESULT: 0x80040154 (REGDB_E_CLASSNOTREG)).&lt;/i&gt; &lt;/h2&gt;&lt;/span&gt;&#xD;&#xA;&#xD;&#xA;            &lt;font face=&quot;Arial, Helvetica, Geneva, SunSans-Regular, sans-serif &quot;&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt; Description: &lt;/b&gt;An unhandled exception occurred during the execution of the current web request. Please review the stack trace for more information about the error and where it originated in the code.&#xD;&#xA;&#xD;&#xA;            &lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt; Exception Details: &lt;/b&gt;System.Runtime.InteropServices.COMException: Retrieving the COM class factory for component with CLSID {4DB2E2BB-78E6-4AEA-BEFB-FDAAB610FD1B} failed due to the following error: 80040154 Class not registered (Exception from HRESULT: 0x80040154 (REGDB_E_CLASSNOTREG)).&lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt;Source Error:&lt;/b&gt; &lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;table width=100% bgcolor=&quot;#ffffcc&quot;&gt;&#xD;&#xA;               &lt;tr&gt;&#xD;&#xA;                  &lt;td&gt;&#xD;&#xA;                      &lt;code&gt;&lt;pre&gt;&#xD;&#xA;&#xD;&#xA;Line 55:                 string pdfFileName = BMSS.WebUI.Models.General.PrintDocTypes.SAP_PO + &amp;quot;_&amp;quot; + DocNum + &amp;quot;_&amp;quot; + DateTime.Now.ToString(&amp;quot;ddMMyy&amp;quot;) + &amp;quot;.pdf&amp;quot;;&#xD;&#xA;Line 56:                 URL = baseUrl + &amp;quot;WForms/ViewerPrint.aspx?DE=&amp;quot; + DocNum + &amp;quot;&amp;amp;Ty=&amp;quot; + BMSS.WebUI.Models.General.PrintDocTypes.SAP_PO;&#xD;&#xA;&lt;font color=red&gt;Line 57:                 ReportDocument cryRpt = new ReportDocument();&#xD;&#xA;&lt;/font&gt;Line 58:                 cryRpt.Load(Server.MapPath(&amp;quot;~\\App_Data\\Purchase_Order_SAP.rpt&amp;quot;));&#xD;&#xA;Line 59:                 cryRpt.SetDatabaseLogon(&amp;quot;sa&amp;quot;, &amp;quot;B1Admin&amp;quot;);&lt;/pre&gt;                      &lt;/code&gt;&#xD;&#xA;&#xD;&#xA;                  &lt;/td&gt;&#xD;&#xA;               &lt;/tr&gt;&#xD;&#xA;            &lt;/table&gt;&#xD;&#xA;&#xD;&#xA;            &lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt; Source File: &lt;/b&gt; D:\WebApplications\BuildMateSalesSystem-From29Jan2021\BMSS.WebUI\WForms\SAPPOViewer.aspx.cs&lt;b&gt; &amp;nbsp;&amp;nbsp; Line: &lt;/b&gt; 57&#xD;&#xA;            &lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt;Stack Trace:&lt;/b&gt; &lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;table width=100% bgcolor=&quot;#ffffcc&quot;&gt;&#xD;&#xA;               &lt;tr&gt;&#xD;&#xA;                  &lt;td&gt;&#xD;&#xA;                      &lt;code&gt;&lt;pre&gt;&#xD;&#xA;&#xD;&#xA;[COMException (0x80040154): Retrieving the COM class factory for component with CLSID {4DB2E2BB-78E6-4AEA-BEFB-FDAAB610FD1B} failed due to the following error: 80040154 Class not registered (Exception from HRESULT: 0x80040154 (REGDB_E_CLASSNOTREG)).]&#xD;&#xA;   CrystalDecisions.CrystalReports.Engine.ReportDocument..cctor() +314&#xD;&#xA;&#xD;&#xA;[TypeInitializationException: The type initializer for &amp;#39;CrystalDecisions.CrystalReports.Engine.ReportDocument&amp;#39; threw an exception.]&#xD;&#xA;   CrystalDecisions.CrystalReports.Engine.ReportDocument..ctor() +41&#xD;&#xA;   BMSS.WebUI.WForms.SAPPOViewer.Page_Load(Object sender, EventArgs e) in D:\WebApplications\BuildMateSalesSystem-From29Jan2021\BMSS.WebUI\WForms\SAPPOViewer.aspx.cs:57&#xD;&#xA;   System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e) +52&#xD;&#xA;   System.Web.UI.Control.OnLoad(EventArgs e) +97&#xD;&#xA;   System.Web.UI.Control.LoadRecursive() +61&#xD;&#xA;   System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint) +693&#xD;&#xA;&lt;/pre&gt;                      &lt;/code&gt;&#xD;&#xA;&#xD;&#xA;                  &lt;/td&gt;&#xD;&#xA;               &lt;/tr&gt;&#xD;&#xA;            &lt;/table&gt;&#xD;&#xA;&#xD;&#xA;            &lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;/font&gt;&#xD;&#xA;&#xD;&#xA;    &lt;/body&gt;&#xD;&#xA;&lt;/html&gt;&#xD;&#xA;">
+  <serverVariables>
+    <item name="ALL_HTTP">
+      <value string="HTTP_CONNECTION:keep-alive&#xD;&#xA;HTTP_ACCEPT:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8&#xD;&#xA;HTTP_ACCEPT_ENCODING:gzip, deflate&#xD;&#xA;HTTP_ACCEPT_LANGUAGE:en-US,en;q=0.5&#xD;&#xA;HTTP_COOKIE:__RequestVerificationToken=0uo0ay5FBWuEVGjuBmXiYDxUy-tdfa0unsoWeFgUgjDNqVSeKmCkhEoGDNyIOs_CCMsrlw01snNX9t9AsFo9GUHGhI9TRZUKpu9sYbPZwqY1; .AspNet.ApplicationCookie=_6ipkIHpVuvmSOz_vOICuxBVfx65xXRnBJqqIuf6ilCGo9wD9EX4rraLKPMVSSRJM-iODDO7L6FDnXW0EYNyZ3lBfCNuDKyaKj1N2DDZAEeXLRWwwoc1Q2Ble5sAaTaq4oZxvi6VteJyVcbEihu7_POdWyWGKyyi44iAoReadcj9YpkPAaDCA3B62lhOL9WkCapu7WCssC57uRKElOISDLuy95PutLB1h8eMS9L_N2ztkm8O9H_wknXCvsQptNRdLcQo0un1PaymPUE5grY1fs3uQqSeofYis56MdM8qmV8oWXSC706TLnt8IadLECbXqVj8UdeDBPh_6Wc-DdZ7aUEDUanAsT-g2_j1ZG-tsem4w08HGdRkIfSD6T9Gy_fn5-8gVYwmKie3sSUG2pspm-_tWl6UmD1w9wNOXcuvkHC4Cs6Aj0nXQglYNVjigIwYK1LOmJDSc0q9aIYFyb_InNqdFqfo3xePakR702OwLQJ-xppKSq9Jx-cnifjydf-wltlvGglw78LlbUDH6DiZCIg2VRaQ2s9Lr3V2cffekVVVZdKWFP4asSVJFgKoin7bTwNGhTeGF6FWSBN1AgR6Ci0Rsw8cldXupW6da7d-nXS4HRm0qz4SUWbGiCJEfPwUneEE76nGYOZnh_7ZFkB52x-VgeA1OQDBRfjQn6FcHRjXz_eQF8gtkXCL5JwfaAPjrBLfNfrxbvrg9kmqYnKayQ31CpQ_5PC-kc4t1dSNlkcX3jjKnivdCsxmZVEpbY_Angknd1CMM42MGEFPURml_FhX0biuaOFgvYP6ukAAJh4UjMyy5mBROsO25oiWCcgvMUQOirkbQTpbfKdB-s9ZVFub6sjr87bCPDnrWqrvf47nvJvBs91JMtTwws6c1vbUdCEAD7AtkvCEw23REdefDx-0edeYrdvnb4X61F8kyHzzWeW7rIKnwwfI_qTbknDsXpyNrmO4ATAbrnS16TOI0A&#xD;&#xA;HTTP_HOST:localhost:60054&#xD;&#xA;HTTP_REFERER:http://localhost:60054/SAPPO/Index&#xD;&#xA;HTTP_USER_AGENT:Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0&#xD;&#xA;HTTP_UPGRADE_INSECURE_REQUESTS:1&#xD;&#xA;" />
+    </item>
+    <item name="ALL_RAW">
+      <value string="Connection: keep-alive&#xD;&#xA;Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8&#xD;&#xA;Accept-Encoding: gzip, deflate&#xD;&#xA;Accept-Language: en-US,en;q=0.5&#xD;&#xA;Cookie: __RequestVerificationToken=0uo0ay5FBWuEVGjuBmXiYDxUy-tdfa0unsoWeFgUgjDNqVSeKmCkhEoGDNyIOs_CCMsrlw01snNX9t9AsFo9GUHGhI9TRZUKpu9sYbPZwqY1; .AspNet.ApplicationCookie=_6ipkIHpVuvmSOz_vOICuxBVfx65xXRnBJqqIuf6ilCGo9wD9EX4rraLKPMVSSRJM-iODDO7L6FDnXW0EYNyZ3lBfCNuDKyaKj1N2DDZAEeXLRWwwoc1Q2Ble5sAaTaq4oZxvi6VteJyVcbEihu7_POdWyWGKyyi44iAoReadcj9YpkPAaDCA3B62lhOL9WkCapu7WCssC57uRKElOISDLuy95PutLB1h8eMS9L_N2ztkm8O9H_wknXCvsQptNRdLcQo0un1PaymPUE5grY1fs3uQqSeofYis56MdM8qmV8oWXSC706TLnt8IadLECbXqVj8UdeDBPh_6Wc-DdZ7aUEDUanAsT-g2_j1ZG-tsem4w08HGdRkIfSD6T9Gy_fn5-8gVYwmKie3sSUG2pspm-_tWl6UmD1w9wNOXcuvkHC4Cs6Aj0nXQglYNVjigIwYK1LOmJDSc0q9aIYFyb_InNqdFqfo3xePakR702OwLQJ-xppKSq9Jx-cnifjydf-wltlvGglw78LlbUDH6DiZCIg2VRaQ2s9Lr3V2cffekVVVZdKWFP4asSVJFgKoin7bTwNGhTeGF6FWSBN1AgR6Ci0Rsw8cldXupW6da7d-nXS4HRm0qz4SUWbGiCJEfPwUneEE76nGYOZnh_7ZFkB52x-VgeA1OQDBRfjQn6FcHRjXz_eQF8gtkXCL5JwfaAPjrBLfNfrxbvrg9kmqYnKayQ31CpQ_5PC-kc4t1dSNlkcX3jjKnivdCsxmZVEpbY_Angknd1CMM42MGEFPURml_FhX0biuaOFgvYP6ukAAJh4UjMyy5mBROsO25oiWCcgvMUQOirkbQTpbfKdB-s9ZVFub6sjr87bCPDnrWqrvf47nvJvBs91JMtTwws6c1vbUdCEAD7AtkvCEw23REdefDx-0edeYrdvnb4X61F8kyHzzWeW7rIKnwwfI_qTbknDsXpyNrmO4ATAbrnS16TOI0A&#xD;&#xA;Host: localhost:60054&#xD;&#xA;Referer: http://localhost:60054/SAPPO/Index&#xD;&#xA;User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0&#xD;&#xA;Upgrade-Insecure-Requests: 1&#xD;&#xA;" />
+    </item>
+    <item name="APPL_MD_PATH">
+      <value string="/LM/W3SVC/3/ROOT" />
+    </item>
+    <item name="APPL_PHYSICAL_PATH">
+      <value string="D:\WebApplications\BuildMateSalesSystem-From29Jan2021\BMSS.WebUI\" />
+    </item>
+    <item name="AUTH_TYPE">
+      <value string="ApplicationCookie" />
+    </item>
+    <item name="AUTH_USER">
+      <value string="Admin" />
+    </item>
+    <item name="AUTH_PASSWORD">
+      <value string="" />
+    </item>
+    <item name="LOGON_USER">
+      <value string="Admin" />
+    </item>
+    <item name="REMOTE_USER">
+      <value string="Admin" />
+    </item>
+    <item name="CERT_COOKIE">
+      <value string="" />
+    </item>
+    <item name="CERT_FLAGS">
+      <value string="" />
+    </item>
+    <item name="CERT_ISSUER">
+      <value string="" />
+    </item>
+    <item name="CERT_KEYSIZE">
+      <value string="" />
+    </item>
+    <item name="CERT_SECRETKEYSIZE">
+      <value string="" />
+    </item>
+    <item name="CERT_SERIALNUMBER">
+      <value string="" />
+    </item>
+    <item name="CERT_SERVER_ISSUER">
+      <value string="" />
+    </item>
+    <item name="CERT_SERVER_SUBJECT">
+      <value string="" />
+    </item>
+    <item name="CERT_SUBJECT">
+      <value string="" />
+    </item>
+    <item name="CONTENT_LENGTH">
+      <value string="0" />
+    </item>
+    <item name="CONTENT_TYPE">
+      <value string="" />
+    </item>
+    <item name="GATEWAY_INTERFACE">
+      <value string="CGI/1.1" />
+    </item>
+    <item name="HTTPS">
+      <value string="off" />
+    </item>
+    <item name="HTTPS_KEYSIZE">
+      <value string="" />
+    </item>
+    <item name="HTTPS_SECRETKEYSIZE">
+      <value string="" />
+    </item>
+    <item name="HTTPS_SERVER_ISSUER">
+      <value string="" />
+    </item>
+    <item name="HTTPS_SERVER_SUBJECT">
+      <value string="" />
+    </item>
+    <item name="INSTANCE_ID">
+      <value string="3" />
+    </item>
+    <item name="INSTANCE_META_PATH">
+      <value string="/LM/W3SVC/3" />
+    </item>
+    <item name="LOCAL_ADDR">
+      <value string="::1" />
+    </item>
+    <item name="PATH_INFO">
+      <value string="/WForms/SAPPOViewer.aspx/2415" />
+    </item>
+    <item name="PATH_TRANSLATED">
+      <value string="D:\WebApplications\BuildMateSalesSystem-From29Jan2021\BMSS.WebUI\WForms\SAPPOViewer.aspx" />
+    </item>
+    <item name="QUERY_STRING">
+      <value string="" />
+    </item>
+    <item name="REMOTE_ADDR">
+      <value string="::1" />
+    </item>
+    <item name="REMOTE_HOST">
+      <value string="::1" />
+    </item>
+    <item name="REMOTE_PORT">
+      <value string="58063" />
+    </item>
+    <item name="REQUEST_METHOD">
+      <value string="GET" />
+    </item>
+    <item name="SCRIPT_NAME">
+      <value string="/WForms/SAPPOViewer.aspx" />
+    </item>
+    <item name="SERVER_NAME">
+      <value string="localhost" />
+    </item>
+    <item name="SERVER_PORT">
+      <value string="60054" />
+    </item>
+    <item name="SERVER_PORT_SECURE">
+      <value string="0" />
+    </item>
+    <item name="SERVER_PROTOCOL">
+      <value string="HTTP/1.1" />
+    </item>
+    <item name="SERVER_SOFTWARE">
+      <value string="Microsoft-IIS/10.0" />
+    </item>
+    <item name="URL">
+      <value string="/WForms/SAPPOViewer.aspx" />
+    </item>
+    <item name="HTTP_CONNECTION">
+      <value string="keep-alive" />
+    </item>
+    <item name="HTTP_ACCEPT">
+      <value string="text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8" />
+    </item>
+    <item name="HTTP_ACCEPT_ENCODING">
+      <value string="gzip, deflate" />
+    </item>
+    <item name="HTTP_ACCEPT_LANGUAGE">
+      <value string="en-US,en;q=0.5" />
+    </item>
+    <item name="HTTP_COOKIE">
+      <value string="__RequestVerificationToken=0uo0ay5FBWuEVGjuBmXiYDxUy-tdfa0unsoWeFgUgjDNqVSeKmCkhEoGDNyIOs_CCMsrlw01snNX9t9AsFo9GUHGhI9TRZUKpu9sYbPZwqY1; .AspNet.ApplicationCookie=_6ipkIHpVuvmSOz_vOICuxBVfx65xXRnBJqqIuf6ilCGo9wD9EX4rraLKPMVSSRJM-iODDO7L6FDnXW0EYNyZ3lBfCNuDKyaKj1N2DDZAEeXLRWwwoc1Q2Ble5sAaTaq4oZxvi6VteJyVcbEihu7_POdWyWGKyyi44iAoReadcj9YpkPAaDCA3B62lhOL9WkCapu7WCssC57uRKElOISDLuy95PutLB1h8eMS9L_N2ztkm8O9H_wknXCvsQptNRdLcQo0un1PaymPUE5grY1fs3uQqSeofYis56MdM8qmV8oWXSC706TLnt8IadLECbXqVj8UdeDBPh_6Wc-DdZ7aUEDUanAsT-g2_j1ZG-tsem4w08HGdRkIfSD6T9Gy_fn5-8gVYwmKie3sSUG2pspm-_tWl6UmD1w9wNOXcuvkHC4Cs6Aj0nXQglYNVjigIwYK1LOmJDSc0q9aIYFyb_InNqdFqfo3xePakR702OwLQJ-xppKSq9Jx-cnifjydf-wltlvGglw78LlbUDH6DiZCIg2VRaQ2s9Lr3V2cffekVVVZdKWFP4asSVJFgKoin7bTwNGhTeGF6FWSBN1AgR6Ci0Rsw8cldXupW6da7d-nXS4HRm0qz4SUWbGiCJEfPwUneEE76nGYOZnh_7ZFkB52x-VgeA1OQDBRfjQn6FcHRjXz_eQF8gtkXCL5JwfaAPjrBLfNfrxbvrg9kmqYnKayQ31CpQ_5PC-kc4t1dSNlkcX3jjKnivdCsxmZVEpbY_Angknd1CMM42MGEFPURml_FhX0biuaOFgvYP6ukAAJh4UjMyy5mBROsO25oiWCcgvMUQOirkbQTpbfKdB-s9ZVFub6sjr87bCPDnrWqrvf47nvJvBs91JMtTwws6c1vbUdCEAD7AtkvCEw23REdefDx-0edeYrdvnb4X61F8kyHzzWeW7rIKnwwfI_qTbknDsXpyNrmO4ATAbrnS16TOI0A" />
+    </item>
+    <item name="HTTP_HOST">
+      <value string="localhost:60054" />
+    </item>
+    <item name="HTTP_REFERER">
+      <value string="http://localhost:60054/SAPPO/Index" />
+    </item>
+    <item name="HTTP_USER_AGENT">
+      <value string="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0" />
+    </item>
+    <item name="HTTP_UPGRADE_INSECURE_REQUESTS">
+      <value string="1" />
+    </item>
+  </serverVariables>
+  <cookies>
+    <item name="__RequestVerificationToken">
+      <value string="0uo0ay5FBWuEVGjuBmXiYDxUy-tdfa0unsoWeFgUgjDNqVSeKmCkhEoGDNyIOs_CCMsrlw01snNX9t9AsFo9GUHGhI9TRZUKpu9sYbPZwqY1" />
+    </item>
+    <item name=".AspNet.ApplicationCookie">
+      <value string="_6ipkIHpVuvmSOz_vOICuxBVfx65xXRnBJqqIuf6ilCGo9wD9EX4rraLKPMVSSRJM-iODDO7L6FDnXW0EYNyZ3lBfCNuDKyaKj1N2DDZAEeXLRWwwoc1Q2Ble5sAaTaq4oZxvi6VteJyVcbEihu7_POdWyWGKyyi44iAoReadcj9YpkPAaDCA3B62lhOL9WkCapu7WCssC57uRKElOISDLuy95PutLB1h8eMS9L_N2ztkm8O9H_wknXCvsQptNRdLcQo0un1PaymPUE5grY1fs3uQqSeofYis56MdM8qmV8oWXSC706TLnt8IadLECbXqVj8UdeDBPh_6Wc-DdZ7aUEDUanAsT-g2_j1ZG-tsem4w08HGdRkIfSD6T9Gy_fn5-8gVYwmKie3sSUG2pspm-_tWl6UmD1w9wNOXcuvkHC4Cs6Aj0nXQglYNVjigIwYK1LOmJDSc0q9aIYFyb_InNqdFqfo3xePakR702OwLQJ-xppKSq9Jx-cnifjydf-wltlvGglw78LlbUDH6DiZCIg2VRaQ2s9Lr3V2cffekVVVZdKWFP4asSVJFgKoin7bTwNGhTeGF6FWSBN1AgR6Ci0Rsw8cldXupW6da7d-nXS4HRm0qz4SUWbGiCJEfPwUneEE76nGYOZnh_7ZFkB52x-VgeA1OQDBRfjQn6FcHRjXz_eQF8gtkXCL5JwfaAPjrBLfNfrxbvrg9kmqYnKayQ31CpQ_5PC-kc4t1dSNlkcX3jjKnivdCsxmZVEpbY_Angknd1CMM42MGEFPURml_FhX0biuaOFgvYP6ukAAJh4UjMyy5mBROsO25oiWCcgvMUQOirkbQTpbfKdB-s9ZVFub6sjr87bCPDnrWqrvf47nvJvBs91JMtTwws6c1vbUdCEAD7AtkvCEw23REdefDx-0edeYrdvnb4X61F8kyHzzWeW7rIKnwwfI_qTbknDsXpyNrmO4ATAbrnS16TOI0A" />
+    </item>
+  </cookies>
+</error>

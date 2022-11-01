@@ -1,0 +1,91 @@
+﻿@using BMSS.Domain
+@model IEnumerable<GRPODocH>
+@using System.Globalization;
+@{
+    ViewBag.Title = "List of Purchase Delivery Note";
+}
+@section Styles {
+    @Styles.Render("~/DataTablesCss")
+}
+@section Content_Header {
+    <section class="content-header">
+        <h1>
+            Purchase Delivery Note Listing
+            <small>Purchase Delivery Note</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href='@Url.Action("Index", "Home")'><i class="fa fa-dashboard"></i>Transactions</a></li>
+            <li class="active">Purchase Delivery Note</li>
+        </ol>
+    </section>
+}
+<div class="row">
+    <div class="col-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">List of Purchase Delivery Note</h3>
+                <div class="box-tools" style="top: 3px;"><a class="btn btn-primary" href="@Url.Action("Add", "GRPO")" role="button">Add</a></div>
+            </div>
+            <div class="box-body">
+                <table id="DeliveryOrderList" class="table table-bordered table-striped responsive nowrap bmdatatable dblEdit" data-fixed-header="true" data-auto-width="true" data-paging="true" data-searching="true" data-length-change="true" data-page-length="100" data-ordering="true" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Doc #</th>
+                            <th>Date</th>
+                            <th>Account #</th>
+                             
+                            <th>Amount</th>
+                           
+                            <th>Print Status</th>
+                            <th>SAP Status</th>
+                            <th>Del Date</th>
+                            <th data-priority="1">POR #</th> 
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var i in Model)
+                        {
+                        <tr>
+                            <td>
+                                @i.DocNum
+                                @using (Html.BeginForm("Edit", null, null, FormMethod.Get, new { id = "DetailForm" }))
+                                {
+                                    @Html.Hidden("DocNum", @i.DocNum)
+                                }
+                            </td>
+                            <td>@i.DocDate.ToString("dd'/'MM'/'yyyy")</td>
+                            <td>@i.CardCode</td>
+                            @*<td>@i.DocDate.ToString("MM'/'yyyy")</td>*@
+                            <td>@i.GrandTotal.ToString("N2", new CultureInfo("en-US"))</td>
+                            @*<td>@Html.GetDocStatusName(i.Status)</td>*@
+                            <td>@Html.GetPrintedStatusName(i.PrintedStatus)</td>
+                            <td>
+                                @Html.GetSyncStatusName(i.SyncStatus)
+                                @if (i.SyncStatus > 1)
+                                {
+                                    <span data-toggle='popover' data-trigger='hover' data-placement='right' data-html='true' data-content='@i.SyncRemarks' data-title='Sync Remarks'><i class='fa fa-fw fa-info-circle'></i></span>
+                                }
+                            </td>
+                            @if (i.DeliveryDate.HasValue)
+                            {
+                                <td>@i.DeliveryDate.Value.ToString("dd'/'MM'/'yyyy")</td>
+                            }
+                            else
+                            {
+                                <td>&nbsp;</td>
+                            }
+                            <td data-priority="1">@i.CopiedPO</td>
+
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/DataTables")
+    @Scripts.Render("~/Own")
+}
