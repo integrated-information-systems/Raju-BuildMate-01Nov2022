@@ -69,10 +69,10 @@ namespace BMSS.WebUI.Controllers
 
         [HttpPost]
         [AjaxOnly]
-        public JsonResult GetItemMthlySales(string ItemCode)
+        public JsonResult GetItemMthlySales(string ItemCode, string WhsCode)
         {
             //ItemCode = "A01-0011G0";
-            var ResultList = i_OITM_Repository.GetItemMthlySales(ItemCode);
+            var ResultList = i_OITM_Repository.GetItemMthlySales(ItemCode, WhsCode);
             return Json(ResultList, JsonRequestBehavior.DenyGet);
         }
 
@@ -954,12 +954,12 @@ namespace BMSS.WebUI.Controllers
                     //LedgerInfoLocal = LedgerInfoLocal.Where(x => x.TransType == "17" || x.TransType == "14").ToList();
                     break;
                 case "PurchaseTxn":
-                    myInClause = new string[] { "20", "21" };
+                    myInClause = new string[] { "20", "21", "59" };
                     LedgerInfoLocal = LedgerInfoLocal.Where(x => myInClause.Contains(x.TransType)).ToList();
                     //LedgerInfoLocal = LedgerInfoLocal.Where(x => x.TransType == "20" || x.TransType == "21").ToList();
                     break;
                 case "InvTxn":
-                    myInClause = new string[] { "59","60","67" };
+                    myInClause = new string[] { "60","67" };
                     LedgerInfoLocal = LedgerInfoLocal.Where(x => myInClause.Contains(x.TransType)).ToList();
 
                     //LedgerInfoLocal = LedgerInfoLocal.Where(x => x.TransType == "60" || x.TransType == "59" || x.TransType == "67").ToList();
@@ -1070,7 +1070,7 @@ namespace BMSS.WebUI.Controllers
         public JsonResult GetItemMthlySalesV1(string whsCode, string transType,string ItemCode)
         {
             //ItemCode = "A01-0011G0";
-            var ResultList = i_OITM_Repository.GetItemMthlySales(whsCode);
+            var ResultList = i_OITM_Repository.GetItemMthlySales(ItemCode,whsCode);
             return Json(ResultList, JsonRequestBehavior.DenyGet);
         }
 

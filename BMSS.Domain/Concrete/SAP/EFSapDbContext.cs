@@ -10,6 +10,7 @@ namespace BMSS.Domain.Concrete.SAP
         {
             // DB First Approach mentioned this line
             Database.SetInitializer<EFSapDbContext>(null);
+            this.Database.CommandTimeout = 300;
         }
         // DB First Approach 
 

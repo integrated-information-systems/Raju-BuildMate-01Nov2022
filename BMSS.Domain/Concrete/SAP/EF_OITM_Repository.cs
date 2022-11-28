@@ -31,7 +31,7 @@ namespace BMSS.Domain.Concrete.SAP
             return Item;
         }
         
-        public IEnumerable<ItemMonthlySales> GetItemMthlySales(string ItemCode)
+        public IEnumerable<ItemMonthlySales> GetItemMthlySales(string ItemCode,string WhsCode)
         {
             IEnumerable<ItemMonthlySales> itemMonthlySales;            
             using (var dbcontext = new EFSapDbContext())
@@ -42,7 +42,13 @@ namespace BMSS.Domain.Concrete.SAP
                 SqlParamItemCode.Direction = ParameterDirection.Input;
                 SqlParamItemCode.Value = ItemCode;
 
-                itemMonthlySales = dbcontext.Database.SqlQuery<ItemMonthlySales>(@"EXEC [dbo].[IISsp_StocksMthlySales] @itemcode", SqlParamItemCode).ToList();
+                var SqlParamWhsCode = new SqlParameter();
+                SqlParamWhsCode.ParameterName = "@whscode";
+                SqlParamWhsCode.SqlDbType = SqlDbType.VarChar;
+                SqlParamWhsCode.Direction = ParameterDirection.Input;
+                SqlParamWhsCode.Value = WhsCode;
+
+                itemMonthlySales = dbcontext.Database.SqlQuery<ItemMonthlySales>(@"EXEC [dbo].[IISsp_StocksMthlySales] @itemcode, @whscode", SqlParamItemCode, SqlParamWhsCode).ToList();
                 
             }
 

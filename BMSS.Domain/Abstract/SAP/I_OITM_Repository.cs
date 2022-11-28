@@ -9,7 +9,7 @@ namespace BMSS.Domain.Abstract.SAP
         IEnumerable<OITM> Items { get; }
         OITM GetItemDetails(string Itemcode);
 
-        IEnumerable<ItemMonthlySales> GetItemMthlySales(string ItemCode);
+        IEnumerable<ItemMonthlySales> GetItemMthlySales(string ItemCode, string WhsCode);
         IEnumerable<ListofStcoks> GetListOfStocks(string WhsCode);
         IEnumerable<WareHouseDetails> GetWareHouses();
 
